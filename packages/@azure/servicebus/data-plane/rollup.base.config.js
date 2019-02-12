@@ -17,7 +17,7 @@ const input = "dist-esm/lib/index.js";
 const production = process.env.NODE_ENV === "production";
 
 export function nodeConfig(test = false) {
-  const externalNodeBuiltins = ["events", "util", "os"];
+  const externalNodeBuiltins = ["events", "util", "os", "url", "querystring", "punycode", "crypto", "buffer", "http", "https", "zlib", "stream", "tls", "net", "string_decoder", "timers", "httpOverHttp", "httpOverHttps", "httpsOverHttp", "httpsOverHttps"];
   const baseConfig = {
     input: input,
     external: depNames.concat(externalNodeBuiltins),
