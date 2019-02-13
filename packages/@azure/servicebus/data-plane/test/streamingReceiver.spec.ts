@@ -17,10 +17,13 @@ import {
 } from "../lib";
 
 import { DispositionType } from "../lib/serviceBusMessage";
+import * as msrestAzure from "ms-rest-azure";
 
 import { testSimpleMessages, getSenderReceiverClients, ClientType, purge } from "./testUtils";
 import { Receiver } from "../lib/receiver";
 import { Sender } from "../lib/sender";
+
+const aadServiceBusAudience = "https://servicebus.azure.net/";
 
 async function testPeekMsgsLength(
   client: QueueClient | SubscriptionClient,
@@ -54,14 +57,17 @@ async function beforeEachTest(senderType: ClientType, receiverType: ClientType):
   // The tests in this file expect the env variables to contain the connection string and
   // the names of empty queue/topic/subscription that are to be tested
 
-  if (!process.env.SERVICEBUS_CONNECTION_STRING) {
+  if (!process.env.SERVICEBUS_END_POINT) {
     throw new Error(
-      "Define SERVICEBUS_CONNECTION_STRING in your environment before running integration tests."
+      "Define SERVICEBUS_END_POINT in your environment before running integration tests."
     );
   }
 
-  ns = Namespace.createFromConnectionString(process.env.SERVICEBUS_CONNECTION_STRING);
+  const tokenCreds = await msrestAzure.interactiveLogin({
+    tokenAudience: aadServiceBusAudience
+  });
 
+  ns = Namespace.createFromAadTokenCredentials(process.env.SERVICEBUS_END_POINT, tokenCreds);
   const clients = await getSenderReceiverClients(ns, senderType, receiverType);
   senderClient = clients.senderClient;
   receiverClient = clients.receiverClient;
@@ -187,7 +193,7 @@ describe("Streaming Receiver - Misc Tests", function(): void {
     should.equal(unexpectedError, undefined, unexpectedError && unexpectedError.message);
   }
 
-  it("Disabled autoComplete, no manual complete retains the message in Partitioned Queue", async function(): Promise<
+  it.only("Disabled autoComplete, no manual complete retains the message in Partitioned Queue", async function(): Promise<
     void
   > {
     await beforeEachTest(ClientType.PartitionedQueue, ClientType.PartitionedQueue);
