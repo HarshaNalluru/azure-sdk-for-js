@@ -63,9 +63,24 @@ async function beforeEachTest(senderType: ClientType, receiverType: ClientType):
     );
   }
 
-  const tokenCreds = await msrestAzure.interactiveLogin({
-    tokenAudience: aadServiceBusAudience
-  });
+  if (!process.env.USERNAME) {
+    throw new Error("Define USERNAME in your environment before running integration tests.");
+  }
+
+  if (!process.env.PASSWORD) {
+    throw new Error("Define PASSWORD in your environment before running integration tests.");
+  }
+
+  // const tokenCreds = await msrestAzure.interactiveLogin({
+  //   tokenAudience: aadServiceBusAudience
+  // });
+  const tokenCreds = await msrestAzure.loginWithUsernamePassword(
+    process.env.USERNAME,
+    process.env.PASSWORD,
+    {
+      tokenAudience: aadServiceBusAudience
+    }
+  );
 
   ns = Namespace.createFromAadTokenCredentials(process.env.SERVICEBUS_END_POINT, tokenCreds);
   const clients = await getSenderReceiverClients(ns, senderType, receiverType);
