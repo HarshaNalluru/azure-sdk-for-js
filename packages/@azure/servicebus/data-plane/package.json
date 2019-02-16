@@ -85,7 +85,7 @@
     "test": "npm run build",
     "unit": "npm run build-test && mocha -t 65000 test-dist/index.js",
     "coverage": "npm run build-test && nyc --reporter=lcov mocha -t 65000 test-dist/index.js",
-    "unit-parallel": "npm run build-test && mocha-parallel-tests -t 65000 --max-parallel 2 test-dist/index.js",
+    "unit-parallel": "npm run build-test && mocha-parallel-tests -t 100000 test-dist/index.js",
     "prepack": "npm i && npm run build",
     "extract-api": "tsc -p . && api-extractor run --local"
   }
