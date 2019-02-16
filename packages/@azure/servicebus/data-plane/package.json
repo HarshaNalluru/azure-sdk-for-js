@@ -48,6 +48,7 @@
     "dotenv": "^6.1.0",
     "mocha": "^5.2.0",
     "mocha-junit-reporter": "^1.18.0",
+    "mocha-parallel-tests": "^2.0.6-alpha.3",
     "nyc": "^13.3.0",
     "prettier": "^1.15.3",
     "rimraf": "^2.6.2",
@@ -84,6 +85,7 @@
     "test": "npm run build",
     "unit": "npm run build-test && mocha -t 65000 test-dist/index.js",
     "coverage": "npm run build-test && nyc --reporter=lcov mocha -t 65000 test-dist/index.js",
+    "unit-parallel": "npm run build-test && mocha-parallel-tests -t 65000 --max-parallel 2 test-dist/index.js",
     "prepack": "npm i && npm run build",
     "extract-api": "tsc -p . && api-extractor run --local"
   }
