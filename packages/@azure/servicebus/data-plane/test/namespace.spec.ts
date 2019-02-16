@@ -8,6 +8,9 @@ import dotenv from "dotenv";
 dotenv.config();
 chai.use(chaiAsPromised);
 import { Namespace, delay } from "../lib";
+import * as msrestAzure from "ms-rest-azure";
+import { getSenderReceiverClients, ClientType, testSimpleMessages, getEnvVars } from "./testUtils";
+const aadServiceBusAudience = "https://servicebus.azure.net/";
 
 function testFalsyValues(testFn: Function): void {
   [undefined, "", 0].forEach(function(value: string | number | undefined): void {
@@ -321,5 +324,80 @@ describe("Errors with non existing Queue/Topic/Subscription", async function(): 
     await delay(3000);
     await client.close();
     should.equal(errorWasThrown, true, "Error thrown flag must be true");
+  });
+});
+
+describe("Test createFromAadTokenCredentials", function(): void {
+  let namespace: Namespace;
+  let tokenCreds: msrestAzure.ApplicationTokenCredentials;
+  let errorWasThrown: boolean = false;
+  if (!process.env.SERVICEBUS_CONNECTION_STRING) {
+    throw new Error(
+      "Define SERVICEBUS_CONNECTION_STRING in your environment before running integration tests."
+    );
+  }
+  const serviceBusEndpoint = (process.env.SERVICEBUS_CONNECTION_STRING.match(
+    "Endpoint=sb://(.*)/;.*"
+  ) || "")[1];
+
+  async function testCreateFromAadTokenCredentials(
+    host: string,
+    tokenAudience: string
+  ): Promise<void> {
+    const env = getEnvVars();
+    tokenCreds = await msrestAzure.loginWithServicePrincipalSecret(
+      env.clientId,
+      env.secret,
+      env.tenantId,
+      { tokenAudience: tokenAudience }
+    );
+    namespace = Namespace.createFromAadTokenCredentials(host, tokenCreds);
+    namespace.should.be.an.instanceof(Namespace);
+    const clients = await getSenderReceiverClients(
+      namespace,
+      ClientType.UnpartitionedQueue,
+      ClientType.UnpartitionedQueue
+    );
+
+    const sender = clients.senderClient.getSender();
+    const receiver = clients.receiverClient.getReceiver();
+    await sender.send(testSimpleMessages);
+    const msgs = await receiver.receiveBatch(1);
+
+    should.equal(Array.isArray(msgs), true, "`ReceivedMessages` is not an array");
+    should.equal(msgs[0].body, testSimpleMessages.body, "MessageBody is different than expected");
+    should.equal(msgs.length, 1, "Unexpected number of messages");
+  }
+
+  it("throws error for an invalid host", async function(): Promise<void> {
+    await testCreateFromAadTokenCredentials("", aadServiceBusAudience).catch((err) => {
+      errorWasThrown = true;
+      should.equal(
+        err.message,
+        "'host' is a required parameter and must be of type: 'string'.",
+        "ErrorMessage is different than expected"
+      );
+    });
+    should.equal(errorWasThrown, true, "Error thrown flag must be true");
+  });
+
+  it("throws error for invalid tokenCredentials(without tokenAudience)", async function(): Promise<
+    void
+  > {
+    await testCreateFromAadTokenCredentials(serviceBusEndpoint, "").catch((err) => {
+      errorWasThrown = true;
+      should.equal(
+        !(err.message.search("InvalidAudience: Invalid authorization token audience.") + 1),
+        false,
+        "ErrorMessage is different than expected"
+      );
+    });
+    should.equal(errorWasThrown, true, "Error thrown flag must be true");
+    await namespace.close();
+  });
+
+  it("sends a message to the ServiceBus entity", async function(): Promise<void> {
+    await testCreateFromAadTokenCredentials(serviceBusEndpoint, aadServiceBusAudience);
+    await namespace.close();
   });
 });
