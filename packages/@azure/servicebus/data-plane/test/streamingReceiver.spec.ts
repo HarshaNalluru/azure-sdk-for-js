@@ -113,41 +113,55 @@ describe("Streaming - Misc Tests", function(): void {
     await afterEachTest();
   });
 
-  async function testAutoComplete(): Promise<void> {
-    const testMessage = TestMessage.getSample();
-    await sender.send(testMessage);
+  async function sendMsgs(): Promise<void> {
+    for (let index = 0; index < 100; index++) {
+      const testMessage = TestMessage.getSample();
+      await sender.send(testMessage);
+      if (index % 9 === 0) console.log("send " + index);
+    }
+  }
 
+  async function testAutoComplete(): Promise<void> {
+    if (!process.env.SERVICEBUS_CONNECTION_STRING) {
+      throw new Error(
+        "Define SERVICEBUS_CONNECTION_STRING in your environment before running integration tests."
+      );
+    }
+    ns = Namespace.createFromConnectionString(process.env.SERVICEBUS_CONNECTION_STRING);
+    receiverClient = ns.createQueueClient(process.env.QUEUE_NAME || "partitioned-queue");
+    receiver = receiverClient.getReceiver();
     const receivedMsgs: ServiceBusMessage[] = [];
+    let index = 0;
     receiver.receive((msg: ServiceBusMessage) => {
       receivedMsgs.push(msg);
-      should.equal(msg.body, testMessage.body, "MessageBody is different than expected");
-      should.equal(msg.messageId, testMessage.messageId, "MessageId is different than expected");
-
+      index++;
+      if (index % 9 === 0) console.log("receive " + index);
       return Promise.resolve();
     }, unExpectedErrorHandler);
 
-    const msgsCheck = await checkWithTimeout(
-      () => receivedMsgs.length === 1 && receivedMsgs[0].delivery.remote_settled === true
-    );
+    const msgsCheck = await checkWithTimeout(() => receivedMsgs.length === 100, 1000, 50000);
+    receivedMsgs.forEach(async (element) => {
+      await checkWithTimeout(() => element.delivery.remote_settled === true, 1000, 50000);
+    });
 
+    await delay(3000);
     should.equal(
       msgsCheck,
       true,
-      receivedMsgs.length !== 1
-        ? `Expected 1, received ${receivedMsgs.length} messages`
+      receivedMsgs.length !== 100
+        ? `Expected 100, received ${receivedMsgs.length} messages`
         : "Message didnt get auto-completed in time"
     );
     await receiver.close();
-
-    should.equal(unexpectedError, undefined, unexpectedError && unexpectedError.message);
-    should.equal(receivedMsgs.length, 1, "Unexpected number of messages");
-    await testPeekMsgsLength(receiverClient, 0);
   }
-
-  it("Partitioned Queue: AutoComplete removes the message", async function(): Promise<void> {
+  it("send", async function(): Promise<void> {
     await beforeEachTest(ClientType.PartitionedQueue, ClientType.PartitionedQueue);
-    await testAutoComplete();
+    await sendMsgs();
   });
+
+  it.only("Partitioned Queue: AutoComplete removes the message", async function(): Promise<void> {
+    await testAutoComplete();
+  }).timeout(1000000);
 
   it("Partitioned Subscription: AutoComplete removes the message", async function(): Promise<void> {
     await beforeEachTest(ClientType.PartitionedTopic, ClientType.PartitionedSubscription);

@@ -69,6 +69,16 @@ export namespace ConnectionContext {
     const disconnected: OnAmqpEvent = async (context: EventContext) => {
       const connectionError =
         context.connection && context.connection.error ? context.connection.error : undefined;
+
+      for (let i = 0; i < 4; i++) {
+        console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      }
+      console.log(context.connection);
+      console.log(context.connection.error);
+      console.log(context.error);
+      for (let i = 0; i < 4; i++) {
+        console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      }
       if (connectionError) {
         log.error(
           "[%s] Error (context.connection.error) occurred on the amqp connection: %O",
