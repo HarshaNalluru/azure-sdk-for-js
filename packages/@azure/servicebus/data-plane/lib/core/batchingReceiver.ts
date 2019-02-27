@@ -60,7 +60,7 @@ export class BatchingReceiver extends MessageReceiver {
     }
 
     const brokeredMessages: ServiceBusMessage[] = [];
-
+    console.log("hello 3");
     this.isReceivingMessages = true;
     return new Promise<ServiceBusMessage[]>((resolve, reject) => {
       let onReceiveMessage: OnAmqpEventAsPromise;
@@ -70,9 +70,10 @@ export class BatchingReceiver extends MessageReceiver {
       let onReceiveError: OnAmqpEvent;
       let onSessionError: OnAmqpEvent;
       let firstMessageWaitTimer: NodeJS.Timer | undefined;
-
+      console.log("hello 5");
       // Final action to be performed after maxMessageCount is reached or the maxWaitTime is over.
       const finalAction = () => {
+        console.log("hello 6");
         if (this._newMessageReceivedTimer) {
           clearTimeout(this._newMessageReceivedTimer);
         }
@@ -146,6 +147,7 @@ export class BatchingReceiver extends MessageReceiver {
 
       // Action to be performed on the "receiver_drained" event.
       onReceiveDrain = (context: EventContext) => {
+        console.log("hello 9");
         this._receiver!.removeListener(ReceiverEvents.receiverDrained, onReceiveDrain);
         this._receiver!.drain = false;
 
@@ -163,6 +165,7 @@ export class BatchingReceiver extends MessageReceiver {
 
       // Action to be performed on the "message" event.
       onReceiveMessage = async (context: EventContext) => {
+        console.log("hello 8");
         if (firstMessageWaitTimer) {
           clearTimeout(firstMessageWaitTimer);
           firstMessageWaitTimer = undefined;
@@ -174,6 +177,8 @@ export class BatchingReceiver extends MessageReceiver {
             context.message!,
             context.delivery!
           );
+          console.log("hello 4");
+          console.log(data.messageId);
           if (brokeredMessages.length < maxMessageCount) {
             brokeredMessages.push(data);
           }
@@ -358,6 +363,7 @@ export class BatchingReceiver extends MessageReceiver {
       };
 
       if (!this.isOpen()) {
+        console.log("hello 7");
         log.batching(
           "[%s] Receiver '%s', setting max concurrent calls to 0.",
           this._context.namespace.connectionId,

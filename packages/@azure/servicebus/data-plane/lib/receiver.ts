@@ -97,6 +97,7 @@ export class Receiver {
     this.validateNewReceiveCall(ReceiverType.batching);
 
     if (!this._context.batchingReceiver || !this._context.batchingReceiver.isOpen()) {
+      console.log("hello 1");
       const options: ReceiveOptions = {
         maxConcurrentCalls: 0,
         receiveMode: this._receiveMode,
@@ -106,6 +107,7 @@ export class Receiver {
     }
 
     try {
+      console.log("hello 2");
       return await this._context.batchingReceiver.receive(maxMessageCount, idleTimeoutInSeconds);
     } catch (err) {
       log.error(
