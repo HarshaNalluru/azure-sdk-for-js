@@ -8,8 +8,8 @@
 #   Example: --fgrep "test description"
 
 variables:
-  OSName: 'Windows'
-  OSVmImage: 'vs2017-win2016'
+  OSName: 'Linux'
+  OSVmImage: 'ubuntu-16.04'
   NodeVersion: '10.x'
 
 jobs:
