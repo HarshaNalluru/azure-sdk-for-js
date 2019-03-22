@@ -532,7 +532,7 @@ describe("Highlevel", () => {
     );
   });
 
-  it.only("bloburl.download should download data failed when exceeding max stream retry requests", async () => {
+  it("bloburl.download should download data failed when exceeding max stream retry requests", async () => {
     const uploadResponse = await uploadFileToBlockBlob(
       Aborter.none,
       tempFileSmall,
