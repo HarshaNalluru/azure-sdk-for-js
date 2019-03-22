@@ -532,7 +532,7 @@ describe("Highlevel", () => {
     );
   });
 
-  it("bloburl.download should download data failed when exceeding max stream retry requests", async () => {
+  it.only("bloburl.download should download data failed when exceeding max stream retry requests", async () => {
     const uploadResponse = await uploadFileToBlockBlob(
       Aborter.none,
       tempFileSmall,
@@ -542,11 +542,13 @@ describe("Highlevel", () => {
         parallelism: 20
       }
     );
+    console.log("after uploadFile");
 
     const downloadedFile = path.join(
       tempFolderPath,
       getUniqueName("downloadfile.")
     );
+    console.log("after downloadFile");
 
     let retirableReadableStreamOptions: IRetriableReadableStreamOptions;
     let injectedErrors = 0;
@@ -571,18 +573,23 @@ describe("Highlevel", () => {
           }
         }
       );
+      console.log("after blobURL.download");
       retirableReadableStreamOptions = (downloadResponse.readableStreamBody! as any)
         .options;
+      console.log("after retirableReadableStreamOptions");
       await readStreamToLocalFile(
         downloadResponse.readableStreamBody!,
         downloadedFile
       );
+      console.log("after readStreamToLocalFile");
     } catch (error) {
       expectedError = true;
     }
 
     assert.ok(expectedError);
+    console.log("after assert.ok");
     fs.unlinkSync(downloadedFile);
+    console.log("after unlink");
   });
 
   it("bloburl.download should abort after retrys", async () => {
