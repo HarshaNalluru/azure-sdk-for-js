@@ -532,64 +532,60 @@ describe("Highlevel", () => {
     );
   });
 
-  it("bloburl.download should download data failed when exceeding max stream retry requests", async () => {
-    const uploadResponse = await uploadFileToBlockBlob(
-      Aborter.none,
-      tempFileSmall,
-      blockBlobURL,
-      {
-        blockSize: 4 * 1024 * 1024,
-        parallelism: 20
-      }
-    );
-    console.log("after uploadFile");
-
-    const downloadedFile = path.join(
-      tempFolderPath,
-      getUniqueName("downloadfile.")
-    );
-    console.log("after downloadFile");
-
-    let retirableReadableStreamOptions: IRetriableReadableStreamOptions;
-    let injectedErrors = 0;
-    let expectedError = false;
-
-    try {
-      const downloadResponse = await blockBlobURL.download(
+  it.only("bloburl.download should download data failed when exceeding max stream retry requests", async () => {
+    for (let index = 0; index < 1000; index++) {
+      const uploadResponse = await uploadFileToBlockBlob(
         Aborter.none,
-        0,
-        undefined,
+        tempFileSmall,
+        blockBlobURL,
         {
-          blobAccessConditions: {
-            modifiedAccessConditions: {
-              ifMatch: uploadResponse.eTag
-            }
-          },
-          maxRetryRequests: 0,
-          progress: () => {
-            if (injectedErrors++ < 1) {
-              retirableReadableStreamOptions.doInjectErrorOnce = true;
-            }
-          }
+          blockSize: 4 * 1024 * 1024,
+          parallelism: 20
         }
       );
-      console.log("after blobURL.download");
-      retirableReadableStreamOptions = (downloadResponse.readableStreamBody! as any)
-        .options;
-      console.log("after retirableReadableStreamOptions");
-      await readStreamToLocalFile(
-        downloadResponse.readableStreamBody!,
-        downloadedFile
+  
+      const downloadedFile = path.join(
+        tempFolderPath,
+        getUniqueName("downloadfile.")
       );
-      console.log("after readStreamToLocalFile");
-    } catch (error) {
-      expectedError = true;
+  
+      let retirableReadableStreamOptions: IRetriableReadableStreamOptions;
+      let injectedErrors = 0;
+      let expectedError = false;
+  
+      try {
+        const downloadResponse = await blockBlobURL.download(
+          Aborter.none,
+          0,
+          undefined,
+          {
+            blobAccessConditions: {
+              modifiedAccessConditions: {
+                ifMatch: uploadResponse.eTag
+              }
+            },
+            maxRetryRequests: 0,
+            progress: () => {
+              if (injectedErrors++ < 1) {
+                retirableReadableStreamOptions.doInjectErrorOnce = true;
+              }
+            }
+          }
+        );
+        retirableReadableStreamOptions = (downloadResponse.readableStreamBody! as any)
+          .options;
+        await readStreamToLocalFile(
+          downloadResponse.readableStreamBody!,
+          downloadedFile
+        );
+      } catch (error) {
+        expectedError = true;
+      }
+  
+      assert.ok(expectedError);
+      fs.unlinkSync(downloadedFile);
+      console.log("after unlink");
     }
-
-    assert.ok(expectedError);
-    console.log("after assert.ok");
-    fs.unlinkSync(downloadedFile);
-    console.log("after unlink");
   });
 
   it("bloburl.download should abort after retrys", async () => {
