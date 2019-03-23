@@ -18,9 +18,6 @@ jobs:
       # since the tests would attempt to use the same resources which causes conflicts.
       maxParallel: 1
       matrix:
-        Linux:
-          OSName: 'Linux'
-          OSVmImage: 'ubuntu-16.04'
         Windows:
           OSName: 'Windows'
           OSVmImage: 'vs2017-win2016'
