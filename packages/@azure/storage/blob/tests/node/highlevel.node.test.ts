@@ -583,8 +583,14 @@ describe("Highlevel", () => {
       }
   
       assert.ok(expectedError);
-      fs.unlinkSync(downloadedFile);
-      console.log("after unlink");
+      try {
+        fs.unlinkSync(downloadedFile);
+        console.log("after first unlink", index);
+      } catch (error) {
+        console.log(error);
+        fs.unlinkSync(downloadedFile);
+        console.log("after second unlink", index);
+      }
     }
   });
 
