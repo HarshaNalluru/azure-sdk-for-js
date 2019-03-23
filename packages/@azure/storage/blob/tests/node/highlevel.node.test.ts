@@ -17,6 +17,7 @@ import {
   getUniqueName,
   readStreamToLocalFile
 } from "../utils";
+import { delay } from '@azure/ms-rest-js';
 
 // tslint:disable:no-empty
 describe("Highlevel", () => {
@@ -593,6 +594,7 @@ describe("Highlevel", () => {
           successfully_unlinked = true
         } catch (error) {
           console.log(error.message);
+          await delay(1000);
         }
       } while (!successfully_unlinked);
     }
