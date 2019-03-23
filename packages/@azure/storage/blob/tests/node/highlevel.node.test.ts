@@ -533,7 +533,7 @@ describe("Highlevel", () => {
   });
 
   it.only("bloburl.download should download data failed when exceeding max stream retry requests", async () => {
-    for (let index = 0; index < 1000; index++) {
+    for (let index = 0; index < 10; index++) {
       const uploadResponse = await uploadFileToBlockBlob(
         Aborter.none,
         tempFileSmall,
@@ -583,14 +583,18 @@ describe("Highlevel", () => {
       }
   
       assert.ok(expectedError);
-      try {
-        fs.unlinkSync(downloadedFile);
-        console.log("after first unlink", index);
-      } catch (error) {
-        console.log(error);
-        fs.unlinkSync(downloadedFile);
-        console.log("after second unlink", index);
-      }
+      let unlink_count = 0;
+      let successfully_unlinked = false;
+      do {
+        try {
+          unlink_count++;
+          console.log("unlink_count - ", unlink_count);
+          fs.unlinkSync(downloadedFile);
+          successfully_unlinked = true
+        } catch (error) {
+          console.log(error);
+        }
+      } while (!successfully_unlinked);
     }
   });
 
