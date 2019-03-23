@@ -594,7 +594,7 @@ describe("Highlevel", () => {
           successfully_unlinked = true
         } catch (error) {
           console.log(error.message);
-          await delay(1000);
+          await delay(10);
         }
       } while (!successfully_unlinked);
     }
