@@ -584,6 +584,7 @@ describe("Highlevel", () => {
       }
   
       assert.ok(expectedError);
+      // fs.unlinkSync(downloadedFile);
       let unlink_count = 0;
       let successfully_unlinked = false;
       do {

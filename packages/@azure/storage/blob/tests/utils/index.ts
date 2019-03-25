@@ -118,6 +118,6 @@ export async function readStreamToLocalFile(
     rs.pipe(ws);
     rs.on("error", reject);
     ws.on("error", reject);
-    ws.on("finish", resolve);
+    ws.on("close", resolve);
   });
 }
