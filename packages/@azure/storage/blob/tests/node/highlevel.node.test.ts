@@ -17,7 +17,6 @@ import {
   getUniqueName,
   readStreamToLocalFile
 } from "../utils";
-import { delay } from '@azure/ms-rest-js';
 
 // tslint:disable:no-empty
 describe("Highlevel", () => {
