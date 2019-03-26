@@ -116,8 +116,11 @@ export async function readStreamToLocalFile(
   return new Promise<void>((resolve, reject) => {
     const ws = fs.createWriteStream(file);
     rs.pipe(ws);
-    rs.on("error", reject);
-    ws.on("error", reject);
-    ws.on("close", resolve);
+
+
+    let error : Error;
+    rs.on("error", (err: Error) => { if (error == null) { error = err; ws.end(); }});
+    ws.on("error", (err: Error) => { if (error == null) { error = err; }});
+    ws.on("close", () => { if (error != null) { reject(error); } else { resolve(); }});
   });
 }
