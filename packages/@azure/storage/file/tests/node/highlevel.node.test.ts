@@ -17,6 +17,7 @@ import {
   readStreamToLocalFile
 } from "../utils";
 import { IRetriableReadableStreamOptions } from "../../lib/utils/RetriableReadableStream";
+import { delay } from '@azure/ms-rest-js';
 
 // tslint:disable:no-empty
 describe("Highlevel", () => {
@@ -453,6 +454,7 @@ describe("Highlevel", () => {
   });
 
   it("bloburl.download should download data failed when exceeding max stream retry requests", async () => {
+    for (let index = 0; index < 1000; index++) {
     await uploadFileToAzureFile(Aborter.none, tempFileSmall, fileURL, {
       rangeSize: 4 * 1024 * 1024,
       parallelism: 20
@@ -492,7 +494,21 @@ describe("Highlevel", () => {
     }
 
     assert.ok(expectedError);
-    fs.unlinkSync(downloadedFile);
+      // fs.unlinkSync(downloadedFile);
+      let unlink_count = 0;
+      let successfully_unlinked = false;
+      do {
+        try {
+          unlink_count++;
+          console.log("iteration - ", index, "unlink_count - ", unlink_count);
+          fs.unlinkSync(downloadedFile);
+          successfully_unlinked = true
+        } catch (error) {
+          console.log(error.message);
+          await delay(10);
+        }
+      } while (!successfully_unlinked);
+  }
   });
 
   it("bloburl.download should abort after retrys", async () => {
