@@ -120,28 +120,47 @@ export async function readStreamToLocalFile(
     const ws = fs.createWriteStream(file);
     rs.pipe(ws);
 
-    let error : Error;
-
-    rs.on("error", (err: Error) => {
-      // First error wins
-      if (error === null) {
-        error = err;
-      }
+    rs.on("error", () => {
+      console.log("rs.error");
+      reject();
     });
-
-    ws.on("error", (err: Error) => {
-      // First error wins
-      if (error === null) {
-        error = err;
-      }
+    ws.on("error", () => {
+      console.log("ws.error");
+      reject();
     });
-
-    ws.on("close", () => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve();
-      }
+    ws.on("finish", () => {
+      console.log("finish");
+      resolve();
     });
+    // let error : Error;
+
+    // rs.on("error", (err: Error) => {
+    //   console.log("rs.error 1");
+    //   // First error wins
+    //   if (error == null) {
+    //     console.log("rs.error 2");
+    //     error = err;
+    //     ws.end();
+    //   }
+    // });
+
+    // ws.on("error", (err: Error) => {
+    //   console.log("ws.error 1");
+    //   // First error wins
+    //   if (error == null) {
+    //     console.log("ws.error 2");
+    //     error = err;
+    //   }
+    // });
+
+    // ws.on("close", () => {
+    //   if (error) {
+    //     console.log("close if");
+    //     reject(error);
+    //   } else {
+    //     console.log("close else");
+    //     resolve();
+    //   }
+    // });
   });
 }
