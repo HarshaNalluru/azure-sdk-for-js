@@ -118,49 +118,45 @@ export async function readStreamToLocalFile(
 ) {
   return new Promise<void>((resolve, reject) => {
     const ws = fs.createWriteStream(file);
+
+    if (process.env.STREAM_DEBUG) {
+      rs.on("close", () => console.log("rs.close"));
+      rs.on("data", () => console.log("rs.data"));
+      rs.on("end", () => console.log("rs.end"));
+      rs.on("error", () => console.log("rs.error"));
+      ws.on("close", () => console.log("ws.close"));
+      ws.on("drain", () => console.log("ws.drain"));
+      ws.on("error", () => console.log("ws.error"));
+      ws.on("finish", () => console.log("ws.finish"));
+      ws.on("pipe", () => console.log("ws.pipe"));
+      ws.on("unpipe", () => console.log("ws.unpipe"));  
+    }
+
+    let error : Error;
+
+    rs.on("error", (err: Error) => {
+      // First error wins
+      if (!error) {
+        error = err;
+      }
+      rs.emit("end");
+    });
+
+    ws.on("error", (err: Error) => {
+      // First error wins
+      if (!error) {
+        error = err;
+      }
+    });
+
+    ws.on("close", () => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+
     rs.pipe(ws);
-
-    rs.on("error", (err) => {
-      console.log("rs.error - ", err.message);
-      reject();
-    });
-    ws.on("error", () => {
-      console.log("ws.error");
-      reject();
-    });
-    ws.on("finish", () => {
-      console.log("finish");
-      resolve();
-    });
-    // let error : Error;
-
-    // rs.on("error", (err: Error) => {
-    //   console.log("rs.error 1");
-    //   // First error wins
-    //   if (error == null) {
-    //     console.log("rs.error 2");
-    //     error = err;
-    //     ws.end();
-    //   }
-    // });
-
-    // ws.on("error", (err: Error) => {
-    //   console.log("ws.error 1");
-    //   // First error wins
-    //   if (error == null) {
-    //     console.log("ws.error 2");
-    //     error = err;
-    //   }
-    // });
-
-    // ws.on("close", () => {
-    //   if (error) {
-    //     console.log("close if");
-    //     reject(error);
-    //   } else {
-    //     console.log("close else");
-    //     resolve();
-    //   }
-    // });
   });
 }
