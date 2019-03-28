@@ -120,8 +120,8 @@ export async function readStreamToLocalFile(
     const ws = fs.createWriteStream(file);
     rs.pipe(ws);
 
-    rs.on("error", () => {
-      console.log("rs.error");
+    rs.on("error", (err) => {
+      console.log("rs.error - ", err.message);
       reject();
     });
     ws.on("error", () => {
