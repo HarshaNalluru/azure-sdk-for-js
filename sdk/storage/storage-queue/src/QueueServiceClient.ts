@@ -250,20 +250,15 @@ export class QueueServiceClient extends StorageClient {
     }
   }
 
-  public listQueues(options: ServiceListQueuesSegmentOptions = {}) {
+  public async listQueues(options: ServiceListQueuesSegmentOptions = {}) {
     const client = this;
     return {
-      next() {
-        return client
-          .listItems(options)
-          .next()
-          .then((value) => ({
-            value,
-            done: value == null
-          }));
-      },
-      [Symbol.asyncIterator]() {
-        return this;
+      async *[Symbol.asyncIterator]() {
+        let marker: string | undefined = undefined;
+        let segment;
+        segment = await client.listSegments(marker, options).next();
+        marker = segment.value.nextMarker;
+        yield segment.value.queueItems;
       },
       /**
        *@param {string} [marker] A string value that identifies the portion of

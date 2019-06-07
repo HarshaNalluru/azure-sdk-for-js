@@ -26,10 +26,12 @@ async function main() {
   let i = 1;
   let marker: string | undefined = undefined;
 
-  let iter1 = queueServiceClient.listQueues();
-  for await (const item of iter1) {
-    console.log(`Queue${i}: ${item.value.name}`);
-    i++;
+  let iter1 = await queueServiceClient.listQueues();
+  for await (const items of iter1) {
+    for await (const item of items!) {
+      console.log(`Queue${i}: ${item.name}`);
+      i++;
+    }
   }
 
   // Same as the previous example
@@ -39,7 +41,7 @@ async function main() {
   //   i++;
   // }
 
-  // // Generator syntax .next()
+  // Generator syntax .next()
   // i = 1;
   // iter1 = queueServiceClient.listQueues();
   // let item1 = (await iter1.next()).value;
