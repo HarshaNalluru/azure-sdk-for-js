@@ -28,63 +28,73 @@ async function main() {
 
   let iter1 = queueServiceClient.listQueues();
   for await (const item of iter1) {
-    console.log(`Queue${i}: ${item.name}`);
+    console.log(`Queue${i}: ${item.value.name}`);
     i++;
   }
 
   // Same as the previous example
-  i = 1;
-  for await (const item of queueServiceClient.listQueues()) {
-    console.log(`Queue${i}: ${item.name}`);
-    i++;
-  }
+  // i = 1;
+  // for await (const item of queueServiceClient.listQueues()) {
+  //   console.log(`Queue${i}: ${item.value.name}`);
+  //   i++;
+  // }
 
-  i = 1;
-  for await (const item1 of queueServiceClient.listQueues().byPage({})) {
-    item1.queueItems!.forEach((queueItem) => {
-      console.log(`Queue${i}: ${queueItem.name}`);
-      i++;
-    });
-  }
+  // // Generator syntax .next()
+  // i = 1;
+  // iter1 = queueServiceClient.listQueues();
+  // let item1 = (await iter1.next()).value;
+  // do {
+  //   console.log(`Queue${i}: ${item1.value.name}`);
+  //   i++;
+  //   item1 = (await iter1.next()).value;
+  // } while (item1.value);
 
-  // Same as the previous example
-  i = 1;
-  for await (const item2 of queueServiceClient.listQueues().byPage({ pagesize: 20 })) {
-    item2.queueItems!.forEach((queueItem) => {
-      console.log(`Queue${i}: ${queueItem.name}`);
-      i++;
-    });
-  }
+  // i = 1;
+  // for await (const item1 of queueServiceClient.listQueues().byPage({})) {
+  //   item1.queueItems!.forEach((queueItem) => {
+  //     console.log(`Queue${i}: ${queueItem.name}`);
+  //     i++;
+  //   });
+  // }
 
-  // Generator syntax .next()
-  i = 1;
-  let iter2 = queueServiceClient.listQueues().byPage({ pagesize: 2 });
-  let item2 = await iter2.next();
-  do {
-    for (const queueItem of item2.value.queueItems!) {
-      console.log(`Queue${i}: ${queueItem.name}`);
-      i++;
-    }
-    item2 = await iter2.next();
-  } while (item2.value);
+  // // Same as the previous example
+  // i = 1;
+  // for await (const item2 of queueServiceClient.listQueues().byPage({ pagesize: 20 })) {
+  //   item2.queueItems!.forEach((queueItem) => {
+  //     console.log(`Queue${i}: ${queueItem.name}`);
+  //     i++;
+  //   });
+  // }
 
-  // Passing marker as argument (similar to the previous example)
-  i = 1;
-  let iter3 = queueServiceClient.listQueues().byPage({ pagesize: 2 });
-  let item = await iter3.next();
-  // Prints 2 queuenames
-  for (const queueItem of item.value.queueItems!) {
-    console.log(`Queue${i}: ${queueItem.name}`);
-    i++;
-  }
-  marker = item.value.nextMarker;
-  iter3 = queueServiceClient.listQueues().byPage({ marker: marker, pagesize: 10 });
-  item = await iter3.next();
-  // Prints 10 queuenames
-  for (const queueItem of item.value.queueItems!) {
-    console.log(`Queue${i}: ${queueItem.name}`);
-    i++;
-  }
+  // // Generator syntax .next()
+  // i = 1;
+  // let iter2 = queueServiceClient.listQueues().byPage({ pagesize: 2 });
+  // let item2 = await iter2.next();
+  // do {
+  //   for (const queueItem of item2.value.queueItems!) {
+  //     console.log(`Queue${i}: ${queueItem.name}`);
+  //     i++;
+  //   }
+  //   item2 = await iter2.next();
+  // } while (item2.value);
+
+  // // Passing marker as argument (similar to the previous example)
+  // i = 1;
+  // let iter3 = queueServiceClient.listQueues().byPage({ pagesize: 2 });
+  // let item = await iter3.next();
+  // // Prints 2 queuenames
+  // for (const queueItem of item.value.queueItems!) {
+  //   console.log(`Queue${i}: ${queueItem.name}`);
+  //   i++;
+  // }
+  // marker = item.value.nextMarker;
+  // iter3 = queueServiceClient.listQueues().byPage({ marker: marker, pagesize: 10 });
+  // item = await iter3.next();
+  // // Prints 10 queuenames
+  // for (const queueItem of item.value.queueItems!) {
+  //   console.log(`Queue${i}: ${queueItem.name}`);
+  //   i++;
+  // }
 }
 
 // An async method returns a Promise object, which is compatible with then().catch() coding style.
