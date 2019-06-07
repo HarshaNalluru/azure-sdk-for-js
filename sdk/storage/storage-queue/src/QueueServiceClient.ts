@@ -240,25 +240,28 @@ export class QueueServiceClient extends StorageClient {
   }
 
   async *listItems(
+    marker: string | undefined = undefined,
     options: ServiceListQueuesSegmentOptions = {}
-  ): AsyncIterableIterator<Models.QueueItem> {
-    let marker: string | undefined = undefined;
+  ): AsyncIterableIterator<Models.ServiceListQueuesSegmentResponse> {
     let segment;
     for await (segment of this.listSegments(marker, options)) {
-      marker = segment.nextMarker;
-      yield* segment.queueItems;
+      yield segment;
     }
   }
 
   public async listQueues(options: ServiceListQueuesSegmentOptions = {}) {
     const client = this;
+    let marker: string | undefined;
     return {
       [Symbol.asyncIterator]: function() {
         return {
           next: async function() {
-            const items = await client.listItems(options);
-            if (items) {
-              return { done: false, value: items };
+            const segmentIter = await client.listItems(marker, options);
+            const segment = await segmentIter.next();
+            marker = segment.value.nextMarker;
+            if (segment.value.queueItems) {
+              console.log("hello");
+              return { done: false, value: segment.value.queueItems };
             } else {
               return { done: true };
             }
