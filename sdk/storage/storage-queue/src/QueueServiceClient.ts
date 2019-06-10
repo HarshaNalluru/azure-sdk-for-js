@@ -251,12 +251,19 @@ export class QueueServiceClient extends StorageClient {
 
   public listQueues(options: ServiceListQueuesSegmentOptions = {}) {
     const client = this;
+    let marker: string | undefined;
     return {
-      async next() {
-        let item = (await client.listItems(options).next()).value;
-        if (item) {
-          return { done: false, value: item };
-        } else {
+      next: async function() {
+        let segment;
+        try {
+          segment = (await client.listSegments(marker, options).next()).value;
+          marker = segment.nextMarker;
+          if (segment.queueItems) {
+            return { done: false, value: segment.queueItems };
+          } else {
+            return { done: true };
+          }
+        } catch (error) {
           return { done: true };
         }
       },
