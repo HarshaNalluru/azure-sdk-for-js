@@ -172,8 +172,9 @@ export class ReceiveHandler {
 
 // @public
 export interface RetryOptions {
-    retryCount?: number;
+    maxRetries?: number;
     retryInterval?: number;
+    timeoutInMs?: number;
 }
 
 // @public
