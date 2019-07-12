@@ -17,7 +17,7 @@ import {
 } from "../../src";
 import { SASProtocol } from "../../src/SASQueryParameters";
 import { getQSU } from "../utils/index";
-import { record, delay } from "../utils/recorder";
+import { record, delay } from "@azure/test-utils-recorder";
 
 describe("Shared Access Signature (SAS) generation Node.js only", () => {
   const queueServiceClient = getQSU();

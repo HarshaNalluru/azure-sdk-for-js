@@ -32,7 +32,15 @@ if (isPlayingBack) {
 
 const skip = [
   // Abort
-  "browsers/aborter/recording_should_abort_after_aborter_timeout.json"
+  "browsers/aborter/recording_should_abort_after_aborter_timeout.json",
+  // Abort
+  "browsers/aborter/recording_should_abort_after_parent_aborter_calls_abort.json",
+  // Abort
+  "browsers/aborter/recording_should_abort_after_parent_aborter_timeout.json",
+  // Abort
+  "browsers/aborter/recording_should_abort_when_calling_abort_before_request_finishes.json",
+  // Character
+  "browsers/messagesurl/recording_enqueue_peek_dequeue_special_characters.json"
 ];
 
 export abstract class Recorder {

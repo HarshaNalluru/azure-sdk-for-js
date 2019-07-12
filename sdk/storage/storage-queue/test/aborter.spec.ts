@@ -3,7 +3,7 @@ import { Aborter } from "../src/Aborter";
 
 import { QueueClient } from "../src/QueueClient";
 import { getQSU } from "./utils";
-import { record } from "./utils/recorder";
+import { record } from "@azure/test-utils-recorder";
 import * as dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 

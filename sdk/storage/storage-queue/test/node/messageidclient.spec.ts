@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { MessageIdClient } from "../../src";
 import { getQSU, getConnectionStringFromEnvironment } from "../utils";
-import { record } from "../utils/recorder";
+import { record } from "@azure/test-utils-recorder";
 import { QueueClient } from "../../src/QueueClient";
 import { MessagesClient } from "../../src/MessagesClient";
 import { SharedKeyCredential } from "../../src/credentials/SharedKeyCredential";

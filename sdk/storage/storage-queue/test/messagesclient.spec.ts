@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { getQSU } from "./utils";
 import { QueueClient } from "../src/QueueClient";
-import { record } from "./utils/recorder";
+import { record } from "@azure/test-utils-recorder";
 import * as dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 

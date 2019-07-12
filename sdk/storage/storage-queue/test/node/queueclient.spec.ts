@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import { getQSU, getConnectionStringFromEnvironment } from "../utils";
-import { record } from "../utils/recorder";
+import { record } from "@azure/test-utils-recorder";
 import { newPipeline, QueueClient, SharedKeyCredential } from "../../src";
 import { TokenCredential } from "@azure/core-http";
 import { assertClientUsesTokenCredential } from "../utils/assert";
