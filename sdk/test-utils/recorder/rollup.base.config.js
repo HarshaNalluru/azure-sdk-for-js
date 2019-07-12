@@ -1,46 +1,18 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
-// @ts-check
-
 import nodeResolve from "rollup-plugin-node-resolve";
 import multiEntry from "rollup-plugin-multi-entry";
 import cjs from "rollup-plugin-commonjs";
 import replace from "rollup-plugin-replace";
 import { terser } from "rollup-plugin-terser";
 import sourcemaps from "rollup-plugin-sourcemaps";
-import inject from "rollup-plugin-inject";
-import shim from "rollup-plugin-shim";
-import json from "rollup-plugin-json";
+import viz from "rollup-plugin-visualizer";
 
 const pkg = require("./package.json");
-const depNames = Object.keys(pkg.dependencies).concat(Object.keys(pkg.peerDependencies));
-
-const input = "dist-esm/src/index.js";
+const depNames = Object.keys(pkg.dependencies);
+const input = "dist-esm/index.js";
 const production = process.env.NODE_ENV === "production";
 
 export function nodeConfig(test = false) {
-  const externalNodeBuiltins = [
-    "os",
-    "events",
-    "net",
-    "tls",
-    "path",
-    "fs",
-    "url",
-    "util",
-    "stream",
-    "punycode",
-    "http",
-    "https",
-    "assert",
-    "crypto",
-    "timers",
-    "string_decoder",
-    "zlib",
-    "dns"
-  ];
-
+  const externalNodeBuiltins = ["events", "fs", "fs-extra"];
   const baseConfig = {
     input: input,
     external: depNames.concat(externalNodeBuiltins),
@@ -57,21 +29,20 @@ export function nodeConfig(test = false) {
         }
       }),
       nodeResolve({ preferBuiltins: true }),
-      cjs(),
-      json()
+      cjs()
     ]
   };
 
   if (test) {
-    // entry point is every test file
-    baseConfig.input = "dist-esm/test/**/*.spec.js";
+    // Entry points - test files under the `test` folder(common for both browser and node), node specific test files
+    baseConfig.input = ["dist-esm/test/*.spec.js", "dist-esm/test/node/*.spec.js"];
     baseConfig.plugins.unshift(multiEntry({ exports: false }));
 
     // different output file
-    baseConfig.output.file = "test-dist/index.js";
+    baseConfig.output.file = "dist-test/index.node.js";
 
     // mark assert as external
-    baseConfig.external.push();
+    baseConfig.external.push("assert", "fs");
 
     // Disable tree-shaking of test code.  In rollup-plugin-node-resolve@5.0.0, rollup started respecting
     // the "sideEffects" field in package.json.  Since our package.json sets "sideEffects=false", this also
@@ -84,19 +55,20 @@ export function nodeConfig(test = false) {
   return baseConfig;
 }
 
-export function browserConfig(test = false) {
+export function browserConfig(test = false, production = false) {
   const baseConfig = {
     input: input,
+    external: ["@azure/ms-rest-js", "fs-extra"],
     output: {
-      file: "browser/index.js",
+      file: "browser/azure-test-utils-recorder.js",
       format: "umd",
-      name: "Azure.AMQPCommon",
-      sourcemap: true
+      name: "ExampleClient",
+      sourcemap: true,
+      globals: { "@azure/ms-rest-js": "msRest" }
     },
     preserveSymlinks: false,
     plugins: [
       sourcemaps(),
-
       replace({
         delimiters: ["", ""],
         values: {
@@ -106,62 +78,34 @@ export function browserConfig(test = false) {
           "if (isNode)": "if (false)"
         }
       }),
-
-      // fs, net, and tls are used by rhea and need to be shimmed
-      // TODO: get these into rhea's pkg.browser field
-      // dotenv doesn't work in the browser, so replace it with a no-op function
-      shim({
-        fs: `export default {}`,
-        net: `export default {}`,
-        tls: `export default {}`,
-        dotenv: `export function config() { }`,
-        os: `
-          export function arch() { return "javascript" }
-          export function type() { return "Browser" }
-          export function release() { typeof navigator === 'undefined' ? '' : navigator.appVersion }
-        `,
-        path: `export default {}`,
-        dns: `export function resolve() { }`
-      }),
-
       nodeResolve({
         mainFields: ["module", "browser"],
         preferBuiltins: false
       }),
-
       cjs({
         // When "rollup-plugin-commonjs@10.0.0" is used with "resolve@1.11.1", named exports of
         // modules with built-in names must have a trailing slash.
         // https://github.com/rollup/rollup-plugin-commonjs/issues/394
-        namedExports: {
-          chai: ["should"],
-          "assert/": ["equal", "deepEqual", "notEqual"]
-        }
+        namedExports: { "events/": ["EventEmitter"] }
       }),
-
-      // rhea and rhea-promise use the Buffer global which requires
-      // injection to shim properly
-      inject({
-        modules: {
-          Buffer: ["buffer", "Buffer"],
-          process: "process"
-        }
-      }),
-
-      json()
+      viz({ filename: "browser/browser-stats.html", sourcemap: false })
     ]
   };
 
   if (test) {
-    baseConfig.input = "dist-esm/test/**/*.spec.js";
+    // Entry points - test files under the `test` folder(common for both browser and node), browser specific test files
+    baseConfig.input = ["dist-esm/test/*.spec.js", "dist-esm/test/browser/*.spec.js"];
     baseConfig.plugins.unshift(multiEntry({ exports: false }));
-    baseConfig.output.file = "test-browser/index.js";
+    baseConfig.output.file = "dist-test/index.browser.js";
+    // mark fs-extra as external
+    baseConfig.external = ["fs-extra"];
 
     // Disable tree-shaking of test code.  In rollup-plugin-node-resolve@5.0.0, rollup started respecting
     // the "sideEffects" field in package.json.  Since our package.json sets "sideEffects=false", this also
     // applies to test code, which causes all tests to be removed by tree-shaking.
     baseConfig.treeshake = false;
   } else if (production) {
+    baseConfig.output.file = "browser/azure-test-utils-recorder.min.js";
     baseConfig.plugins.push(terser());
   }
 
