@@ -4,30 +4,50 @@
 import fs from "fs-extra";
 import nise from "nise";
 import queryString from "query-string";
-import { isBrowser, blobToString } from "./utils";
+import { isBrowser, blobToString, escapeRegExp, env } from "./utils";
 import { customConsoleLog } from "./customConsoleLog";
+import nock from "nock";
+import path from "path";
 
-const env = isBrowser() ? (window as any).__env__ : process.env;
-const isRecording = env.TEST_MODE === "record";
-const isPlayingBack = env.TEST_MODE === "playback";
+let isRecording: boolean;
+let isPlayingBack: boolean;
 
-let nock: any;
-if (!isBrowser() && (isRecording || isPlayingBack)) {
-  nock = require("nock");
+function envTestMode() {
+  isRecording = env.TEST_MODE === "record";
+  isPlayingBack = env.TEST_MODE === "playback";
 }
 
-if (isBrowser() && isRecording) {
-  customConsoleLog();
+let replaceableVariables: { [x: string]: string } = {};
+export function setReplaceableVariables(a: { [x: string]: string }): void {
+  replaceableVariables = a;
+  if (isPlayingBack) {
+    // Providing dummy values to avoid the error
+    Object.keys(a).map((k) => {
+      env[k] = a[k];
+    });
+  }
 }
 
-if (isPlayingBack) {
-  // Providing dummy values to avoid the error
-  env.ACCOUNT_NAME = "fakestorageaccount";
-  env.ACCOUNT_KEY = "aaaaa";
-  env.ACCOUNT_SAS = "aaaaa";
-  env.STORAGE_CONNECTION_STRING = `DefaultEndpointsProtocol=https;AccountName=${
-    env.ACCOUNT_NAME
-  };AccountKey=${env.ACCOUNT_KEY};EndpointSuffix=core.windows.net`;
+let replacements: any[] = [];
+export function setReplacements(maps: any): void {
+  replacements = maps;
+}
+
+export function setEnviromentOnLoad() {
+  envTestMode();
+  if (isBrowser() && isRecording) {
+    customConsoleLog();
+  }
+
+  if (isPlayingBack) {
+    // Providing dummy values to avoid the error [ENVs for storage packages]
+    env.ACCOUNT_NAME = "fakestorageaccount";
+    env.ACCOUNT_KEY = "aaaaa";
+    env.ACCOUNT_SAS = "aaaaa";
+    env.STORAGE_CONNECTION_STRING = `DefaultEndpointsProtocol=https;AccountName=${
+      env.ACCOUNT_NAME
+    };AccountKey=${env.ACCOUNT_KEY};EndpointSuffix=core.windows.net`;
+  }
 }
 
 const skip = [
@@ -66,10 +86,20 @@ export abstract class Recorder {
    * Additional layer of security to avoid unintended/accidental occurrences of secrets in the recordings
    * */
   protected filterSecrets(recording: string): string {
-    let updatedRecording = recording.replace(
-      new RegExp(env.ACCOUNT_NAME, "g"),
-      "fakestorageaccount"
-    );
+    let updatedRecording = recording;
+    for (const k of Object.keys(replaceableVariables)) {
+      const escaped = escapeRegExp(env[k]);
+      updatedRecording = updatedRecording.replace(
+        new RegExp(escaped, "g"),
+        replaceableVariables[k]
+      );
+    }
+    for (const map of replacements) {
+      updatedRecording = map(updatedRecording);
+    }
+
+    // Handling storage environment variables separately
+    updatedRecording = recording.replace(new RegExp(env.ACCOUNT_NAME, "g"), "fakestorageaccount");
     if (env.ACCOUNT_KEY) {
       updatedRecording = updatedRecording.replace(new RegExp(env.ACCOUNT_KEY, "g"), "aaaaa");
     }
@@ -87,7 +117,7 @@ export abstract class Recorder {
   }
 
   public abstract record(): void;
-  public abstract playback(): void;
+  public abstract playback(filePath: string): void;
   public abstract stop(): void;
 }
 
@@ -102,8 +132,17 @@ export class NockRecorder extends Recorder {
     });
   }
 
-  public playback(): void {
-    this.uniqueTestInfo = require("../recordings/" + this.filepath).testInfo;
+  public playback(filePath: string): void {
+    const searchTerm = "\\";
+    this.uniqueTestInfo = require(path.resolve(
+      filePath
+        .substring(0, filePath.lastIndexOf(searchTerm))
+        .substring(
+          0,
+          filePath.substring(0, filePath.lastIndexOf(searchTerm)).lastIndexOf(searchTerm) + 1
+        ),
+      "./recordings/" + this.filepath
+    )).testInfo;
   }
 
   public stop(): void {
@@ -137,7 +176,7 @@ export class NockRecorder extends Recorder {
 
     for (const fixture of fixtures) {
       // We're not matching query string parameters because they may contain sensitive information, and Nock does not allow us to customize it easily
-      const updatedFixture = fixture.replace(/\.query\(.*\)/, ".query(true)");
+      const updatedFixture = fixture.toString().replace(/\.query\(.*\)/, ".query(true)");
       file.write(this.filterSecrets(updatedFixture) + "\n");
     }
 
