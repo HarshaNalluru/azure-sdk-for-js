@@ -1,10 +1,11 @@
 import * as assert from "assert";
 import * as dotenv from "dotenv";
 import { extractConnectionStringParts } from "../../src/utils/utils.common";
-import { record } from "@azure/test-utils-recorder";
+import { record, setEnviromentOnLoad } from "@azure/test-utils-recorder";
 dotenv.config({ path: "../.env" });
 
 describe("Utility Helpers Node.js only", () => {
+  setEnviromentOnLoad();
   let recorder: any;
 
   beforeEach(async function() {

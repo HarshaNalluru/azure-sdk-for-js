@@ -4,11 +4,12 @@ import { QueueClient, RestError, newPipeline } from "../src";
 import { Pipeline } from "../src/Pipeline";
 import { getQSU } from "./utils";
 import { InjectorPolicyFactory } from "./utils/InjectorPolicyFactory";
-import { record } from "@azure/test-utils-recorder";
+import { record, setEnviromentOnLoad } from "@azure/test-utils-recorder";
 import * as dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
 describe("RetryPolicy", () => {
+  setEnviromentOnLoad();
   const queueServiceClient = getQSU();
   let queueName: string;
   let queueClient: QueueClient;
