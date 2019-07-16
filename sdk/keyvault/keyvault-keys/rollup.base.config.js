@@ -5,7 +5,7 @@ import nodeResolve from "rollup-plugin-node-resolve";
 import multiEntry from "rollup-plugin-multi-entry";
 import cjs from "rollup-plugin-commonjs";
 import replace from "rollup-plugin-replace";
-import { uglify } from "rollup-plugin-uglify";
+import { terser } from "rollup-plugin-terser";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import shim from "rollup-plugin-shim";
 import json from 'rollup-plugin-json';
@@ -30,7 +30,7 @@ const depNames = Object.keys(pkg.dependencies);
 const production = process.env.NODE_ENV === "production";
 
 export function nodeConfig(test = false) {
-  const externalNodeBuiltins = ["url"];
+  const externalNodeBuiltins = ["@azure/ms-rest-js", "crypto", "fs", "os", "url"];
   const baseConfig = {
     input: "dist-esm/src/index.js",
     external: depNames.concat(externalNodeBuiltins),
@@ -74,7 +74,7 @@ export function nodeConfig(test = false) {
     // applies to test code, which causes all tests to be removed by tree-shaking.
     baseConfig.treeshake = false;
   } else if (production) {
-    baseConfig.plugins.push(uglify());
+    baseConfig.plugins.push(terser());
   } 
 
   return baseConfig;
@@ -92,7 +92,6 @@ export function browserConfig(test = false) {
     },
     preserveSymlinks: false,
     plugins: [
-      json(),
       sourcemaps(),
       replace({
         delimiters: ["", ""],
@@ -122,7 +121,8 @@ export function browserConfig(test = false) {
           // https://github.com/rollup/rollup-plugin-commonjs/issues/394
           "assert/": ["ok", "deepEqual", "equal", "fail", "deepStrictEqual"]
         }
-      })
+      }),
+      json(),
     ] 
   };
 
@@ -131,7 +131,7 @@ export function browserConfig(test = false) {
     baseConfig.plugins.unshift(multiEntry({ exports: false }));
     baseConfig.output.file = "dist-test/index.browser.js";
     // mark fs-extra as external
-    baseConfig.external = ["assert", "fs-extra", "path"];
+    baseConfig.external = ["fs-extra", "path"];
     baseConfig.context = "null";
 
     // Disable tree-shaking of test code.  In rollup-plugin-node-resolve@5.0.0, rollup started respecting
@@ -141,7 +141,7 @@ export function browserConfig(test = false) {
   } else if (production) {
     baseConfig.output.file = "browser/azure-keyvault-keys.min.js";
     baseConfig.plugins.push(
-      uglify({
+      terser({
         output: {
           preamble: banner
         }
