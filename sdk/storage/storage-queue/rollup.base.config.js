@@ -23,7 +23,13 @@ const depNames = Object.keys(pkg.dependencies);
 const production = process.env.NODE_ENV === "production";
 
 export function nodeConfig(test = false) {
-  const externalNodeBuiltins = ["@azure/core-http", "crypto", "fs", "os"];
+  const externalNodeBuiltins = [
+    "@azure/core-http",
+    "@azure/test-utils-recorder",
+    "crypto",
+    "fs",
+    "os"
+  ];
   const baseConfig = {
     input: "dist-esm/src/index.js",
     external: depNames.concat(externalNodeBuiltins),
@@ -122,7 +128,8 @@ export function browserConfig(test = false, production = false) {
     baseConfig.plugins.unshift(multiEntry({ exports: false }));
     baseConfig.output.file = "dist-test/index.browser.js";
     // mark fs-extra as external
-    baseConfig.external = ["fs-extra"];
+    baseConfig.external = ["fs-extra", "@azure/test-utils-recorder"];
+    baseConfig.output.globals = { "@azure/test-utils-recorder": "testUtilsRecorder" };
 
     baseConfig.context = "null";
 
