@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AbortSignalLike } from '@azure/abort-controller';
 import { HttpClient } from '@azure/core-http';
 import { HttpPipelineLogger } from '@azure/core-http';
 import * as msRest from '@azure/core-http';
@@ -21,6 +22,7 @@ export interface CreateEcKeyOptions extends CreateKeyOptions {
 
 // @public
 export interface CreateKeyOptions {
+    abortSignal?: AbortSignalLike;
     enabled?: boolean;
     expires?: Date;
     keyOps?: JsonWebKeyOperation[];
@@ -49,17 +51,20 @@ export type DeletionRecoveryLevel = "Purgeable" | "Recoverable+Purgeable" | "Rec
 
 // @public
 export interface GetKeyOptions {
+    abortSignal?: AbortSignalLike;
     requestOptions?: msRest.RequestOptionsBase;
     version?: string;
 }
 
 // @public
 export interface GetKeysOptions {
+    abortSignal?: AbortSignalLike;
     requestOptions?: msRest.RequestOptionsBase;
 }
 
 // @public
 export interface ImportKeyOptions {
+    abortSignal?: AbortSignalLike;
     enabled?: boolean;
     expires?: Date;
     hsm?: boolean;
@@ -175,6 +180,7 @@ export interface ProxyOptions {
 
 // @public
 export interface RequestOptions {
+    abortSignal?: AbortSignalLike;
     requestOptions?: msRest.RequestOptionsBase;
 }
 
@@ -193,6 +199,7 @@ export interface TelemetryOptions {
 
 // @public
 export interface UpdateKeyOptions {
+    abortSignal?: AbortSignalLike;
     enabled?: boolean;
     expires?: Date;
     keyOps?: JsonWebKeyOperation[];
