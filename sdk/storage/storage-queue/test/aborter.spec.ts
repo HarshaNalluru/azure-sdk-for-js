@@ -3,12 +3,13 @@ import { Aborter } from "../src/Aborter";
 
 import { QueueClient } from "../src/QueueClient";
 import { getQSU } from "./utils";
-import { record } from "./utils/recorder";
+import { record, setEnviromentOnLoad } from "@azure/test-utils-recorder";
 import * as dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
 // tslint:disable:no-empty
 describe("Aborter", () => {
+  setEnviromentOnLoad();
   const queueServiceClient = getQSU();
   let queueName: string;
   let queueClient: QueueClient;
