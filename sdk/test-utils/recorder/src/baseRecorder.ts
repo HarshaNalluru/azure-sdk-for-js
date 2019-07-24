@@ -4,23 +4,23 @@
 import fs from "fs-extra";
 import nise from "nise";
 import queryString from "query-string";
-import { isBrowser, blobToString, escapeRegExp, env } from "./utils";
+import {
+  isBrowser,
+  blobToString,
+  escapeRegExp,
+  env,
+  TestInfo,
+  isPlayingBack,
+  isRecording
+} from "./utils";
 import { customConsoleLog } from "./customConsoleLog";
 import nock from "nock";
 import path from "path";
 
-let isRecording: boolean;
-let isPlayingBack: boolean;
-
-function envTestMode() {
-  isRecording = env.TEST_MODE === "record";
-  isPlayingBack = env.TEST_MODE === "playback";
-}
-
 let replaceableVariables: { [x: string]: string } = {};
 export function setReplaceableVariables(a: { [x: string]: string }): void {
   replaceableVariables = a;
-  if (isPlayingBack) {
+  if (isPlayingBack()) {
     // Providing dummy values to avoid the error
     Object.keys(a).map((k) => {
       env[k] = a[k];
@@ -34,12 +34,11 @@ export function setReplacements(maps: any): void {
 }
 
 export function setEnviromentOnLoad() {
-  envTestMode();
-  if (isBrowser() && isRecording) {
+  if (isBrowser() && isRecording()) {
     customConsoleLog();
   }
 
-  if (isPlayingBack) {
+  if (isPlayingBack()) {
     // Providing dummy values to avoid the error [ENVs for storage packages]
     env.ACCOUNT_NAME = "fakestorageaccount";
     env.ACCOUNT_KEY = "aaaaa";
@@ -55,13 +54,13 @@ const skip = [
   "browsers/aborter/recording_should_abort_after_aborter_timeout.json"
 ];
 
-export abstract class Recorder {
+export abstract class BaseRecorder {
   protected readonly filepath: string;
-  public uniqueTestInfo: any = {};
+  public uniqueTestInfo: TestInfo = { uniqueName: {}, newDate: {} };
 
-  constructor(env: string, testHierarchy: string, testTitle: string, ext: string) {
+  constructor(runtime: string, testHierarchy: string, testTitle: string, ext: string) {
     this.filepath =
-      env +
+      runtime +
       "/" +
       this.formatPath(testHierarchy) +
       "/recording_" +
@@ -121,7 +120,7 @@ export abstract class Recorder {
   public abstract stop(): void;
 }
 
-export class NockRecorder extends Recorder {
+export class NockRecorder extends BaseRecorder {
   constructor(testHierarchy: string, testTitle: string) {
     super("node", testHierarchy, testTitle, "js");
   }
@@ -133,15 +132,9 @@ export class NockRecorder extends Recorder {
   }
 
   public playback(filePath: string): void {
-    const searchTerm = "\\";
     this.uniqueTestInfo = require(path.resolve(
-      filePath
-        .substring(0, filePath.lastIndexOf(searchTerm))
-        .substring(
-          0,
-          filePath.substring(0, filePath.lastIndexOf(searchTerm)).lastIndexOf(searchTerm) + 1
-        ),
-      "./recordings/" + this.filepath
+      filePath,
+      "../../recordings/" + this.filepath
     )).testInfo;
   }
 
@@ -201,7 +194,7 @@ export class NockRecorder extends Recorder {
 
 // Nise module does not have a native implementation of record/playback like Nock does
 // This class overrides requests' 'open', 'send' and 'onreadystatechange' functions, adding our own code to them to deal with requests
-export class NiseRecorder extends Recorder {
+export class NiseRecorder extends BaseRecorder {
   private readonly sasQueryParameters = ["se", "sig", "sp", "spr", "srt", "ss", "st", "sv"];
   private recordings: any[] = [];
 
@@ -372,15 +365,20 @@ export class NiseRecorder extends Recorder {
   }
 
   public stop(): void {
+    for (let i = 0; i < this.recordings.length; i++) {
+      for (const k of Object.keys(this.recordings[i])) {
+        if (typeof this.recordings[i][k] === "string") {
+          this.recordings[i][k] = this.filterSecrets(this.recordings[i][k]);
+        }
+      }
+    }
     // We're sending the recordings to the 'karma-json-to-file-reporter' via console.log
     console.log(
-      this.filterSecrets(
-        JSON.stringify({
-          writeFile: true,
-          path: "./recordings/" + this.filepath,
-          content: { recordings: this.recordings, uniqueTestInfo: this.uniqueTestInfo }
-        })
-      )
+      JSON.stringify({
+        writeFile: true,
+        path: "./recordings/" + this.filepath,
+        content: { recordings: this.recordings, uniqueTestInfo: this.uniqueTestInfo }
+      })
     );
   }
 }
