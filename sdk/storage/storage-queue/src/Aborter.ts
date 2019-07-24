@@ -1,4 +1,7 @@
-import { AbortSignalLike, isNode } from "@azure/ms-rest-js";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+import { AbortSignalLike, isNode } from "@azure/core-http";
 
 /**
  * An aborter instance implements AbortSignal interface, can abort HTTP requests.

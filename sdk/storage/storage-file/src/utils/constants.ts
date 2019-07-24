@@ -1,4 +1,7 @@
-export const SDK_VERSION: string = "10.1.0";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+export const SDK_VERSION: string = "12.0.0-preview.1";
 export const SERVICE_VERSION: string = "2018-03-28";
 
 export const FILE_MAX_SIZE_BYTES: number = 1024 * 1024 * 1024 * 1024; // 1TB
@@ -40,6 +43,7 @@ export const HeaderConstants = {
   RANGE: "Range",
   USER_AGENT: "User-Agent",
   X_MS_CLIENT_REQUEST_ID: "x-ms-client-request-id",
+  X_MS_COPY_SOURCE: "x-ms-copy-source",
   X_MS_DATE: "x-ms-date"
 };
 

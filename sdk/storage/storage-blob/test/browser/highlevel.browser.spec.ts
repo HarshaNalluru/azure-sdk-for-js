@@ -1,10 +1,6 @@
 import * as assert from "assert";
 
 import { Aborter } from "../../src/Aborter";
-import { BlobURL } from "../../src/BlobURL";
-import { BlockBlobURL } from "../../src/BlockBlobURL";
-import { ContainerURL } from "../../src/ContainerURL";
-import { uploadBrowserDataToBlockBlob } from "../../src/highlevel.browser";
 import {
   arrayBufferEqual,
   blobToArrayBuffer,
@@ -15,15 +11,16 @@ import {
   isIE
 } from "../utils/index.browser";
 import { record } from "../utils/recorder";
+import { ContainerClient, BlobClient, BlockBlobClient } from "../../src";
 
 // tslint:disable:no-empty
 describe("Highlevel", () => {
-  const serviceURL = getBSU();
+  const blobServiceClient = getBSU();
   let containerName: string;
-  let containerURL: ContainerURL;
+  let containerClient: ContainerClient;
   let blobName: string;
-  let blobURL: BlobURL;
-  let blockBlobURL: BlockBlobURL;
+  let blobClient: BlobClient;
+  let blockBlobClient: BlockBlobClient;
   let tempFile1: File;
   const tempFile1Length: number = 257 * 1024 * 1024 - 1;
   let tempFile2: File;
@@ -34,15 +31,15 @@ describe("Highlevel", () => {
   beforeEach(async function() {
     recorder = record(this);
     containerName = recorder.getUniqueName("container");
-    containerURL = ContainerURL.fromServiceURL(serviceURL, containerName);
-    await containerURL.create(Aborter.none);
+    containerClient = blobServiceClient.getContainerClient(containerName);
+    await containerClient.create();
     blobName = recorder.getUniqueName("blob");
-    blobURL = BlobURL.fromContainerURL(containerURL, blobName);
-    blockBlobURL = BlockBlobURL.fromBlobURL(blobURL);
+    blobClient = containerClient.getBlobClient(blobName);
+    blockBlobClient = blobClient.getBlockBlobClient();
   });
 
-  afterEach(async () => {
-    await containerURL.delete(Aborter.none);
+  afterEach(async function() {
+    await containerClient.delete();
     recorder.stop();
   });
 
@@ -59,7 +56,9 @@ describe("Highlevel", () => {
     const aborter = Aborter.timeout(1);
 
     try {
-      await uploadBrowserDataToBlockBlob(aborter, tempFile1, blockBlobURL);
+      await blockBlobClient.uploadBrowserData(tempFile1, {
+        abortSignal: aborter
+      });
       assert.fail();
     } catch (err) {
       assert.ok((err.code as string).toLowerCase().includes("abort"));
@@ -70,7 +69,8 @@ describe("Highlevel", () => {
     const aborter = Aborter.timeout(1);
 
     try {
-      await uploadBrowserDataToBlockBlob(aborter, tempFile2, blockBlobURL, {
+      await blockBlobClient.uploadBrowserData(tempFile2, {
+        abortSignal: aborter,
         blockSize: 4 * 1024 * 1024,
         parallelism: 2
       });
@@ -85,7 +85,8 @@ describe("Highlevel", () => {
     const aborter = Aborter.none;
 
     try {
-      await uploadBrowserDataToBlockBlob(aborter, tempFile1, blockBlobURL, {
+      await blockBlobClient.uploadBrowserData(tempFile1, {
+        abortSignal: aborter,
         blockSize: 4 * 1024 * 1024,
         parallelism: 2,
         progress: (ev) => {
@@ -103,7 +104,8 @@ describe("Highlevel", () => {
     const aborter = Aborter.none;
 
     try {
-      await uploadBrowserDataToBlockBlob(aborter, tempFile2, blockBlobURL, {
+      await blockBlobClient.uploadBrowserData(tempFile2, {
+        abortSignal: aborter,
         blockSize: 4 * 1024 * 1024,
         parallelism: 2,
         progress: (ev) => {
@@ -117,12 +119,12 @@ describe("Highlevel", () => {
   });
 
   it("uploadBrowserDataToBlockBlob should success when blob < BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES", async () => {
-    await uploadBrowserDataToBlockBlob(Aborter.none, tempFile2, blockBlobURL, {
+    await blockBlobClient.uploadBrowserData(tempFile2, {
       blockSize: 4 * 1024 * 1024,
       parallelism: 2
     });
 
-    const downloadResponse = await blockBlobURL.download(Aborter.none, 0);
+    const downloadResponse = await blockBlobClient.download(0);
     const downloadedString = await bodyToString(downloadResponse);
     const uploadedString = await blobToString(tempFile2);
 
@@ -130,12 +132,12 @@ describe("Highlevel", () => {
   });
 
   it("uploadBrowserDataToBlockBlob should success when blob < BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES and configured maxSingleShotSize", async () => {
-    await uploadBrowserDataToBlockBlob(Aborter.none, tempFile2, blockBlobURL, {
+    await blockBlobClient.uploadBrowserData(tempFile2, {
       blockSize: 512 * 1024,
       maxSingleShotSize: 0
     });
 
-    const downloadResponse = await blockBlobURL.download(Aborter.none, 0);
+    const downloadResponse = await blockBlobClient.download(0);
     const downloadedString = await bodyToString(downloadResponse);
     const uploadedString = await blobToString(tempFile2);
 
@@ -151,12 +153,12 @@ describe("Highlevel", () => {
       return;
     }
 
-    await uploadBrowserDataToBlockBlob(Aborter.none, tempFile1, blockBlobURL, {
+    await blockBlobClient.uploadBrowserData(tempFile1, {
       blockSize: 4 * 1024 * 1024,
       parallelism: 2
     });
 
-    const downloadResponse = await blockBlobURL.download(Aborter.none, 0);
+    const downloadResponse = await blockBlobClient.download(0);
     const buf1 = await blobToArrayBuffer(await downloadResponse.blobBody!);
     const buf2 = await blobToArrayBuffer(tempFile1);
 

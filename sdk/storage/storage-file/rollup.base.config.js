@@ -23,7 +23,7 @@ const depNames = Object.keys(pkg.dependencies);
 const production = process.env.NODE_ENV === "production";
 
 export function nodeConfig(test = false) {
-  const externalNodeBuiltins = ["@azure/ms-rest-js", "crypto", "fs", "events", "os", "stream"];
+  const externalNodeBuiltins = ["@azure/core-http", "crypto", "fs", "events", "os", "stream"];
   const baseConfig = {
     input: "dist-esm/src/index.js",
     external: depNames.concat(externalNodeBuiltins),
@@ -75,7 +75,6 @@ export function nodeConfig(test = false) {
 export function browserConfig(test = false, production = false) {
   const baseConfig = {
     input: "dist-esm/src/index.browser.js",
-    external: ["ms-rest-js"],
     output: {
       file: "browser/azure-storage-file.js",
       banner: banner,
@@ -95,9 +94,15 @@ export function browserConfig(test = false, production = false) {
           "if (isNode)": "if (false)"
         }
       }),
-      // os is not used by the browser bundle, so just shim it
+      // fs and os are not used by the browser bundle, so just shim it
+      // dotenv doesn't work in the browser, so replace it with a no-op function
       shim({
         dotenv: `export function config() { }`,
+        fs: `
+          export function statSync() { }
+          export function createReadStream() { }
+          export function createWriteStream() { }
+        `,
         os: `
           export const type = 1;
           export const release = 1;

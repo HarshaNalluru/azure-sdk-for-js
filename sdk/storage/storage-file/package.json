@@ -1,13 +1,14 @@
 {
   "name": "@azure/storage-file",
   "sdk-type": "client",
-  "version": "10.1.0",
+  "version": "12.0.0-preview.1",
   "description": "Microsoft Azure Storage SDK for JavaScript - File",
   "main": "./dist/index.js",
   "module": "./dist-esm/src/index.js",
   "browser": {
     "./dist/index.js": "./browser/azure-storage-file.min.js",
     "./dist-esm/src/index.js": "./dist-esm/src/index.browser.js",
+    "./dist-esm/src/credentials/SharedKeyCredential.js": "./dist-esm/src/credentials/SharedKeyCredential.browser.js",
     "./dist-esm/test/utils/index.js": "./dist-esm/test/utils/index.browser.js",
     "./dist-esm/src/FileDownloadResponse.js": "./dist-esm/src/FileDownloadResponse.browser.js",
     "os": false,
@@ -23,6 +24,8 @@
     "build:browserzip": "gulp zip",
     "build:es6": "tsc -p tsconfig.json",
     "build:nodebrowser": "rollup -c 2>&1",
+    "build:js-samples": "npm run clean && npm run build:es6 && cross-env ONLY_NODE=true rollup -c 2>&1",
+    "build:ts-samples": "npm run clean && cd samples && tsc -p . ",
     "build:test": "npm run build:es6 && rollup -c rollup.test.config.js 2>&1",
     "build": "npm run build:es6 && npm run build:nodebrowser && npm run build:browserzip",
     "check-format": "prettier --list-different --config ../../.prettierrc.json \"src/**/*.ts\" \"test/**/*.ts\" \"*.{js,json}\"",
@@ -30,7 +33,7 @@
     "extract-api": "tsc -p . && api-extractor run --local",
     "format": "prettier --write --config ../../.prettierrc.json \"src/**/*.ts\" \"test/**/*.ts\" \"*.{js,json}\"",
     "integration-test:browser": "karma start --single-run",
-    "integration-test:node": "nyc mocha --require source-map-support/register --reporter mocha-multi --reporter-options spec=-,mocha-junit-reporter=- --full-trace -t 120000 dist-test/index.node.js",
+    "integration-test:node": "nyc mocha --require source-map-support/register --reporter mocha-multi --reporter-options spec=-,mocha-junit-reporter=- --full-trace -t 120000 --retries 2 dist-test/index.node.js",
     "integration-test": "npm run integration-test:node && npm run integration-test:browser",
     "lint:fix": "eslint -c ../../.eslintrc.json src test samples --ext .ts --fix",
     "lint": "eslint -c ../../.eslintrc.json src test samples --ext .ts -f node_modules/eslint-detailed-reporter/lib/detailed.js -o storage-file-lintReport.html || exit 0",
@@ -49,6 +52,7 @@
     "browser/ThirdPartyNotices.txt",
     "dist/",
     "dist-esm/src/",
+    "LICENSE",
     "src/",
     "typings/src",
     "tsconfig.json"
@@ -74,7 +78,8 @@
   "homepage": "https://github.com/Azure/azure-sdk-for-js#readme",
   "sideEffects": false,
   "dependencies": {
-    "@azure/ms-rest-js": "^1.2.6",
+    "@azure/core-http": "^1.0.0-preview.1",
+    "@azure/core-paging": "^1.0.0-preview.1",
     "events": "^3.0.0",
     "tslib": "^1.9.3"
   },

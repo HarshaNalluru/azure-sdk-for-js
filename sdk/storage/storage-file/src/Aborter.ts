@@ -1,4 +1,7 @@
-import { AbortSignalLike, isNode } from "@azure/ms-rest-js";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+import { AbortSignalLike, isNode } from "@azure/core-http";
 
 /**
  * An aborter instance implements AbortSignal interface, can abort HTTP requests.
@@ -14,18 +17,18 @@ import { AbortSignalLike, isNode } from "@azure/ms-rest-js";
  *
  * @example
  * // Abort without timeout
- * await fileURL.uploadRange(Aborter.none, buf, 0, buf.length);
+ * await fileClient.uploadRange(buf, 0, buf.length);
  *
  * @example
  * // Abort container create in 1000ms
- * await fileURL.uploadRange(Aborter.timeout(1000), buf, 0, buf.length);
+ * await fileClient.uploadRange(buf, 0, buf.length, {abortSignal: Aborter.timeout(1000)});
  *
  * @example
  * // Share aborter cross multiple operations in 30s
  * // Upload the same data to 2 different data centers at the same time, abort another when any of them is finished
  * const aborter = Aborter.timeout(30 * 1000);
- * fileURL1.uploadRange(aborter, buf, 0, buf.length).then(aborter.abort);
- * fileURL2.uploadRange(aborter, buf, 0, buf.length).then(aborter.abort);
+ * fileClient1.uploadRange(buf, 0, buf.length, {abortSignal: aborter}).then(aborter.abort);
+ * fileClient2.uploadRange(buf, 0, buf.length, {abortSignal: aborter}).then(aborter.abort);
  *
  * @example
  * // Cascaded aborting
@@ -33,8 +36,8 @@ import { AbortSignalLike, isNode } from "@azure/ms-rest-js";
  * const aborter = Aborter.timeout(30 * 1000);
  *
  * // Following 2 operations can't take more than 25 seconds
- * await fileURL.uploadRange(aborter.withTimeout(25 * 1000), buf, 0, buf.length);
- * await fileURL.uploadRange(aborter.withTimeout(25 * 1000), buf, 0, buf.length);
+ * await fileClient.uploadRange(buf, 0, buf.length, {abortSignal: aborter.withTimeout(25 * 1000)});
+ * await fileClient.uploadRange(buf, 0, buf.length, {abortSignal: aborter.withTimeout(25 * 1000)});
  *
  * @export
  * @class Aborter
