@@ -1,19 +1,28 @@
 import * as assert from "assert";
 
 import { Aborter } from "../src/Aborter";
-import { getBSU, getUniqueName } from "./utils";
+import { getBSU } from "./utils";
+import { record } from "./utils/recorder";
 import * as dotenv from "dotenv";
+import { ShareClient } from "../src";
 dotenv.config({ path: "../.env" });
 
 // tslint:disable:no-empty
 describe("Aborter", () => {
   const serviceClient = getBSU();
-  let shareName: string = getUniqueName("share");
-  let shareClient = serviceClient.createShareClient(shareName);
+  let shareName: string;
+  let shareClient: ShareClient;
 
-  beforeEach(async () => {
-    shareName = getUniqueName("share");
-    shareClient = serviceClient.createShareClient(shareName);
+  let recorder: any;
+
+  beforeEach(async function() {
+    recorder = record(this);
+    shareName = recorder.getUniqueName("share");
+    shareClient = serviceClient.getShareClient(shareName);
+  });
+
+  afterEach(function() {
+    recorder.stop();
   });
 
   it("should set value and get value successfully", async () => {

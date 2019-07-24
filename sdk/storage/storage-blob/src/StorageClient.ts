@@ -13,21 +13,22 @@ import { escapeURLPath } from "./utils/utils.common";
  */
 export abstract class StorageClient {
   /**
-   * Request policy pipeline.
-   *
-   * @internal
-   * @type {Pipeline}
-   * @memberof StorageClient
-   */
-  public readonly pipeline: Pipeline;
-
-  /**
    * Encoded URL string value.
    *
    * @type {string}
    * @memberof StorageClient
    */
   public readonly url: string;
+
+  /**
+   * Request policy pipeline.
+   *
+   * @internal
+   * @ignore
+   * @type {Pipeline}
+   * @memberof StorageClient
+   */
+  protected readonly pipeline: Pipeline;
 
   /**
    * StorageClient is a reference to protocol layer operations entry, which is

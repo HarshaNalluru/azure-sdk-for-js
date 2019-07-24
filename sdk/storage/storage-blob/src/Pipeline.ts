@@ -14,8 +14,14 @@ import {
   RequestPolicyFactory,
   RequestPolicyOptions,
   ServiceClientOptions,
-  WebResource
-} from "@azure/ms-rest-js";
+  WebResource,
+  proxyPolicy,
+  getDefaultProxySettings,
+  isNode,
+  TokenCredential,
+  isTokenCredential,
+  bearerTokenAuthenticationPolicy
+} from "@azure/core-http";
 
 import { BrowserPolicyFactory } from "./BrowserPolicyFactory";
 import { Credential } from "./credentials/Credential";
@@ -41,6 +47,27 @@ export {
   RequestPolicyOptions
 };
 
+/**
+ * Interface of proxy policy options.
+ *
+ * @example
+ * // Use SharedKeyCredential with storage account and account key
+ * // SharedKeyCredential is only avaiable in Node.js runtime, not in browsers
+ * const sharedKeyCredential = new SharedKeyCredential(account, accountKey);
+ * const blobServiceClient = new BlobServiceClient(
+ *  `https://${account}.blob.core.windows.net`,
+ *  sharedKeyCredential,
+ *  {
+ *    proxy: { url: "http://localhost:3128" }
+ *  });
+ *
+ * @export
+ * @interface ProxyOptions
+ */
+
+export interface ProxyOptions {
+  url?: string;
+}
 /**
  * Option interface for Pipeline constructor.
  *
@@ -106,7 +133,7 @@ export class Pipeline {
    * Transfer Pipeline object to ServiceClientOptions object which required by
    * ServiceClient constructor.
    *
-   * @returns {ServiceClientOptions}
+   * @returns {ServiceClientOptions} The ServiceClientOptions object from this Pipeline.
    * @memberof Pipeline
    */
   public toServiceClientOptions(): ServiceClientOptions {
@@ -125,6 +152,7 @@ export class Pipeline {
  * @interface NewPipelineOptions
  */
 export interface NewPipelineOptions {
+  proxy?: ProxyOptions;
   /**
    * Telemetry configures the built-in telemetry policy behavior.
    *
@@ -160,29 +188,43 @@ export interface NewPipelineOptions {
  * Creates a new Pipeline object with Credential provided.
  *
  * @export
- * @param {Credential} credential Such as AnonymousCredential, SharedKeyCredential or TokenCredential.
+ * @param {Credential | TokenCredential} credential Such as AnonymousCredential, SharedKeyCredential, RawTokenCredential,
+ *                                                  or a TokenCredential from @azure/identity.
  * @param {NewPipelineOptions} [pipelineOptions] Optional. Options.
  * @returns {Pipeline} A new Pipeline object.
  */
 export function newPipeline(
- credential: Credential,
- pipelineOptions: NewPipelineOptions = {}
+  credential: Credential | TokenCredential,
+  pipelineOptions: NewPipelineOptions = {}
 ): Pipeline {
- // Order is important. Closer to the API at the top & closer to the network at the bottom.
- // The credential's policy factory must appear close to the wire so it can sign any
- // changes made by other factories (like UniqueRequestIDPolicyFactory)
- const factories: RequestPolicyFactory[] = [
-   new TelemetryPolicyFactory(pipelineOptions.telemetry),
-   new UniqueRequestIDPolicyFactory(),
-   new BrowserPolicyFactory(),
-   deserializationPolicy(), // Default deserializationPolicy is provided by protocol layer
-   new RetryPolicyFactory(pipelineOptions.retryOptions),
-   new LoggingPolicyFactory(),
-   credential
- ];
+  // Order is important. Closer to the API at the top & closer to the network at the bottom.
+  // The credential's policy factory must appear close to the wire so it can sign any
+  // changes made by other factories (like UniqueRequestIDPolicyFactory)
+  const factories: RequestPolicyFactory[] = [
+    new TelemetryPolicyFactory(pipelineOptions.telemetry),
+    new UniqueRequestIDPolicyFactory(),
+    new BrowserPolicyFactory(),
+    deserializationPolicy(), // Default deserializationPolicy is provided by protocol layer
+    new RetryPolicyFactory(pipelineOptions.retryOptions),
+    new LoggingPolicyFactory()
+  ];
 
- return new Pipeline(factories, {
-   HTTPClient: pipelineOptions.httpClient,
-   logger: pipelineOptions.logger
- });
+  if (isNode) {
+    // ProxyPolicy is only avaiable in Node.js runtime, not in browsers
+    factories.push(
+      proxyPolicy(
+        getDefaultProxySettings(pipelineOptions.proxy ? pipelineOptions.proxy.url : undefined)
+      )
+    );
+  }
+  factories.push(
+    isTokenCredential(credential)
+      ? bearerTokenAuthenticationPolicy(credential, "https://storage.azure.com/.default")
+      : credential
+  );
+
+  return new Pipeline(factories, {
+    HTTPClient: pipelineOptions.httpClient,
+    logger: pipelineOptions.logger
+  });
 }

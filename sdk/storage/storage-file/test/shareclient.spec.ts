@@ -1,21 +1,27 @@
 import * as assert from "assert";
-import { getBSU, getUniqueName } from "./utils";
 import * as dotenv from "dotenv";
+import { getBSU } from "./utils";
+import { ShareClient } from "../src";
+import { record } from "./utils/recorder";
 dotenv.config({ path: "../.env" });
 
 describe("ShareClient", () => {
   const serviceClient = getBSU();
-  let shareName: string = getUniqueName("share");
-  let shareClient = serviceClient.createShareClient(shareName);
+  let shareName: string;
+  let shareClient: ShareClient;
 
-  beforeEach(async () => {
-    shareName = getUniqueName("share");
-    shareClient = serviceClient.createShareClient(shareName);
+  let recorder: any;
+
+  beforeEach(async function() {
+    recorder = record(this);
+    shareName = recorder.getUniqueName("share");
+    shareClient = serviceClient.getShareClient(shareName);
     await shareClient.create();
   });
 
-  afterEach(async () => {
+  afterEach(async function() {
     await shareClient.delete();
+    recorder.stop();
   });
 
   it("setMetadata", async () => {
@@ -45,7 +51,7 @@ describe("ShareClient", () => {
   });
 
   it("create with all parameters configured", async () => {
-    const shareClient2 = serviceClient.createShareClient(getUniqueName(shareName));
+    const shareClient2 = serviceClient.getShareClient(recorder.getUniqueName(shareName));
     const metadata = { key: "value" };
     await shareClient2.create({ metadata });
     const result = await shareClient2.getProperties();
@@ -86,5 +92,48 @@ describe("ShareClient", () => {
     assert.notDeepStrictEqual(originProperties.metadata, metadata);
 
     await snapshotShareClient.delete({});
+  });
+
+  it("createDirectory and deleteDirectory", async () => {
+    const dirName = recorder.getUniqueName("directory");
+    const metadata = { key: "value" };
+
+    const { directoryClient } = await shareClient.createDirectory(dirName, { metadata });
+    const result = await directoryClient.getProperties();
+    assert.deepEqual(result.metadata, metadata);
+
+    await shareClient.deleteDirectory(dirName);
+    try {
+      await directoryClient.getProperties();
+      assert.fail(
+        "Expecting an error in getting properties from a deleted block blob but didn't get one."
+      );
+    } catch (error) {
+      assert.ok((error.statusCode as number) === 404);
+    }
+  });
+
+  it("createFile and deleteFile under root directory", async () => {
+    const fileName = recorder.getUniqueName("file");
+    const metadata = { key: "value" };
+    const { fileClient } = await shareClient.createFile(fileName, 256, { metadata });
+    const result = await fileClient.getProperties();
+    assert.deepEqual(result.metadata, metadata);
+
+    await shareClient.deleteFile(fileName);
+    try {
+      await fileClient.getProperties();
+      assert.fail(
+        "Expecting an error in getting properties from a deleted block blob but didn't get one."
+      );
+    } catch (error) {
+      assert.ok((error.statusCode as number) === 404);
+    }
+  });
+
+  it("can get a directory client for root directory", async () => {
+    const root = await shareClient.rootDirectoryClient;
+    const result = await root.getProperties();
+    assert.ok(result, "Expecting valid properties for the root directory.");
   });
 });

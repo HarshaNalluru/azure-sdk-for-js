@@ -1,14 +1,28 @@
 import * as assert from "assert";
 
-import { BlobServiceClient } from "../src/BlobServiceClient";
-import { getAlternateBSU, getBSU, getUniqueName, wait } from "./utils";
 import * as dotenv from "dotenv";
+import { BlobServiceClient } from "../src/BlobServiceClient";
+import { getAlternateBSU, getBSU } from "./utils";
+import { record, delay } from "./utils/recorder";
 dotenv.config({ path: "../.env" });
 
 describe("BlobServiceClient", () => {
+  let recorder: any;
+
+  beforeEach(async function() {
+    recorder = record(this);
+  });
+
+  afterEach(async function() {
+    recorder.stop();
+  });
+
   it("ListContainers with default parameters", async () => {
     const blobServiceClient = getBSU();
-    const result = await blobServiceClient.listContainersSegment();
+    const result = (await blobServiceClient
+      .listContainers()
+      .byPage()
+      .next()).value;
     assert.ok(typeof result.requestId);
     assert.ok(result.requestId!.length > 0);
     assert.ok(typeof result.version);
@@ -28,19 +42,21 @@ describe("BlobServiceClient", () => {
   it("ListContainers with all parameters configured", async () => {
     const blobServiceClient = getBSU();
 
-    const containerNamePrefix = getUniqueName("container");
+    const containerNamePrefix = recorder.getUniqueName("container");
     const containerName1 = `${containerNamePrefix}x1`;
     const containerName2 = `${containerNamePrefix}x2`;
-    const containerClient1 = blobServiceClient.createContainerClient(containerName1);
-    const containerClient2 = blobServiceClient.createContainerClient(containerName2);
+    const containerClient1 = blobServiceClient.getContainerClient(containerName1);
+    const containerClient2 = blobServiceClient.getContainerClient(containerName2);
     await containerClient1.create({ metadata: { key: "val" } });
     await containerClient2.create({ metadata: { key: "val" } });
 
-    const result1 = await blobServiceClient.listContainersSegment(undefined, {
-      include: "metadata",
-      maxresults: 1,
-      prefix: containerNamePrefix
-    });
+    const result1 = (await blobServiceClient
+      .listContainers({
+        include: "metadata",
+        prefix: containerNamePrefix
+      })
+      .byPage({ maxPageSize: 1 })
+      .next()).value;
 
     assert.ok(result1.nextMarker);
     assert.equal(result1.containerItems!.length, 1);
@@ -53,11 +69,13 @@ describe("BlobServiceClient", () => {
     assert.deepEqual(result1.containerItems![0].properties.leaseStatus, "unlocked");
     assert.deepEqual(result1.containerItems![0].metadata!.key, "val");
 
-    const result2 = await blobServiceClient.listContainersSegment(result1.nextMarker, {
-      include: "metadata",
-      maxresults: 1,
-      prefix: containerNamePrefix
-    });
+    const result2 = (await blobServiceClient
+      .listContainers({
+        include: "metadata",
+        prefix: containerNamePrefix
+      })
+      .byPage({ continuationToken: result1.nextMarker, maxPageSize: 1 })
+      .next()).value;
 
     assert.ok(!result2.nextMarker);
     assert.equal(result2.containerItems!.length, 1);
@@ -74,14 +92,46 @@ describe("BlobServiceClient", () => {
     await containerClient2.delete();
   });
 
-  it("Verify AsyncIterator(generator .next() syntax) for ListContainers", async () => {
+  it("Verify PagedAsyncIterableIterator for ListContainers", async () => {
+    const containerClients = [];
     const blobServiceClient = getBSU();
 
-    const containerNamePrefix = getUniqueName("container");
+    const containerNamePrefix = recorder.getUniqueName("container");
+
+    for (let i = 0; i < 4; i++) {
+      const containerName = `${containerNamePrefix}x${i}`;
+      const containerClient = blobServiceClient.getContainerClient(containerName);
+      await containerClient.create({ metadata: { key: "val" } });
+      containerClients.push(containerClient);
+    }
+
+    for await (const container of blobServiceClient.listContainers({
+      include: "metadata",
+      prefix: containerNamePrefix
+    })) {
+      assert.ok(container.name.startsWith(containerNamePrefix));
+      assert.ok(container.properties.etag.length > 0);
+      assert.ok(container.properties.lastModified);
+      assert.ok(!container.properties.leaseDuration);
+      assert.ok(!container.properties.publicAccess);
+      assert.deepEqual(container.properties.leaseState, "available");
+      assert.deepEqual(container.properties.leaseStatus, "unlocked");
+      assert.deepEqual(container.metadata!.key, "val");
+    }
+
+    for (const client of containerClients) {
+      await client.delete();
+    }
+  });
+
+  it("Verify PagedAsyncIterableIterator(generator .next() syntax) for ListContainers", async () => {
+    const blobServiceClient = getBSU();
+
+    const containerNamePrefix = recorder.getUniqueName("container");
     const containerName1 = `${containerNamePrefix}x1`;
     const containerName2 = `${containerNamePrefix}x2`;
-    const containerClient1 = blobServiceClient.createContainerClient(containerName1);
-    const containerClient2 = blobServiceClient.createContainerClient(containerName2);
+    const containerClient1 = blobServiceClient.getContainerClient(containerName1);
+    const containerClient2 = blobServiceClient.getContainerClient(containerName2);
     await containerClient1.create({ metadata: { key: "val" } });
     await containerClient2.create({ metadata: { key: "val" } });
 
@@ -114,24 +164,84 @@ describe("BlobServiceClient", () => {
     await containerClient2.delete();
   });
 
-  it("Verify AsyncIterator(for-loop syntax) for ListContainers", async () => {
+  it("Verify PagedAsyncIterableIterator(byPage()) for ListContainers", async () => {
     const containerClients = [];
     const blobServiceClient = getBSU();
 
-    const containerNamePrefix = getUniqueName("container");
+    const containerNamePrefix = recorder.getUniqueName("container");
 
     for (let i = 0; i < 4; i++) {
       const containerName = `${containerNamePrefix}x${i}`;
-      const containerClient = blobServiceClient.createContainerClient(containerName);
+      const containerClient = blobServiceClient.getContainerClient(containerName);
       await containerClient.create({ metadata: { key: "val" } });
       containerClients.push(containerClient);
     }
 
-    for await (const container of blobServiceClient.listContainers({
-      include: "metadata",
-      prefix: containerNamePrefix,
-      maxresults: 2
-    })) {
+    for await (const response of blobServiceClient
+      .listContainers({
+        include: "metadata",
+        prefix: containerNamePrefix
+      })
+      .byPage({ maxPageSize: 2 })) {
+      for (const container of response.containerItems) {
+        assert.ok(container.name.startsWith(containerNamePrefix));
+        assert.ok(container.properties.etag.length > 0);
+        assert.ok(container.properties.lastModified);
+        assert.ok(!container.properties.leaseDuration);
+        assert.ok(!container.properties.publicAccess);
+        assert.deepEqual(container.properties.leaseState, "available");
+        assert.deepEqual(container.properties.leaseStatus, "unlocked");
+        assert.deepEqual(container.metadata!.key, "val");
+      }
+    }
+
+    for (const client of containerClients) {
+      await client.delete();
+    }
+  });
+
+  it("Verify PagedAsyncIterableIterator(byPage() - continuationToken) for ListContainers", async () => {
+    const containerClients = [];
+    const blobServiceClient = getBSU();
+
+    const containerNamePrefix = recorder.getUniqueName("container");
+
+    for (let i = 0; i < 4; i++) {
+      const containerName = `${containerNamePrefix}x${i}`;
+      const containerClient = blobServiceClient.getContainerClient(containerName);
+      await containerClient.create({ metadata: { key: "val" } });
+      containerClients.push(containerClient);
+    }
+
+    let iter = blobServiceClient
+      .listContainers({
+        include: "metadata",
+        prefix: containerNamePrefix
+      })
+      .byPage({ maxPageSize: 2 });
+    let response = (await iter.next()).value;
+    for (const container of response.containerItems) {
+      assert.ok(container.name.startsWith(containerNamePrefix));
+      assert.ok(container.properties.etag.length > 0);
+      assert.ok(container.properties.lastModified);
+      assert.ok(!container.properties.leaseDuration);
+      assert.ok(!container.properties.publicAccess);
+      assert.deepEqual(container.properties.leaseState, "available");
+      assert.deepEqual(container.properties.leaseStatus, "unlocked");
+      assert.deepEqual(container.metadata!.key, "val");
+    }
+    // Gets next marker
+    let marker = response.nextMarker;
+    // Passing next marker as continuationToken
+    iter = blobServiceClient
+      .listContainers({
+        include: "metadata",
+        prefix: containerNamePrefix
+      })
+      .byPage({ continuationToken: marker, maxPageSize: 2 });
+    response = (await iter.next()).value;
+    // Gets 2 containers
+    for (const container of response.containerItems) {
       assert.ok(container.name.startsWith(containerNamePrefix));
       assert.ok(container.properties.etag.length > 0);
       assert.ok(container.properties.lastModified);
@@ -222,7 +332,7 @@ describe("BlobServiceClient", () => {
     }
 
     await blobServiceClient.setProperties(serviceProperties);
-    await wait(5 * 1000);
+    await delay(5 * 1000);
 
     const result = await blobServiceClient.getProperties();
     assert.ok(typeof result.requestId);
@@ -256,5 +366,30 @@ describe("BlobServiceClient", () => {
     const accountInfo = await blobServiceClient.getAccountInfo();
     assert.ok(accountInfo.accountKind);
     assert.ok(accountInfo.skuName);
+  });
+
+  it("createContainer and deleteContainer", async () => {
+    const blobServiceClient = getBSU();
+    const containerName = recorder.getUniqueName("container");
+    const access = "container";
+    const metadata = { key: "value" };
+
+    const { containerClient } = await blobServiceClient.createContainer(containerName, {
+      access,
+      metadata
+    });
+    const result = await containerClient.getProperties();
+    assert.deepEqual(result.blobPublicAccess, access);
+    assert.deepEqual(result.metadata, metadata);
+
+    await blobServiceClient.deleteContainer(containerName);
+    try {
+      await containerClient.getProperties();
+      assert.fail(
+        "Expecting an error in getting properties from a deleted block blob but didn't get one."
+      );
+    } catch (error) {
+      assert.ok((error.statusCode as number) === 404);
+    }
   });
 });

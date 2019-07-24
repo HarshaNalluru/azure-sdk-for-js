@@ -5,7 +5,7 @@ import nodeResolve from "rollup-plugin-node-resolve";
 import multiEntry from "rollup-plugin-multi-entry";
 import cjs from "rollup-plugin-commonjs";
 import replace from "rollup-plugin-replace";
-import { uglify } from "rollup-plugin-uglify";
+import { terser } from "rollup-plugin-terser";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import shim from "rollup-plugin-shim";
 // import visualizer from "rollup-plugin-visualizer";
@@ -23,7 +23,7 @@ const depNames = Object.keys(pkg.dependencies);
 const production = process.env.NODE_ENV === "production";
 
 export function nodeConfig(test = false) {
-  const externalNodeBuiltins = ["@azure/ms-rest-js", "crypto", "fs", "events", "os", "stream"];
+  const externalNodeBuiltins = ["@azure/core-http", "crypto", "fs", "events", "os", "stream"];
   const baseConfig = {
     input: "dist-esm/src/index.js",
     external: depNames.concat(externalNodeBuiltins),
@@ -60,8 +60,13 @@ export function nodeConfig(test = false) {
     baseConfig.external.push("assert", "fs", "path");
 
     baseConfig.context = "null";
+
+    // Disable tree-shaking of test code.  In rollup-plugin-node-resolve@5.0.0, rollup started respecting
+    // the "sideEffects" field in package.json.  Since our package.json sets "sideEffects=false", this also
+    // applies to test code, which causes all tests to be removed by tree-shaking.
+    baseConfig.treeshake = false;
   } else if (production) {
-    baseConfig.plugins.push(uglify());
+    baseConfig.plugins.push(terser());
   }
 
   return baseConfig;
@@ -70,7 +75,6 @@ export function nodeConfig(test = false) {
 export function browserConfig(test = false, production = false) {
   const baseConfig = {
     input: "dist-esm/src/index.browser.js",
-    external: ["ms-rest-js"],
     output: {
       file: "browser/azure-storage-file.js",
       banner: banner,
@@ -97,6 +101,7 @@ export function browserConfig(test = false, production = false) {
         fs: `
           export function statSync() { }
           export function createReadStream() { }
+          export function createWriteStream() { }
         `,
         os: `
           export const type = 1;
@@ -108,9 +113,12 @@ export function browserConfig(test = false, production = false) {
         preferBuiltins: false
       }),
       cjs({
+        // When "rollup-plugin-commonjs@10.0.0" is used with "resolve@1.11.1", named exports of
+        // modules with built-in names must have a trailing slash.
+        // https://github.com/rollup/rollup-plugin-commonjs/issues/394
         namedExports: {
-          events: ["EventEmitter"],
-          assert: [
+          "events/": ["EventEmitter"],
+          "assert/": [
             "ok",
             "deepEqual",
             "equal",
@@ -129,12 +137,19 @@ export function browserConfig(test = false, production = false) {
     baseConfig.input = ["dist-esm/test/*.spec.js", "dist-esm/test/browser/*.spec.js"];
     baseConfig.plugins.unshift(multiEntry({ exports: false }));
     baseConfig.output.file = "dist-test/index.browser.js";
+    // mark fs-extra as external
+    baseConfig.external = ["fs-extra"];
 
     baseConfig.context = "null";
+
+    // Disable tree-shaking of test code.  In rollup-plugin-node-resolve@5.0.0, rollup started respecting
+    // the "sideEffects" field in package.json.  Since our package.json sets "sideEffects=false", this also
+    // applies to test code, which causes all tests to be removed by tree-shaking.
+    baseConfig.treeshake = false;
   } else if (production) {
     baseConfig.output.file = "browser/azure-storage-file.min.js";
     baseConfig.plugins.push(
-      uglify({
+      terser({
         output: {
           preamble: banner
         }

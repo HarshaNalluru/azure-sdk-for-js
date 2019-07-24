@@ -2,7 +2,7 @@
 process.env.CHROME_BIN = require("puppeteer").executablePath();
 require("dotenv").config({ path: "../.env" });
 
-module.exports = function (config) {
+module.exports = function(config) {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: "./",
@@ -21,15 +21,18 @@ module.exports = function (config) {
       "karma-env-preprocessor",
       "karma-coverage",
       "karma-remap-coverage",
-      "karma-junit-reporter"
+      "karma-junit-reporter",
+      "karma-json-to-file-reporter",
+      "karma-json-preprocessor"
     ],
 
     // list of files / patterns to load in the browser
     files: [
       // polyfill service supporting IE11 missing features
       // Promise,String.prototype.startsWith,String.prototype.endsWith,String.prototype.repeat,String.prototype.includes,Array.prototype.includes,Object.keys
-      "https://cdn.polyfill.io/v2/polyfill.js?features=Promise,String.prototype.startsWith,String.prototype.endsWith,String.prototype.repeat,String.prototype.includes,Array.prototype.includes,Object.keys|always",
-      "dist-test/index.browser.js"
+      "https://cdn.polyfill.io/v2/polyfill.js?features=Symbol,Promise,String.prototype.startsWith,String.prototype.endsWith,String.prototype.repeat,String.prototype.includes,Array.prototype.includes,Object.keys|always",
+      "dist-test/index.browser.js",
+      "recordings/browsers/**/*.json"
     ],
 
     // list of files / patterns to exclude
@@ -41,18 +44,19 @@ module.exports = function (config) {
       "**/*.js": ["env"],
       // IMPORTANT: COMMENT following line if you want to debug in your browsers!!
       // Preprocess source file to calculate code coverage, however this will make source file unreadable
-      "dist-test/index.browser.js": ["coverage"]
+      "dist-test/index.browser.js": ["coverage"],
+      "recordings/browsers/**/*.json": ["json"]
     },
 
     // inject following environment values into browser testing with window.__env__
     // environment values MUST be exported or set with same console running "karma start"
     // https://www.npmjs.com/package/karma-env-preprocessor
-    envPreprocessor: ["ACCOUNT_NAME", "ACCOUNT_SAS"],
+    envPreprocessor: ["ACCOUNT_NAME", "ACCOUNT_SAS", "TEST_MODE"],
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ["mocha", "coverage", "remap-coverage", "junit"],
+    reporters: ["mocha", "coverage", "remap-coverage", "junit", "json-to-file"],
 
     coverageReporter: { type: "in-memory" },
 
@@ -78,6 +82,37 @@ module.exports = function (config) {
       properties: {} // key value pair of properties to add to the <properties> section of the report
     },
 
+    jsonToFileReporter: {
+      filter: function(obj) {
+        // - jsonToFileReporter filters the JSON strings in console.logs.
+        // - Console logs with `.writeFile` property are captured and are written to a file(recordings).
+        // - The other console statements are captured and printed normally.
+        // - Example - console.warn("hello"); -> console.log({ warn: "hello" });
+        // - Example - console.log("hello"); -> console.log({ log: "hello" });
+        if (process.env.TEST_MODE === "record") {
+          if (obj.writeFile) {
+            const fs = require("fs-extra");
+            // Create the directories recursively incase they don't exist
+            try {
+              // Stripping away the filename from the file path and retaining the directory structure
+              fs.ensureDirSync(obj.path.substring(0, obj.path.lastIndexOf("/") + 1));
+            } catch (err) {
+              if (err.code !== "EEXIST") throw err;
+            }
+            fs.writeFile(obj.path, JSON.stringify(obj.content, null, " "), (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          } else {
+            console.log(obj);
+          }
+          return false;
+        }
+      },
+      outputPath: "."
+    },
+
     // web server port
     port: 9328,
 
@@ -94,7 +129,7 @@ module.exports = function (config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     // 'ChromeHeadless', 'Chrome', 'Firefox', 'Edge', 'IE'
-    browsers: ["ChromeHeadless"],
+    browsers: ["Chrome"],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
@@ -107,12 +142,16 @@ module.exports = function (config) {
     browserNoActivityTimeout: 600000,
     browserDisconnectTimeout: 10000,
     browserDisconnectTolerance: 3,
+    browserConsoleLogOptions: {
+      terminal: process.env.TEST_MODE !== "record"
+    },
 
     client: {
       mocha: {
         // change Karma's debug.html to the mocha web reporter
         reporter: "html",
-        timeout: "600000"
+        timeout: "600000",
+        retries: 2
       }
     }
   });

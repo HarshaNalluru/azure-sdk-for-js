@@ -2,12 +2,7 @@
  Setup: Enter your storage account name and shared key in main()
 */
 
-const {
-  newPipeline,
-  FileServiceClient,
-  SharedKeyCredential,
-  AnonymousCredential
-} = require("../.."); // Change to "@azure/storage-file" in your package
+const { FileServiceClient, SharedKeyCredential } = require("../.."); // Change to "@azure/storage-file" in your package
 
 async function main() {
   // Enter your storage account name and shared key
@@ -19,47 +14,37 @@ async function main() {
   const sharedKeyCredential = new SharedKeyCredential(account, accountKey);
 
   // Use AnonymousCredential when url already includes a SAS signature
-  const anonymousCredential = new AnonymousCredential();
-
-  // Use sharedKeyCredential or anonymousCredential to create a pipeline
-  const pipeline = newPipeline(sharedKeyCredential);
+  // const anonymousCredential = new AnonymousCredential();
 
   // List shares
   const serviceClient = new FileServiceClient(
     // When using AnonymousCredential, following url should include a valid SAS
     `https://${account}.file.core.windows.net`,
-    pipeline
+    sharedKeyCredential
   );
 
   console.log(`List shares`);
-  let marker;
-  do {
-    const listSharesResponse = await serviceClient.listSharesSegment(
-      marker
-    );
-
-    marker = listSharesResponse.nextMarker;
-    for (const share of listSharesResponse.shareItems) {
-      console.log(`\tShare: ${share.name}`);
-    }
-  } while (marker);
+  let i = 1;
+  for await (const share of serviceClient.listShares()) {
+    console.log(`Share ${i++}: ${share.name}`);
+  }
 
   // Create a share
   const shareName = `newshare${new Date().getTime()}`;
-  const shareClient = serviceClient.createShareClient(shareName);
+  const shareClient = serviceClient.getShareClient(shareName);
   await shareClient.create();
   console.log(`Create share ${shareName} successfully`);
 
   // Create a directory
   const directoryName = `newdirectory${new Date().getTime()}`;
-  const directoryClient = shareClient.createDirectoryClient(directoryName);
+  const directoryClient = shareClient.getDirectoryClient(directoryName);
   await directoryClient.create();
   console.log(`Create directory ${directoryName} successfully`);
 
   // Create a file
   const content = "Hello World!";
   const fileName = "newfile" + new Date().getTime();
-  const fileClient = directoryClient.createFileClient(fileName);
+  const fileClient = directoryClient.getFileClient(fileName);
   await fileClient.create(content.length);
   console.log(`Create file ${fileName} successfully`);
 
@@ -69,30 +54,21 @@ async function main() {
 
   // List directories and files
   console.log(`List directories and files under directory ${directoryName}`);
-  marker = undefined;
-  do {
-    const listFilesAndDirectoriesResponse = await directoryClient.listFilesAndDirectoriesSegment(
-      marker
-    );
-
-    marker = listFilesAndDirectoriesResponse.nextMarker;
-    for (const file of listFilesAndDirectoriesResponse.segment.fileItems) {
-      console.log(`\tFile: ${file.name}`);
+  i = 1;
+  for await (const entity of directoryClient.listFilesAndDirectories()) {
+    if (entity.kind === "directory") {
+      console.log(`${i++} - directory\t: ${entity.name}`);
+    } else {
+      console.log(`${i++} - file\t: ${entity.name}`);
     }
-    for (const directory of listFilesAndDirectoriesResponse.segment
-        .directoryItems) {
-      console.log(`\tDirectory: ${directory.name}`);
-    }
-  } while (marker);
+  }
 
   // Get file content from position 0 to the end
   // In Node.js, get downloaded data by accessing downloadFileResponse.readableStreamBody
   // In browsers, get downloaded data by accessing downloadFileResponse.blobBody
   const downloadFileResponse = await fileClient.download(0);
   console.log(
-    `Downloaded file content${await streamToString(
-      downloadFileResponse.readableStreamBody
-    )}`
+    `Downloaded file content${await streamToString(downloadFileResponse.readableStreamBody)}`
   );
 
   // Delete share
@@ -104,7 +80,7 @@ async function main() {
 async function streamToString(readableStream) {
   return new Promise((resolve, reject) => {
     const chunks = [];
-    readableStream.on("data", data => {
+    readableStream.on("data", (data) => {
       chunks.push(data.toString());
     });
     readableStream.on("end", () => {
@@ -119,6 +95,6 @@ main()
   .then(() => {
     console.log("Successfully executed sample.");
   })
-  .catch(err => {
+  .catch((err) => {
     console.log(err.message);
   });

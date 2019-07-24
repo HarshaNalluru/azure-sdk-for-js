@@ -1,39 +1,45 @@
 import * as assert from "assert";
 
-import { base64encode, bodyToString, getBSU, getUniqueName } from "./utils";
+import { record } from "./utils/recorder";
 import * as dotenv from "dotenv";
+import { base64encode, bodyToString, getBSU } from "./utils";
+import { ContainerClient, BlobClient, BlockBlobClient } from "../src";
 dotenv.config({ path: "../.env" });
 
 describe("BlockBlobClient", () => {
   const blobServiceClient = getBSU();
-  let containerName: string = getUniqueName("container");
-  let containerClient = blobServiceClient.createContainerClient(containerName);
-  let blobName: string = getUniqueName("blob");
-  let blobClient = containerClient.createBlobClient(blobName);
-  let blockBlobClient = blobClient.createBlockBlobClient();
+  let containerName: string;
+  let containerClient: ContainerClient;
+  let blobName: string;
+  let blobClient: BlobClient;
+  let blockBlobClient: BlockBlobClient;
 
-  beforeEach(async () => {
-    containerName = getUniqueName("container");
-    containerClient = blobServiceClient.createContainerClient(containerName);
+  let recorder: any;
+
+  beforeEach(async function() {
+    recorder = record(this);
+    containerName = recorder.getUniqueName("container");
+    containerClient = blobServiceClient.getContainerClient(containerName);
     await containerClient.create();
-    blobName = getUniqueName("blob");
-    blobClient = containerClient.createBlobClient(blobName);
-    blockBlobClient = blobClient.createBlockBlobClient();
+    blobName = recorder.getUniqueName("blob");
+    blobClient = containerClient.getBlobClient(blobName);
+    blockBlobClient = blobClient.getBlockBlobClient();
   });
 
-  afterEach(async () => {
+  afterEach(async function() {
     await containerClient.delete();
+    recorder.stop();
   });
 
   it("upload with string body and default parameters", async () => {
-    const body: string = getUniqueName("randomstring");
+    const body: string = recorder.getUniqueName("randomstring");
     await blockBlobClient.upload(body, body.length);
     const result = await blobClient.download(0);
     assert.deepStrictEqual(await bodyToString(result, body.length), body);
   });
 
   it("upload with string body and all parameters set", async () => {
-    const body: string = getUniqueName("randomstring");
+    const body: string = recorder.getUniqueName("randomstring");
     const options = {
       blobCacheControl: "blobCacheControl",
       blobContentDisposition: "blobContentDisposition",
@@ -82,13 +88,10 @@ describe("BlockBlobClient", () => {
       // tslint:disable-next-line:no-empty
     } catch (err) {}
 
-    const newBlockBlobClient = containerClient.createBlockBlobClient(
-      getUniqueName("newblockblob")
+    const newBlockBlobClient = containerClient.getBlockBlobClient(
+      recorder.getUniqueName("newblockblob")
     );
-    await newBlockBlobClient.stageBlockFromURL(
-      base64encode("1"),
-      blockBlobClient.url
-    );
+    await newBlockBlobClient.stageBlockFromURL(base64encode("1"), blockBlobClient.url);
 
     const listResponse = await newBlockBlobClient.getBlockList("uncommitted");
     assert.equal(listResponse.uncommittedBlocks!.length, 1);
@@ -107,27 +110,12 @@ describe("BlockBlobClient", () => {
       // tslint:disable-next-line:no-empty
     } catch (err) {}
 
-    const newBlockBlobClient = containerClient.createBlockBlobClient(
-      getUniqueName("newblockblob")
+    const newBlockBlobClient = containerClient.getBlockBlobClient(
+      recorder.getUniqueName("newblockblob")
     );
-    await newBlockBlobClient.stageBlockFromURL(
-      base64encode("1"),
-      blockBlobClient.url,
-      0,
-      4
-    );
-    await newBlockBlobClient.stageBlockFromURL(
-      base64encode("2"),
-      blockBlobClient.url,
-      4,
-      4
-    );
-    await newBlockBlobClient.stageBlockFromURL(
-      base64encode("3"),
-      blockBlobClient.url,
-      8,
-      2
-    );
+    await newBlockBlobClient.stageBlockFromURL(base64encode("1"), blockBlobClient.url, 0, 4);
+    await newBlockBlobClient.stageBlockFromURL(base64encode("2"), blockBlobClient.url, 4, 4);
+    await newBlockBlobClient.stageBlockFromURL(base64encode("3"), blockBlobClient.url, 8, 2);
 
     const listResponse = await newBlockBlobClient.getBlockList("uncommitted");
     assert.equal(listResponse.uncommittedBlocks!.length, 3);

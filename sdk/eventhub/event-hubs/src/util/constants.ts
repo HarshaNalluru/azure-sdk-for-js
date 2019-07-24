@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { name, version } from "../../package.json";
-
+/**
+ * @ignore
+ */
 export const packageJsonInfo = {
-  name: name,
-  version: version
+  name: "@azure/event-hubs",
+  version: "5.0.0-preview.2"
 };
