@@ -6,7 +6,7 @@ import {
   RequestPolicy,
   RequestPolicyFactory,
   RequestPolicyOptions
-} from "@azure/ms-rest-js";
+} from "@azure/core-http";
 import * as os from "os";
 
 import { TelemetryPolicy } from "./policies/TelemetryPolicy";
@@ -54,7 +54,7 @@ export class TelemetryPolicyFactory implements RequestPolicyFactory {
         }
       }
 
-      // e.g. azsdk-js-storagefile/10.0.0
+      // e.g. azsdk-js-storagefile/11.0.0
       const libInfo = `azsdk-js-storagefile/${SDK_VERSION}`;
       if (userAgentInfo.indexOf(libInfo) === -1) {
         userAgentInfo.push(libInfo);

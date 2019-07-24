@@ -1,11 +1,12 @@
 omitted_paths:
   - documentation/ServicePrincipal/*
+  - eng/tools/select-packages/**
   - "sdk/*/arm-*"
   - "sdk/cognitiveservices/*"
 language: js
 root_check_enabled: True
 required_readme_sections:
-  - ^Azure .+ client library for (JS|AMQP operations)
+  - ^Azure (.+ client library for (JS|AMQP operations)|Smoke Test for JS)
   - ^Getting started$
   - ^Key concepts$
   - ^Examples$
@@ -60,9 +61,9 @@ known_content_issues:
   - ["sdk/cognitiveservices/cognitiveservices-visualsearch/README.md", "#1583"]
   - ["sdk/cognitiveservices/cognitiveservices-websearch/README.md", "#1583"]
   - ["sdk/eventgrid/eventgrid/README.md", "#1583"]
-  - ["sdk/core/core-aborter/README.md", "#1583"]
-  - ["sdk/core/core-http/README.md", "#1583"]
-  - ['sdk/identity/identity/README.md', '#1583']
+  - ["sdk/core/abort-controller/README.md", "#1583"]
+  - ["sdk/core/core-auth/README.md", "#1583"]
+  - ["sdk/core/core-arm/README.md", "#1583"]
   - ["sdk/cosmosdb/cosmos/README.md", "#1583"]
   - ["sdk/cosmosdb/cosmos/src/test/readme.md", "#1583"]
   - ["sdk/cosmosdb/cosmos/samples/readme.md", "#1583"]
@@ -103,6 +104,7 @@ known_content_issues:
   - ["sdk/storage/storage-queue/samples/README.md", "#1583"]
   - ["sdk/storage/storage-queue/test/README.md", "#1583"]
   - ["sdk/storage/storage-datalake/README.md", "#1583"]
+  - ["sdk/test-utils/recorder/README.md", "#1583"]
 
 package_indexing_exclusion_list:
   - "@azure/template"

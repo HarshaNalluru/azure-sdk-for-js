@@ -2,13 +2,7 @@
  Setup: Enter your storage account name and shared key in main()
 */
 
-import {
-  BlobServiceClient,
-  Models,
-  SharedKeyCredential,
-  newPipeline,
-  TokenCredential,
-} from "../../src"; // Change to "@azure/storage-blob" in your package
+import { BlobServiceClient, SharedKeyCredential, Models } from "../../src"; // Change to "@azure/storage-blob" in your package
 
 async function main() {
   // Enter your storage account name and shared key
@@ -16,40 +10,44 @@ async function main() {
   const accountKey = "";
 
   // Use SharedKeyCredential with storage account and account key
+  // SharedKeyCredential is only avaiable in Node.js runtime, not in browsers
   const sharedKeyCredential = new SharedKeyCredential(account, accountKey);
 
+  // ONLY AVAILABLE IN NODE.JS RUNTIME
+  // DefaultAzureCredential will first look for Azure Active Directory (AAD)
+  // client secret credentials in the following environment variables:
+  //
+  // - AZURE_TENANT_ID: The ID of your AAD tenant
+  // - AZURE_CLIENT_ID: The ID of your AAD app registration (client)
+  // - AZURE_CLIENT_SECRET: The client secret for your AAD app registration
+  //
+  // If those environment variables aren't found and your application is deployed
+  // to an Azure VM or App Service instance, the managed service identity endpoint
+  // will be used as a fallback authentication source.
+  // const defaultAzureCredential = new DefaultAzureCredential();
+
   // Use TokenCredential with OAuth token
-  const tokenCredential = new TokenCredential("token");
-  tokenCredential.token = "renewedToken"; // Renew the token by updating token field of token credential
+  // const tokenCredential = new RawTokenCredential("token");
+  // tokenCredential.token = "renewedToken"; // Renew the token by updating token field of token credential
 
   // Use AnonymousCredential when url already includes a SAS signature
   // const anonymousCredential = new AnonymousCredential();
-
-  // Use sharedKeyCredential, tokenCredential or anonymousCredential to create a pipeline
-  const pipeline = newPipeline(sharedKeyCredential);
 
   // List containers
   const blobServiceClient = new BlobServiceClient(
     // When using AnonymousCredential, following url should include a valid SAS or support public access
     `https://${account}.blob.core.windows.net`,
-    pipeline
+    sharedKeyCredential
   );
 
-  let marker;
-  do {
-    const listContainersResponse: Models.ServiceListContainersSegmentResponse = await blobServiceClient.listContainersSegment(
-      marker
-    );
-
-    marker = listContainersResponse.nextMarker;
-    for (const container of listContainersResponse.containerItems) {
-      console.log(`Container: ${container.name}`);
-    }
-  } while (marker);
+  let i = 1;
+  for await (const container of blobServiceClient.listContainers()) {
+    console.log(`Container ${i++}: ${container.name}`);
+  }
 
   // Create a container
   const containerName = `newcontainer${new Date().getTime()}`;
-  const containerClient = blobServiceClient.createContainerClient(containerName);
+  const containerClient = blobServiceClient.getContainerClient(containerName);
 
   const createContainerResponse = await containerClient.create();
   console.log(`Create container ${containerName} successfully`, createContainerResponse.requestId);
@@ -57,23 +55,16 @@ async function main() {
   // Create a blob
   const content = "hello";
   const blobName = "newblob" + new Date().getTime();
-  const blobClient = containerClient.createBlobClient(blobName);
-  const blockBlobClient = blobClient.createBlockBlobClient();
+  const blobClient = containerClient.getBlobClient(blobName);
+  const blockBlobClient = blobClient.getBlockBlobClient();
   const uploadBlobResponse = await blockBlobClient.upload(content, content.length);
   console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 
   // List blobs
-  marker = undefined;
-  do {
-    const listBlobsResponse: Models.ContainerListBlobFlatSegmentResponse = await containerClient.listBlobFlatSegment(
-      marker
-    );
-
-    marker = listBlobsResponse.nextMarker;
-    for (const blob of listBlobsResponse.segment.blobItems) {
-      console.log(`Blob: ${blob.name}`);
-    }
-  } while (marker);
+  i = 1;
+  for await (const blob of containerClient.listBlobsFlat()) {
+    console.log(`Blob ${i++}: ${blob.name}`);
+  }
 
   // Get blob content from position 0 to the end
   // In Node.js, get downloaded data by accessing downloadBlockBlobResponse.readableStreamBody

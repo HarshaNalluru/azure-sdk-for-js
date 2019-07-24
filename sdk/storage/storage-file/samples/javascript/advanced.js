@@ -7,8 +7,32 @@ const {
   AnonymousCredential,
   Aborter,
   FileServiceClient,
+  HttpPipelineLogLevel,
   newPipeline
 } = require("../.."); // Change to "@azure/storage-file" in your package
+
+class ConsoleHttpPipelineLogger {
+  constructor(minimumLogLevel) {
+    this.minimumLogLevel = minimumLogLevel;
+  }
+  log(logLevel, message) {
+    const logMessage = `${new Date().toISOString()} ${HttpPipelineLogLevel[logLevel]}: ${message}`;
+    switch (logLevel) {
+      case HttpPipelineLogLevel.ERROR:
+        // tslint:disable-next-line:no-console
+        console.error(logMessage);
+        break;
+      case HttpPipelineLogLevel.WARNING:
+        // tslint:disable-next-line:no-console
+        console.warn(logMessage);
+        break;
+      case HttpPipelineLogLevel.INFO:
+        // tslint:disable-next-line:no-console
+        console.log(logMessage);
+        break;
+    }
+  }
+}
 
 async function main() {
   // Fill in following settings before running this sample
@@ -19,30 +43,31 @@ async function main() {
   const pipeline = newPipeline(new AnonymousCredential(), {
     // httpClient: MyHTTPClient, // A customized HTTP client implementing IHttpClient interface
     // logger: MyLogger, // A customized logger implementing IHttpPipelineLogger interface
+    logger: new ConsoleHttpPipelineLogger(HttpPipelineLogLevel.INFO),
     retryOptions: { maxTries: 4 }, // Retry options
-    telemetry: { value: "HighLevelSample V1.0.0" } // Customized telemetry string
+    telemetry: { value: "AdvancedSample V1.0.0" } // Customized telemetry string
   });
 
-  const servieClient = new FileServiceClient(
+  const serviceClient = new FileServiceClient(
     `https://${account}.file.core.windows.net${accountSas}`,
     pipeline
   );
 
   // Create a share
   const shareName = `newshare${new Date().getTime()}`;
-  const shareClient = servieClient.createShareClient(shareName);
+  const shareClient = serviceClient.getShareClient(shareName);
   await shareClient.create();
   console.log(`Create share ${shareName} successfully`);
 
   // Create a directory
   const directoryName = `newdirectory${new Date().getTime()}`;
-  const directoryClient = shareClient.createDirectoryClient(directoryName);
+  const directoryClient = shareClient.getDirectoryClient(directoryName);
   await directoryClient.create();
   console.log(`Create directory ${directoryName} successfully`);
 
   // Upload local file to Azure file parallelly
   const fileName = "newfile" + new Date().getTime();
-  const fileClient = directoryClient.createFileClient(fileName);
+  const fileClient = directoryClient.getFileClient(fileName);
   const fileSize = fs.statSync(localFilePath).size;
 
   // Parallel uploading with FileClient.uploadFile() in Node.js runtime
@@ -50,22 +75,16 @@ async function main() {
   await fileClient.uploadFile(localFilePath, {
     rangeSize: 4 * 1024 * 1024, // 4MB range size
     parallelism: 20, // 20 concurrency
-    progress: ev => console.log(ev)
+    progress: (ev) => console.log(ev)
   });
   console.log("uploadFile success");
 
   // Parallel uploading a Readable stream with FileClient.uploadStream() in Node.js runtime
   // FileClient.uploadStream() is only available in Node.js
-  await fileClient.uploadStream(
-    fs.createReadStream(localFilePath),
-    fileSize,
-    4 * 1024 * 1024,
-    20,
-    {
-      abortSignal: Aborter.timeout(30 * 60 * 1000), // Abort uploading with timeout in 30mins
-      progress: ev => console.log(ev)
-    }
-  );
+  await fileClient.uploadStream(fs.createReadStream(localFilePath), fileSize, 4 * 1024 * 1024, 20, {
+    abortSignal: Aborter.timeout(30 * 60 * 1000), // Abort uploading with timeout in 30mins
+    progress: (ev) => console.log(ev)
+  });
   console.log("uploadStream success");
 
   // Parallel uploading a browser File/Blob/ArrayBuffer in browsers with FileClient.uploadBrowserData()
@@ -82,17 +101,12 @@ async function main() {
   // Parallel downloading an Azure file into Node.js buffer
   // FileClient.downloadToBuffer() is only available in Node.js
   const buffer = Buffer.alloc(fileSize);
-  await fileClient.downloadToBuffer(
-    buffer,
-    0,
-    undefined,
-    {
-      abortSignal: Aborter.timeout(30 * 60 * 1000),
-      rangeSize: 4 * 1024 * 1024, // 4MB range size
-      parallelism: 20, // 20 concurrency
-      progress: ev => console.log(ev)
-    }
-  );
+  await fileClient.downloadToBuffer(buffer, 0, undefined, {
+    abortSignal: Aborter.timeout(30 * 60 * 1000),
+    rangeSize: 4 * 1024 * 1024, // 4MB range size
+    parallelism: 20, // 20 concurrency
+    progress: (ev) => console.log(ev)
+  });
   console.log("downloadToBuffer success");
 
   // Delete share

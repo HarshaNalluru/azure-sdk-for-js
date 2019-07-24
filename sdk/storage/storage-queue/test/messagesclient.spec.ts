@@ -1,27 +1,33 @@
 import * as assert from "assert";
-
-import { getQSU, getUniqueName } from "./utils";
+import { getQSU } from "./utils";
+import { QueueClient } from "../src/QueueClient";
+import { record, setEnviromentOnLoad } from "@azure/test-utils-recorder";
 import * as dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
 describe("MessagesClient", () => {
+  setEnviromentOnLoad();
   const queueServiceClient = getQSU();
-  let queueName = getUniqueName("queue");
-  let queueClient = queueServiceClient.createQueueClient(queueName);
+  let queueName: string;
+  let queueClient: QueueClient;
   const messageContent = "Hello World";
 
-  beforeEach(async () => {
-    queueName = getUniqueName("queue");
-    queueClient = queueServiceClient.createQueueClient(queueName);
+  let recorder: any;
+
+  beforeEach(async function() {
+    recorder = record(this);
+    queueName = recorder.getUniqueName("queue");
+    queueClient = queueServiceClient.getQueueClient(queueName);
     await queueClient.create();
   });
 
-  afterEach(async () => {
+  afterEach(async function() {
     await queueClient.delete();
+    recorder.stop();
   });
 
   it("enqueue, peek, dequeue and clear message with default parameters", async () => {
-    let messagesClient = queueClient.createMessagesClient();
+    let messagesClient = queueClient.getMessagesClient();
     let eResult = await messagesClient.enqueue(messageContent);
     assert.ok(eResult.date);
     assert.ok(eResult.expirationTime);
@@ -63,7 +69,7 @@ describe("MessagesClient", () => {
   });
 
   it("enqueue, peek, dequeue and clear message with all parameters", async () => {
-    let messagesClient = queueClient.createMessagesClient();
+    let messagesClient = queueClient.getMessagesClient();
 
     let eResult = await messagesClient.enqueue(messageContent, {
       messageTimeToLive: 40,
@@ -133,7 +139,7 @@ describe("MessagesClient", () => {
   });
 
   it("enqueue, peek, dequeue empty message, and peek, dequeue with numberOfMessages > count(messages)", async () => {
-    let messagesClient = queueClient.createMessagesClient();
+    let messagesClient = queueClient.getMessagesClient();
 
     let eResult = await messagesClient.enqueue("", {
       messageTimeToLive: 40,
@@ -177,7 +183,7 @@ describe("MessagesClient", () => {
   });
 
   it("enqueue, peek, dequeue special characters", async () => {
-    let messagesClient = queueClient.createMessagesClient();
+    let messagesClient = queueClient.getMessagesClient();
 
     let specialMessage =
       "!@#$%^&*()_+`-=[]|};'\":,./?><`~漢字㒈保ᨍ揫^p[뷁)׷񬓔7񈺝l鮍򧽶ͺ簣ڞ츊䈗㝯綞߫⯹?ÎᦡC왶żsmt㖩닡򈸱𕩣ОլFZ򃀮9tC榅ٻ컦驿Ϳ[𱿛봻烌󱰷򙥱Ռ򽒏򘤰δŊϜ췮㐦9ͽƙp퐂ʩ由巩KFÓ֮򨾭⨿󊻅aBm󶴂旨Ϣ񓙠򻐪񇧱򆋸ջ֨ipn򒷐ꝷՆ򆊙斡賆𒚑m˞𻆕󛿓򐞺Ӯ򡗺򴜍<񐸩԰Bu)򁉂񖨞á<џɏ嗂�⨣1PJ㬵┡ḸI򰱂ˮaࢸ۳i灛ȯɨb𹺪򕕱뿶uٔ䎴񷯆Φ륽󬃨س_NƵ¦\u00E9";
@@ -224,7 +230,7 @@ describe("MessagesClient", () => {
   });
 
   it("enqueue, peek, dequeue with 64KB characters size which is computed after encoding", async () => {
-    let messagesClient = queueClient.createMessagesClient();
+    let messagesClient = queueClient.getMessagesClient();
     let messageContent = new Array(64 * 1024 + 1).join("a");
 
     let eResult = await messagesClient.enqueue(messageContent, {
@@ -269,7 +275,7 @@ describe("MessagesClient", () => {
   });
 
   it("enqueue, peek and dequeue negative", async () => {
-    let messagesClient = queueClient.createMessagesClient();
+    let messagesClient = queueClient.getMessagesClient();
     let eResult = await messagesClient.enqueue(messageContent, {
       messageTimeToLive: 40
     });
@@ -320,7 +326,7 @@ describe("MessagesClient", () => {
   });
 
   it("enqueue negative with 65537B(64KB+1B) characters size which is computed after encoding", async () => {
-    let messagesClient = queueClient.createMessagesClient();
+    let messagesClient = queueClient.getMessagesClient();
     let messageContent = new Array(64 * 1024 + 2).join("a");
 
     let error;

@@ -1,14 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import { TokenCredential, isTokenCredential, isNode } from "@azure/core-http";
 import * as Models from "./generated/lib/models";
 import { Aborter } from "./Aborter";
 import { ListQueuesIncludeType } from "./generated/lib/models/index";
 import { Service } from "./generated/lib/operations";
-import { Pipeline } from "./Pipeline";
+import { newPipeline, NewPipelineOptions, Pipeline } from "./Pipeline";
 import { StorageClient } from "./StorageClient";
 import { QueueClient } from "./QueueClient";
-import { appendToURLPath } from "./utils/utils.common";
+import "@azure/core-paging";
+import { PageSettings, PagedAsyncIterableIterator } from "@azure/core-paging";
+import { appendToURLPath, extractConnectionStringParts } from "./utils/utils.common";
+import { Credential } from "./credentials/Credential";
+import { SharedKeyCredential } from "./credentials/SharedKeyCredential";
+import { AnonymousCredential } from "./credentials/AnonymousCredential";
 
 /**
  * Options to configure Queue Service - Get Properties operation
@@ -67,17 +73,16 @@ export interface ServiceGetStatisticsOptions {
 /**
  * Options to configure Queue Service - List Queues Segment operation
  *
- * @export
  * @interface ServiceListQueuesSegmentOptions
  */
-export interface ServiceListQueuesSegmentOptions {
+interface ServiceListQueuesSegmentOptions {
   /**
    * Aborter instance to cancel request. It can be created with Aborter.none
    * or Aborter.timeout(). Go to documents of {@link Aborter} for more examples
    * about request cancellation.
    *
    * @type {Aborter}
-   * @memberof AppendBlobCreateOptions
+   * @memberof ServiceListQueuesSegmentOptions
    */
   abortSignal?: Aborter;
   /**
@@ -100,7 +105,36 @@ export interface ServiceListQueuesSegmentOptions {
    * specify that the queue's metadata be returned as part of the response
    * body. Possible values include: 'metadata'
    */
-  include?: ListQueuesIncludeType;
+  include?: ListQueuesIncludeType[];
+}
+
+/**
+ * Options to configure Queue Service - List Queues operation
+ *
+ * @export
+ * @interface ServiceListQueuesOptions
+ */
+export interface ServiceListQueuesOptions {
+  /**
+   * Aborter instance to cancel request. It can be created with Aborter.none
+   * or Aborter.timeout(). Go to documents of {@link Aborter} for more examples
+   * about request cancellation.
+   *
+   * @type {Aborter}
+   * @memberof ServiceListQueuesOptions
+   */
+  abortSignal?: Aborter;
+  /**
+   * @member {string} [prefix] Filters the results to return only queues
+   * whose name begins with the specified prefix.
+   */
+  prefix?: string;
+  /**
+   * @member {ListQueuesIncludeType} [include] Include this parameter to
+   * specify that the queue's metadata be returned as part of the response
+   * body. Possible values include: 'metadata'
+   */
+  include?: ListQueuesIncludeType[];
 }
 
 /**
@@ -112,6 +146,34 @@ export interface ServiceListQueuesSegmentOptions {
  */
 export class QueueServiceClient extends StorageClient {
   /**
+   * ONLY AVAILABLE IN NODE.JS RUNTIME.
+   *
+   * Creates an instance of QueueServiceClient.
+   *
+   * @param {string} connectionString Connection string for an Azure storage account.
+   * @param {NewPipelineOptions} [options] Options to configure the HTTP pipeline.
+   * @returns {QueueServiceClient} A new QueueServiceClient object from the given connection string.
+   * @memberof QueueServiceClient
+   */
+  public static fromConnectionString(
+    connectionString: string,
+    options?: NewPipelineOptions
+  ): QueueServiceClient {
+    if (isNode) {
+      const extractedCreds = extractConnectionStringParts(connectionString);
+      const sharedKeyCredential = new SharedKeyCredential(
+        extractedCreds.accountName,
+        extractedCreds.accountKey
+      );
+
+      const pipeline = newPipeline(sharedKeyCredential, options);
+      return new QueueServiceClient(extractedCreds.url, pipeline);
+    } else {
+      throw new Error("Connection string is only supported in Node.js environment");
+    }
+  }
+
+  /**
    * serviceContext provided by protocol layer.
    *
    * @private
@@ -122,6 +184,20 @@ export class QueueServiceClient extends StorageClient {
 
   /**
    * Creates an instance of QueueServiceClient.
+   *
+   * @param {string} url A URL string pointing to Azure Storage queue service, such as
+   *                     "https://myaccount.queue.core.windows.net". You can append a SAS
+   *                     if using AnonymousCredential, such as "https://myaccount.queue.core.windows.net?sasString".
+   * @param {Credential | TokenCredential} credential Such as AnonymousCredential, SharedKeyCredential, RawTokenCredential,
+   *                                                  or a TokenCredential from @azure/identity. If not specified,
+   *                                                  AnonymousCredential is used.
+   * @param {NewPipelineOptions} [options] Options to configure the HTTP pipeline.
+   * @memberof QueueServiceClient
+   */
+  constructor(url: string, credential?: Credential | TokenCredential, options?: NewPipelineOptions);
+  /**
+   * Creates an instance of QueueServiceClient.
+   *
    * @param {string} url A URL string pointing to Azure Storage queue service, such as
    *                     "https://myaccount.queue.core.windows.net". You can append a SAS
    *                     if using AnonymousCredential, such as "https://myaccount.queue.core.windows.net?sasString".
@@ -129,7 +205,24 @@ export class QueueServiceClient extends StorageClient {
    *                            pipeline, or provide a customized pipeline.
    * @memberof QueueServiceClient
    */
-  constructor(url: string, pipeline: Pipeline) {
+  constructor(url: string, pipeline: Pipeline);
+  constructor(
+    url: string,
+    credentialOrPipeline?: Credential | TokenCredential | Pipeline,
+    options?: NewPipelineOptions
+  ) {
+    let pipeline: Pipeline;
+    if (credentialOrPipeline instanceof Pipeline) {
+      pipeline = credentialOrPipeline;
+    } else if (
+      credentialOrPipeline instanceof Credential ||
+      isTokenCredential(credentialOrPipeline)
+    ) {
+      pipeline = newPipeline(credentialOrPipeline, options);
+    } else {
+      // The second paramter is undefined. Use anonymous credential.
+      pipeline = newPipeline(new AnonymousCredential(), options);
+    }
     super(url, pipeline);
     this.serviceContext = new Service(this.storageClientContext);
   }
@@ -138,7 +231,7 @@ export class QueueServiceClient extends StorageClient {
    * Creates a QueueClient object.
    * @param queueName
    */
-  public createQueueClient(queueName: string): QueueClient {
+  public getQueueClient(queueName: string): QueueClient {
     return new QueueClient(appendToURLPath(this.url, queueName), this.pipeline);
   }
 
@@ -147,8 +240,8 @@ export class QueueServiceClient extends StorageClient {
    * for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
    * @see https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties
    *
-   * @param {ServiceGetPropertiesOptions} [options] Optional options to get properties operation.
-   * @returns {Promise<Models.ServiceGetPropertiesResponse>}
+   * @param {ServiceGetPropertiesOptions} [options] Options to get properties operation.
+   * @returns {Promise<Models.ServiceGetPropertiesResponse>} Response data including the queue service properties.
    * @memberof QueueServiceClient
    */
   public async getProperties(
@@ -166,8 +259,8 @@ export class QueueServiceClient extends StorageClient {
    * @see https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties
    *
    * @param {Models.StorageServiceProperties} properties
-   * @param {ServiceGetPropertiesOptions} [options] Optional options to set properties operation.
-   * @returns {Promise<Models.ServiceSetPropertiesResponse>}
+   * @param {ServiceGetPropertiesOptions} [options] Options to set properties operation.
+   * @returns {Promise<Models.ServiceSetPropertiesResponse>} Response data for the Set Properties operation.
    * @memberof QueueServiceClient
    */
   public async setProperties(
@@ -186,8 +279,8 @@ export class QueueServiceClient extends StorageClient {
    * replication is enabled for the storage account.
    * @see https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats
    *
-   * @param {ServiceGetStatisticsOptions} [options] Optional optiosn to get statistics operation.
-   * @returns {Promise<Models.ServiceGetStatisticsResponse>}
+   * @param {ServiceGetStatisticsOptions} [options] Options to get statistics operation.
+   * @returns {Promise<Models.ServiceGetStatisticsResponse>} Response data for get statistics the operation.
    * @memberof QueueServiceClient
    */
   public async getStatistics(
@@ -197,56 +290,6 @@ export class QueueServiceClient extends StorageClient {
     return this.serviceContext.getStatistics({
       abortSignal: aborter
     });
-  }
-
-  /**
-   * Iterates over queues under the specified account.
-   *
-   * @param {ServiceListQueuesSegmentOptions} [options={}] Options to list queues(optional)
-   * @returns {AsyncIterableIterator<Models.QueueItem>}
-   * @memberof QueueServiceClient
-   *
-   * @example
-   * let i = 1;
-   * for await (const item of queueServiceClient.listQueues()) {
-   *   console.log(`Queue${i}: ${item.name}`);
-   *   i++;
-   * }
-   *
-   * @example
-   * let iter1 = queueServiceClient.listQueues();
-   * let i = 1;
-   * for await (const item of iter1) {
-   *   console.log(`Queue${i}: ${item.name}`);
-   *   i++;
-   * }
-   *
-   * @example
-   * let iter2 = await queueServiceClient.listQueues();
-   * i = 1;
-   * let item = await iter2.next();
-   * do {
-   *   console.log(`Queue${i++}: ${item.value.name}`);
-   *   item = await iter2.next();
-   * } while (item.value);
-   *
-   */
-  public async *listQueues(
-    options: ServiceListQueuesSegmentOptions = {}
-  ): AsyncIterableIterator<Models.QueueItem> {
-    let marker = undefined;
-    const queueServiceClient = this;
-    const aborter = !options.abortSignal ? Aborter.none : options.abortSignal;
-    let listQueuesResponse;
-    do {
-      listQueuesResponse = await queueServiceClient.listQueuesSegment(marker, {
-        ...options,
-        abortSignal: aborter
-      });
-
-      marker = listQueuesResponse.nextMarker;
-      yield* listQueuesResponse.queueItems;
-    } while (marker);
   }
 
   /**
@@ -260,11 +303,11 @@ export class QueueServiceClient extends StorageClient {
    *                          with the current page. The NextMarker value can be used as the value for
    *                          the marker parameter in a subsequent call to request the next page of list
    *                          items. The marker value is opaque to the client.
-   * @param {ServiceListQueuesSegmentOptions} [options] Optional optiosn to list queues operation.
-   * @returns {Promise<Models.ServiceListQueuesSegmentResponse>}
+   * @param {ServiceListQueuesSegmentOptions} [options] Options to list queues operation.
+   * @returns {Promise<Models.ServiceListQueuesSegmentResponse>} Response data for the list queues segment operation.
    * @memberof QueueServiceClient
    */
-  public async listQueuesSegment(
+  private async listQueuesSegment(
     marker?: string,
     options: ServiceListQueuesSegmentOptions = {}
   ): Promise<Models.ServiceListQueuesSegmentResponse> {
@@ -273,6 +316,144 @@ export class QueueServiceClient extends StorageClient {
       abortSignal: aborter,
       marker,
       ...options
-    });
+    } as Models.ServiceListQueuesSegmentOptionalParams);
+  }
+
+  /**
+   * Returns an AsyncIterableIterator for ServiceListQueuesSegmentResponses
+   *
+   * @private
+   * @param {string} [marker] A string value that identifies the portion of
+   *                          the list of queues to be returned with the next listing operation. The
+   *                          operation returns the NextMarker value within the response body if the
+   *                          listing operation did not return all queues remaining to be listed
+   *                          with the current page. The NextMarker value can be used as the value for
+   *                          the marker parameter in a subsequent call to request the next page of list
+   *                          items. The marker value is opaque to the client.
+   * @param {ServiceListQueuesSegmentOptions} [options] Options to list queues operation.
+   * @returns {AsyncIterableIterator<Models.ServiceListQueuesSegmentResponse>}
+   * @memberof QueueServiceClient
+   */
+  private async *listSegments(
+    marker?: string,
+    options: ServiceListQueuesSegmentOptions = {}
+  ): AsyncIterableIterator<Models.ServiceListQueuesSegmentResponse> {
+    let listQueuesResponse;
+    do {
+      listQueuesResponse = await this.listQueuesSegment(marker, options);
+      marker = listQueuesResponse.nextMarker;
+      yield await listQueuesResponse;
+    } while (marker);
+  }
+
+  /**
+   * Returns an AsyncIterableIterator for Queue Items
+   *
+   * @private
+   * @param {ServiceListQueuesSegmentOptions} [options] Options to list queues operation.
+   * @returns {AsyncIterableIterator<Models.ServiceListQueuesSegmentResponse>}
+   * @memberof QueueServiceClient
+   */
+  private async *listItems(
+    options: ServiceListQueuesSegmentOptions = {}
+  ): AsyncIterableIterator<Models.QueueItem> {
+    let marker: string | undefined;
+    for await (const segment of this.listSegments(marker, options)) {
+      yield* segment.queueItems;
+    }
+  }
+
+  /**
+   * Returns an async iterable iterator to list all the queues
+   * under the specified account.
+   *
+   * .byPage() returns an async iterable iterator to list the queues in pages.
+   * @example
+   *    let i = 1;
+   *    for await (const item of queueServiceClient.listQueues()) {
+   *      console.log(`Queue${i}: ${item.name}`);
+   *      i++;
+   *    }
+   *
+   * @example
+   *    // Generator syntax .next()
+   *    let i = 1;
+   *    let iterator = queueServiceClient.listQueues();
+   *    let item = await iterator.next();
+   *    while (!item.done) {
+   *      console.log(`Queue${i}: ${iterator.value.name}`);
+   *      i++;
+   *      item = await iterator.next();
+   *    }
+   *
+   * @example
+   *    // Example for .byPage()
+   *    // passing optional maxPageSize in the page settings
+   *    let i = 1;
+   *    for await (const item2 of queueServiceClient.listQueues().byPage({ maxPageSize: 20 })) {
+   *      if (item2.queueItems) {
+   *        for (const queueItem of item2.queueItems) {
+   *          console.log(`Queue${i}: ${queueItem.name}`);
+   *          i++;
+   *        }
+   *      }
+   *    }
+   *
+   * @example
+   *    let i = 1;
+   *    let iterator = queueServiceClient.listQueues().byPage({ maxPageSize: 2 });
+   *    let item = (await iterator.next()).value;
+   *    // Prints 2 queue names
+   *    if (item.queueItems) {
+   *      for (const queueItem of item.queueItems) {
+   *        console.log(`Queue${i}: ${queueItem.name}`);
+   *        i++;
+   *      }
+   *    }
+   *    // Gets next marker
+   *    let marker = item.nextMarker;
+   *    // Passing next marker as continuationToken
+   *    iterator = queueServiceClient.listQueues().byPage({ continuationToken: marker, maxPageSize: 10 });
+   *    item = (await iterator.next()).value;
+   *    // Prints 10 queue names
+   *    if (item.queueItems) {
+   *      for (const queueItem of item.queueItems) {
+   *        console.log(`Queue${i}: ${queueItem.name}`);
+   *        i++;
+   *      }
+   *    }
+   *
+   * @param {ServiceListQueuesOptions} [options] Options to list queues operation.
+   * @memberof QueueServiceClient
+   * @returns {PagedAsyncIterableIterator<Models.QueueItem, Models.ServiceListQueuesSegmentResponse>} An asyncIterableIterator that supports paging.
+   */
+  public listQueues(
+    options: ServiceListQueuesOptions = {}
+  ): PagedAsyncIterableIterator<Models.QueueItem, Models.ServiceListQueuesSegmentResponse> {
+    // AsyncIterableIterator to iterate over queues
+    const iter = this.listItems(options);
+    return {
+      /**
+       * @member {Promise} [next] The next method, part of the iteration protocol
+       */
+      next() {
+        return iter.next();
+      },
+      /**
+       * @member {Symbol} [asyncIterator] The connection to the async iterator, part of the iteration protocol
+       */
+      [Symbol.asyncIterator]() {
+        return this;
+      },
+      /**
+       * @member {Function} [byPage] Return an AsyncIterableIterator that works a page at a time
+       */
+      byPage: (settings: PageSettings = {}) => {
+        return this.listSegments(settings.continuationToken, {
+          maxresults: settings.maxPageSize,
+          ...options
+        });
+      }
+    };
   }
 }

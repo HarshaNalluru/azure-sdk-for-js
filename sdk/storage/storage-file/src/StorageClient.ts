@@ -6,21 +6,12 @@ import { Pipeline } from "./Pipeline";
 import { escapeURLPath } from "./utils/utils.common";
 
 /**
- * A ServiceClient represents a based URL class for ServiceClient, ContainerURL and etc.
+ * A StorageClient represents a base client class for ServiceClient, ContainerClient and etc.
  *
  * @export
  * @class StorageClient
  */
 export abstract class StorageClient {
-  /**
-   * Request policy pipeline.
-   *
-   * @internal
-   * @type {Pipeline}
-   * @memberof StorageClient
-   */
-  public readonly pipeline: Pipeline;
-
   /**
    * URL string value.
    *
@@ -28,6 +19,16 @@ export abstract class StorageClient {
    * @memberof StorageClient
    */
   public readonly url: string;
+
+  /**
+   * Request policy pipeline.
+   *
+   * @internal
+   * @ignore
+   * @type {Pipeline}
+   * @memberof StorageClient
+   */
+  protected readonly pipeline: Pipeline;
 
   /**
    * StorageClient is a reference to protocol layer operations entry, which is

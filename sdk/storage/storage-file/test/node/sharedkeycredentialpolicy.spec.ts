@@ -1,35 +1,53 @@
-import { getBSU, getUniqueName } from "../utils";
+import { getBSU } from "../utils";
+import { record } from "../utils/recorder";
+import { ShareClient } from "../../src";
 
 describe("SharedKeyCredentialPolicy Node.js only", () => {
   const serviceClient = getBSU();
-  const shareName: string = getUniqueName("1share-with-dash");
-  const shareClient = serviceClient.createShareClient(shareName);
+  let shareName: string;
+  let shareClient: ShareClient;
 
-  before(async () => {
+  let recorder: any;
+
+  before(async function() {
+    recorder = record(this);
+    shareName = recorder.getUniqueName("1share-with-dash");
+    shareClient = serviceClient.getShareClient(shareName);
     await shareClient.create();
+    recorder.stop();
   });
 
-  after(async () => {
+  after(async function() {
+    recorder = record(this);
     await shareClient.delete();
+    recorder.stop();
+  });
+
+  beforeEach(function() {
+    recorder = record(this);
+  });
+
+  afterEach(function() {
+    recorder.stop();
   });
 
   it("SharedKeyCredentialPolicy should work with special share and file names with spaces", async () => {
-    const dirName = getUniqueName("dir empty");
-    const dirClient = shareClient.createDirectoryClient(dirName);
+    const dirName = recorder.getUniqueName("dir empty");
+    const dirClient = shareClient.getDirectoryClient(dirName);
     await dirClient.create();
 
-    const fileName: string = getUniqueName("file empty");
-    const fileClient = dirClient.createFileClient(fileName);
+    const fileName: string = recorder.getUniqueName("file empty");
+    const fileClient = dirClient.getFileClient(fileName);
     await fileClient.create(0);
   });
 
   it("SharedKeyCredentialPolicy should work with special share and file names uppercase", async () => {
-    const dirName = getUniqueName("Dir empty");
-    const dirClient = shareClient.createDirectoryClient(dirName);
+    const dirName = recorder.getUniqueName("Dir empty");
+    const dirClient = shareClient.getDirectoryClient(dirName);
     await dirClient.create();
 
-    const fileName: string = getUniqueName("Upper_another");
-    const fileClient = dirClient.createFileClient(fileName);
+    const fileName: string = recorder.getUniqueName("Upper_another");
+    const fileClient = dirClient.getFileClient(fileName);
     await fileClient.create(0);
   });
 });

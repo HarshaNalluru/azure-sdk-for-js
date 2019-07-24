@@ -1,30 +1,37 @@
 import * as assert from "assert";
 
-import { isNode } from "@azure/ms-rest-js";
-import { bodyToString, getBSU, getUniqueName, sleep } from "./utils";
+import { isNode } from "@azure/core-http";
 import * as dotenv from "dotenv";
+import { bodyToString, getBSU } from "./utils";
+import { record, delay } from "./utils/recorder";
+import { BlobClient, BlockBlobClient, ContainerClient } from "../src";
 dotenv.config({ path: "../.env" });
+
 describe("BlobClient", () => {
   const blobServiceClient = getBSU();
-  let containerName: string = getUniqueName("container");
-  let containerClient = blobServiceClient.createContainerClient(containerName);
-  let blobName: string = getUniqueName("blob");
-  let blobClient = containerClient.createBlobClient(blobName);
-  let blockBlobClient = blobClient.createBlockBlobClient();
+  let containerName: string;
+  let containerClient: ContainerClient;
+  let blobName: string;
+  let blobClient: BlobClient;
+  let blockBlobClient: BlockBlobClient;
   const content = "Hello World";
 
-  beforeEach(async () => {
-    containerName = getUniqueName("container");
-    containerClient = blobServiceClient.createContainerClient(containerName);
+  let recorder: any;
+
+  beforeEach(async function() {
+    recorder = record(this);
+    containerName = recorder.getUniqueName("container");
+    containerClient = blobServiceClient.getContainerClient(containerName);
     await containerClient.create();
-    blobName = getUniqueName("blob");
-    blobClient = containerClient.createBlobClient(blobName);
-    blockBlobClient = blobClient.createBlockBlobClient();
+    blobName = recorder.getUniqueName("blob");
+    blobClient = containerClient.getBlobClient(blobName);
+    blockBlobClient = blobClient.getBlockBlobClient();
     await blockBlobClient.upload(content, content.length);
   });
 
-  afterEach(async () => {
+  afterEach(async function() {
     await containerClient.delete();
+    recorder.stop();
   });
 
   it("download with with default parameters", async () => {
@@ -101,100 +108,6 @@ describe("BlobClient", () => {
     assert.deepStrictEqual(result.contentDisposition, headers.blobContentDisposition);
   });
 
-  it("acquireLease", async () => {
-    const guid = "ca761232ed4211cebacd00aa0057b223";
-    const duration = 30;
-    await blobClient.acquireLease(guid, duration);
-
-    const result = await blobClient.getProperties();
-    assert.equal(result.leaseDuration, "fixed");
-    assert.equal(result.leaseState, "leased");
-    assert.equal(result.leaseStatus, "locked");
-
-    await blobClient.releaseLease(guid);
-  });
-
-  it("releaseLease", async () => {
-    const guid = "ca761232ed4211cebacd00aa0057b223";
-    const duration = -1;
-    await blobClient.acquireLease(guid, duration);
-
-    const result = await blobClient.getProperties();
-    assert.equal(result.leaseDuration, "infinite");
-    assert.equal(result.leaseState, "leased");
-    assert.equal(result.leaseStatus, "locked");
-
-    await blobClient.releaseLease(guid);
-  });
-
-  it("renewLease", async () => {
-    const guid = "ca761232ed4211cebacd00aa0057b223";
-    const duration = 15;
-    await blobClient.acquireLease(guid, duration);
-
-    const result = await blobClient.getProperties();
-    assert.equal(result.leaseDuration, "fixed");
-    assert.equal(result.leaseState, "leased");
-    assert.equal(result.leaseStatus, "locked");
-
-    await sleep(20 * 1000);
-
-    const result2 = await blobClient.getProperties();
-    assert.ok(!result2.leaseDuration);
-    assert.equal(result2.leaseState, "expired");
-    assert.equal(result2.leaseStatus, "unlocked");
-
-    await blobClient.renewLease(guid);
-    const result3 = await blobClient.getProperties();
-    assert.equal(result3.leaseDuration, "fixed");
-    assert.equal(result3.leaseState, "leased");
-    assert.equal(result3.leaseStatus, "locked");
-
-    await blobClient.releaseLease(guid);
-  });
-
-  it("changeLease", async () => {
-    const guid = "ca761232ed4211cebacd00aa0057b223";
-    const duration = 15;
-    await blobClient.acquireLease(guid, duration);
-
-    const result = await blobClient.getProperties();
-    assert.equal(result.leaseDuration, "fixed");
-    assert.equal(result.leaseState, "leased");
-    assert.equal(result.leaseStatus, "locked");
-
-    const newGuid = "3c7e72ebb4304526bc53d8ecef03798f";
-    await blobClient.changeLease(guid, newGuid);
-
-    await blobClient.getProperties();
-    await blobClient.releaseLease(newGuid);
-  });
-
-  it("breakLease", async () => {
-    const guid = "ca761232ed4211cebacd00aa0057b223";
-    const duration = 15;
-    await blobClient.acquireLease(guid, duration);
-
-    const result = await blobClient.getProperties();
-    assert.equal(result.leaseDuration, "fixed");
-    assert.equal(result.leaseState, "leased");
-    assert.equal(result.leaseStatus, "locked");
-
-    await blobClient.breakLease(5);
-
-    const result2 = await blobClient.getProperties();
-    assert.ok(!result2.leaseDuration);
-    assert.equal(result2.leaseState, "breaking");
-    assert.equal(result2.leaseStatus, "locked");
-
-    await sleep(5 * 1000);
-
-    const result3 = await blobClient.getProperties();
-    assert.ok(!result3.leaseDuration);
-    assert.equal(result3.leaseState, "broken");
-    assert.equal(result3.leaseStatus, "unlocked");
-  });
-
   it("delete", async () => {
     await blobClient.delete();
   });
@@ -210,9 +123,12 @@ describe("BlobClient", () => {
     await blobSnapshotClient.delete();
     await blobClient.delete();
 
-    const result2 = await containerClient.listBlobFlatSegment(undefined, {
-      include: ["snapshots"]
-    });
+    const result2 = (await containerClient
+      .listBlobsFlat({
+        include: ["snapshots"]
+      })
+      .byPage()
+      .next()).value;
 
     // Verify that the snapshot is deleted
     assert.equal(result2.segment.blobItems!.length, 0);
@@ -225,9 +141,12 @@ describe("BlobClient", () => {
     const blobSnapshotClient = blobClient.withSnapshot(result.snapshot!);
     await blobSnapshotClient.getProperties();
 
-    const result3 = await containerClient.listBlobFlatSegment(undefined, {
-      include: ["snapshots"]
-    });
+    const result3 = (await containerClient
+      .listBlobsFlat({
+        include: ["snapshots"]
+      })
+      .byPage()
+      .next()).value;
 
     // As a snapshot doesn't have leaseStatus and leaseState properties but origin blob has,
     // let assign them to undefined both for other properties' easy comparison
@@ -256,27 +175,34 @@ describe("BlobClient", () => {
           enabled: true
         }
       });
-      await sleep(15 * 1000);
+      await delay(15 * 1000);
     }
 
     await blobClient.delete();
 
-    const result = await containerClient.listBlobFlatSegment(undefined, {
-      include: ["deleted"]
-    });
+    const result = (await containerClient
+      .listBlobsFlat({
+        include: ["deleted"]
+      })
+      .byPage()
+      .next()).value;
+
     assert.ok(result.segment.blobItems![0].deleted);
 
     await blobClient.undelete();
-    const result2 = await containerClient.listBlobFlatSegment(undefined, {
-      include: ["deleted"]
-    });
+
+    const result2 = (await containerClient
+      .listBlobsFlat({
+        include: ["deleted"]
+      })
+      .byPage()
+      .next()).value;
+
     assert.ok(!result2.segment.blobItems![0].deleted);
   });
 
   it("startCopyFromClient", async () => {
-    const newBlobClient = containerClient.createBlobClient(
-      getUniqueName("copiedblob")
-    );
+    const newBlobClient = containerClient.getBlobClient(recorder.getUniqueName("copiedblob"));
     const result = await newBlobClient.startCopyFromURL(blobClient.url);
     assert.ok(result.copyId);
 
@@ -288,12 +214,10 @@ describe("BlobClient", () => {
   });
 
   it("abortCopyFromClient should failed for a completed copy operation", async () => {
-    const newBlobClient = containerClient.createBlobClient(
-      getUniqueName("copiedblob")
-    );
+    const newBlobClient = containerClient.getBlobClient(recorder.getUniqueName("copiedblob"));
     const result = await newBlobClient.startCopyFromURL(blobClient.url);
     assert.ok(result.copyId);
-    sleep(1 * 1000);
+    delay(1 * 1000);
 
     try {
       await newBlobClient.startCopyFromURL(result.copyId!);

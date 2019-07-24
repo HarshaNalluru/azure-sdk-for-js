@@ -6,7 +6,7 @@ import multiEntry from "rollup-plugin-multi-entry";
 import cjs from "rollup-plugin-commonjs";
 import json from "rollup-plugin-json";
 import replace from "rollup-plugin-replace";
-import { uglify } from "rollup-plugin-uglify";
+import { terser } from "rollup-plugin-terser";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import shim from "rollup-plugin-shim";
 import inject from "rollup-plugin-inject";
@@ -52,9 +52,17 @@ export function nodeConfig(test = false) {
     baseConfig.output.file = "test-dist/index.js";
 
     // mark assert as external
-    baseConfig.external.push("assert", "fs", "path", "os", "tty", "child_process");
+    baseConfig.external.push(
+      "assert",
+      "fs",
+      "path",
+      "os",
+      "tty",
+      "child_process",
+      "@azure/identity"
+    );
 
-    baseConfig.onwarn = warning => {
+    baseConfig.onwarn = (warning) => {
       if (
         warning.code === "CIRCULAR_DEPENDENCY" &&
         warning.importer.indexOf(path.normalize("node_modules/chai/lib") === 0)
@@ -65,8 +73,13 @@ export function nodeConfig(test = false) {
 
       console.error(`(!) ${warning.message}`);
     };
+
+    // Disable tree-shaking of test code.  In rollup-plugin-node-resolve@5.0.0, rollup started respecting
+    // the "sideEffects" field in package.json.  Since our package.json sets "sideEffects=false", this also
+    // applies to test code, which causes all tests to be removed by tree-shaking.
+    baseConfig.treeshake = false;
   } else if (production) {
-    baseConfig.plugins.push(uglify());
+    baseConfig.plugins.push(terser());
   }
 
   return baseConfig;
@@ -117,11 +130,20 @@ export function browserConfig(test = false) {
 
       nodeResolve({
         mainFields: ["module", "browser"],
-        preferBuiltins: false
+        preferBuiltins: false,
+        // Following packages are de-duped in order to get module resolution to work with npm + rollup
+        // This will be in place until we have a solution for issue
+        // https://github.com/Azure/azure-sdk-for-js/issues/3326
+        dedupe: ["buffer", "events", "util", "process", "assert"]
       }),
 
       cjs({
-        namedExports: { events: ["EventEmitter"] }
+        // When "rollup-plugin-commonjs@10.0.0" is used with "resolve@1.11.1", named exports of
+        // modules with built-in names must have a trailing slash.
+        // https://github.com/rollup/rollup-plugin-commonjs/issues/394
+        namedExports: {
+          "events/": ["EventEmitter"]
+        }
       }),
 
       // rhea and rhea-promise use the Buffer global which requires
@@ -142,8 +164,13 @@ export function browserConfig(test = false) {
     baseConfig.input = "dist-esm/test/**/*.spec.js";
     baseConfig.plugins.unshift(multiEntry({ exports: false }));
     baseConfig.output.file = "test-browser/index.js";
+
+    // Disable tree-shaking of test code.  In rollup-plugin-node-resolve@5.0.0, rollup started respecting
+    // the "sideEffects" field in package.json.  Since our package.json sets "sideEffects=false", this also
+    // applies to test code, which causes all tests to be removed by tree-shaking.
+    baseConfig.treeshake = false;
   } else if (production) {
-    baseConfig.plugins.push(uglify());
+    baseConfig.plugins.push(terser());
   }
 
   return baseConfig;

@@ -3,12 +3,31 @@
 */
 
 import fs from "fs";
-import {
-  Aborter,
-  AnonymousCredential,
-  FileServiceClient,
-  newPipeline
-} from "../../src"; // Change to "@azure/storage-file" in your package
+import { Aborter, AnonymousCredential, FileServiceClient, newPipeline, HttpPipelineLogLevel } from "../../src"; // Change to "@azure/storage-file" in your package
+
+class ConsoleHttpPipelineLogger {
+  minimumLogLevel: any;
+  constructor(minimumLogLevel: any) {
+    this.minimumLogLevel = minimumLogLevel;
+  }
+  log(logLevel: number, message: any) {
+    const logMessage = `${new Date().toISOString()} ${HttpPipelineLogLevel[logLevel]}: ${message}`;
+    switch (logLevel) {
+      case HttpPipelineLogLevel.ERROR:
+        // tslint:disable-next-line:no-console
+        console.error(logMessage);
+        break;
+      case HttpPipelineLogLevel.WARNING:
+        // tslint:disable-next-line:no-console
+        console.warn(logMessage);
+        break;
+      case HttpPipelineLogLevel.INFO:
+        // tslint:disable-next-line:no-console
+        console.log(logMessage);
+        break;
+    }
+  }
+}
 
 async function main() {
   // Fill in following settings before running this sample
@@ -19,8 +38,9 @@ async function main() {
   const pipeline = newPipeline(new AnonymousCredential(), {
     // httpClient: MyHTTPClient, // A customized HTTP client implementing IHttpClient interface
     // logger: MyLogger, // A customized logger implementing IHttpPipelineLogger interface
+    logger: new ConsoleHttpPipelineLogger(HttpPipelineLogLevel.INFO),
     retryOptions: { maxTries: 4 }, // Retry options
-    telemetry: { value: "HighLevelSample V1.0.0" } // Customized telemetry string
+    telemetry: { value: "AdvancedSample V1.0.0" } // Customized telemetry string
   });
 
   const serviceClient = new FileServiceClient(
@@ -30,19 +50,19 @@ async function main() {
 
   // Create a share
   const shareName = `newshare${new Date().getTime()}`;
-  const shareClient = serviceClient.createShareClient(shareName);
+  const shareClient = serviceClient.getShareClient(shareName);
   await shareClient.create();
   console.log(`Create share ${shareName} successfully`);
 
   // Create a directory
   const directoryName = `newdirectory${new Date().getTime()}`;
-  const directoryClient = shareClient.createDirectoryClient(directoryName);
+  const directoryClient = shareClient.getDirectoryClient(directoryName);
   await directoryClient.create();
   console.log(`Create directory ${directoryName} successfully`);
 
   // Upload local file to Azure file parallelly
   const fileName = "newfile" + new Date().getTime();
-  const fileClient = directoryClient.createFileClient(fileName);
+  const fileClient = directoryClient.getFileClient(fileName);
   const fileSize = fs.statSync(localFilePath).size;
 
   // Parallel uploading with FileClient.uploadFile() in Node.js runtime

@@ -10,7 +10,7 @@ The Azure Storage development team uses Visual Studio Code. However, any preferr
 
 ### Install
 
-* Node.js valid LTS versions (>=6.5.0)
+* Node.js valid LTS versions (>=8.16.0)
 * Browsers like Chrome, Edge or Firefox
 * Clone the source code from GitHub
 
@@ -26,17 +26,32 @@ You can generate a valid account SAS from Azure portal or tools like Azure Stora
 set "ACCOUNT_SAS=<YOUR_SAS>"
 ```
 
+### Record and playback tests
+
+The environment variable **TEST_MODE** controls how tests are running.
+
+- If TEST_MODE = "record",
+  - Tests hit the live-service
+  - Nock/Nise are used for recording the request-responses for future use
+  - If recordings are already present, forces re-recording
+- Else If TEST_MODE = "playback",
+  - Existing recordings are used
+- Else
+  - Tests hit the live-service, we don't record the requests/responses
+
+Please refers to [RecordAndPlayback.md](./RecordAndPlayback.md) for more details about record and playback tests.
+
 #### CORS
 
 You need to set up CORS rules for your storage account if you need to develop for browsers. Go to Azure portal and Azure Storage Explorer, find your storage account, create new CORS rules for blob/queue/file/table service(s).
 
 For example, you can create following CORS settings for debugging. But please customize the settings carefully according to your requirements in production environment.
 
-* Allowed origins: *
-* Allowed verbs: DELETE,GET,HEAD,MERGE,POST,OPTIONS,PUT
-* Allowed headers: *
-* Exposed headers: *
-* Maximum age (seconds): 86400
+- Allowed origins: \*
+- Allowed verbs: DELETE,GET,HEAD,MERGE,POST,OPTIONS,PUT
+- Allowed headers: \*
+- Exposed headers: \*
+- Maximum age (seconds): 86400
 
 ### Building
 
@@ -71,22 +86,50 @@ Browser testing is based on Karma, you can change default testing browser by mod
 
 As you develop a feature, you'll need to write tests to ensure quality. You should also run existing tests related to your change to address any unexpected breaks in both Node.js and Browsers.
 
+### Unit Tests
+
+New env variable for recordings - TEST_MODE [Supposed to be added in the `.env` file to be able to do record and playback]
+
+- If TEST_MODE = "record",
+
+  - Tests hit the live-service
+  - We record the request-responses for future use by leveraging
+  - If recordings are already present, forces re-recording
+
+- Else If TEST_MODE = "playback",
+
+  - Existing recordings(present in the `/recordings` folder) are used to verify the tests
+
+- Else,
+
+  - Tests hit the live-service, we don't record the requests/responses
+
+```bash
+npm install
+npm run test
+```
+
+`npm run test` would run the the tests in both node and the browser.
+
+**Link** - [Guidelines for record and playback](https://github.com/Azure/azure-sdk-for-js/blob/master/sdk/storage/RecordAndPlayback.md)
+
 ## Pull Requests
 
 ### Guidelines
 
 The following are the minimum requirements for any pull request that must be met before contributions can be accepted.
 
-* Make sure you've signed the CLA before you start working on any change.
-* Discuss any proposed contribution with the team via a GitHub issue **before** starting development.
-* Code must be professional quality
-  * No style issues
-  * You should strive to mimic the style with which we have written the library
-  * Clean, well-commented, well-designed code
-  * Try to limit the number of commits for a feature to 1-2. If you end up having too many we may ask you to squash your changes into fewer commits.
+- Make sure you've signed the CLA before you start working on any change.
+- Discuss any proposed contribution with the team via a GitHub issue **before** starting development.
+- Code must be professional quality
 
-* ChangeLog.md needs to be updated describing the new change
-* Thoroughly test your feature
+  - No style issues
+  - You should strive to mimic the style with which we have written the library
+  - Clean, well-commented, well-designed code
+  - Try to limit the number of commits for a feature to 1-2. If you end up having too many we may ask you to squash your changes into fewer commits.
+
+- ChangeLog.md needs to be updated describing the new change
+- Thoroughly test your feature
 
 ### Branching Policy
 

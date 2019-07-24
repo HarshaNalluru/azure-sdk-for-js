@@ -1,22 +1,28 @@
 import * as assert from "assert";
-
-import { getQSU, getUniqueName } from "./utils";
+import { getQSU } from "./utils";
+import { record, setEnviromentOnLoad } from "@azure/test-utils-recorder";
 import * as dotenv from "dotenv";
+import { QueueClient } from "../src";
 dotenv.config({ path: "../.env" });
 
 describe("QueueClient", () => {
+  setEnviromentOnLoad();
   const queueServiceClient = getQSU();
-  let queueName = getUniqueName("queue");
-  let queueClient = queueServiceClient.createQueueClient(queueName);
+  let queueName: string;
+  let queueClient: QueueClient;
 
-  beforeEach(async () => {
-    queueName = getUniqueName("queue");
-    queueClient = queueServiceClient.createQueueClient(queueName);
+  let recorder: any;
+
+  beforeEach(async function() {
+    recorder = record(this);
+    queueName = recorder.getUniqueName("queue");
+    queueClient = queueServiceClient.getQueueClient(queueName);
     await queueClient.create();
   });
 
-  afterEach(async () => {
+  afterEach(async function() {
     await queueClient.delete();
+    recorder.stop();
   });
 
   it("setMetadata", async () => {
@@ -39,9 +45,9 @@ describe("QueueClient", () => {
     assert.ok(result.date);
   });
 
-  it("getPropertis negative", async () => {
-    const queueName2 = getUniqueName("queue");
-    const queueClient2 = queueServiceClient.createQueueClient(queueName2);
+  it("getProperties negative", async () => {
+    const queueName2 = recorder.getUniqueName("queue", "queue2");
+    const queueClient2 = queueServiceClient.getQueueClient(queueName2);
     let error;
     try {
       await queueClient2.getProperties();
@@ -62,19 +68,19 @@ describe("QueueClient", () => {
   });
 
   it("create with all parameters", async () => {
-    const qURL = queueServiceClient.createQueueClient(getUniqueName(queueName));
+    const qClient = queueServiceClient.getQueueClient(recorder.getUniqueName(queueName));
     const metadata = { key: "value" };
-    await qURL.create({ metadata });
-    const result = await qURL.getProperties();
+    await qClient.create({ metadata });
+    const result = await qClient.getProperties();
     assert.deepEqual(result.metadata, metadata);
   });
 
   // create with invalid queue name
   it("create negative", async () => {
-    const qURL = queueServiceClient.createQueueClient("");
+    const qClient = queueServiceClient.getQueueClient("");
     let error;
     try {
-      await qURL.create();
+      await qClient.create();
     } catch (err) {
       error = err;
     }

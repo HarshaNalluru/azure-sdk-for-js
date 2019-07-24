@@ -1,28 +1,33 @@
 import * as assert from "assert";
-import { bodyToString, getBSU, getUniqueName } from "./utils";
-
 import * as dotenv from "dotenv";
+import { bodyToString, getBSU } from "./utils";
+import { ContainerClient, BlobClient, PageBlobClient } from "../src";
+import { record } from "./utils/recorder";
 dotenv.config({ path: "../.env" });
 
 describe("PageBlobClient", () => {
   const blobServiceClient = getBSU();
-  let containerName: string = getUniqueName("container");
-  let containerClient = blobServiceClient.createContainerClient(containerName);
-  let blobName: string = getUniqueName("blob");
-  let blobClient = containerClient.createBlobClient(blobName);
-  let pageBlobClient = blobClient.createPageBlobClient();
+  let containerName: string;
+  let containerClient: ContainerClient;
+  let blobName: string;
+  let blobClient: BlobClient;
+  let pageBlobClient: PageBlobClient;
 
-  beforeEach(async () => {
-    containerName = getUniqueName("container");
-    containerClient = blobServiceClient.createContainerClient(containerName);
+  let recorder: any;
+
+  beforeEach(async function() {
+    recorder = record(this);
+    containerName = recorder.getUniqueName("container");
+    containerClient = blobServiceClient.getContainerClient(containerName);
     await containerClient.create();
-    blobName = getUniqueName("blob");
-    blobClient = containerClient.createBlobClient(blobName);
-    pageBlobClient = blobClient.createPageBlobClient();
+    blobName = recorder.getUniqueName("blob");
+    blobClient = containerClient.getBlobClient(blobName);
+    pageBlobClient = blobClient.getPageBlobClient();
   });
 
-  afterEach(async () => {
+  afterEach(async function() {
     await containerClient.delete();
+    recorder.stop();
   });
 
   it("create with default parameters", async () => {
@@ -121,11 +126,7 @@ describe("PageBlobClient", () => {
     await pageBlobClient.uploadPages("a".repeat(512), 0, 512);
     await pageBlobClient.clearPages(512, 512);
 
-    const rangesDiff = await pageBlobClient.getPageRangesDiff(
-      0,
-      1024,
-      snapshotResult.snapshot!
-    );
+    const rangesDiff = await pageBlobClient.getPageRangesDiff(0, 1024, snapshotResult.snapshot!);
     assert.equal(rangesDiff.pageRange![0].start, 0);
     assert.equal(rangesDiff.pageRange![0].end, 511);
     assert.equal(rangesDiff.clearRange![0].start, 512);
