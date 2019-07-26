@@ -1,13 +1,16 @@
 import { SharedKeyCredential } from "../../src/credentials/SharedKeyCredential";
-import { ServiceURL } from "../../src/ServiceURL";
-import { StorageURL } from "../../src/StorageURL";
+import { newPipeline } from "../../src/Pipeline";
+import { QueueServiceClient } from "../../src/QueueServiceClient";
 // Uncomment if need to enable logger when debugging
 // import {HttpPipelineLogLevel} from "../../src"
 // import {ConsoleHttpPipelineLogger} from "./testutils.common"
 
 export * from "./testutils.common";
 
-export function getGenericQSU(accountType: string, accountNameSuffix: string = ""): ServiceURL {
+export function getGenericQSU(
+  accountType: string,
+  accountNameSuffix: string = ""
+): QueueServiceClient {
   const accountNameEnvVar = `${accountType}ACCOUNT_NAME`;
   const accountKeyEnvVar = `${accountType}ACCOUNT_KEY`;
 
@@ -24,18 +27,29 @@ export function getGenericQSU(accountType: string, accountNameSuffix: string = "
   }
 
   const credentials = new SharedKeyCredential(accountName, accountKey);
-  const pipeline = StorageURL.newPipeline(credentials, {
+  const pipeline = newPipeline(credentials, {
     // Enable logger when debugging
     // logger: new ConsoleHttpPipelineLogger(HttpPipelineLogLevel.INFO)
   });
   const queuePrimaryURL = `https://${accountName}${accountNameSuffix}.queue.core.windows.net/`;
-  return new ServiceURL(queuePrimaryURL, pipeline);
+  return new QueueServiceClient(queuePrimaryURL, pipeline);
 }
 
-export function getQSU(): ServiceURL {
+export function getQSU(): QueueServiceClient {
   return getGenericQSU("");
 }
 
-export function getAlternateQSU(): ServiceURL {
+export function getAlternateQSU(): QueueServiceClient {
   return getGenericQSU("SECONDARY_", "-secondary");
+}
+
+export function getConnectionStringFromEnvironment(): string {
+  const connectionStringEnvVar = `STORAGE_CONNECTION_STRING`;
+  const connectionString = process.env[connectionStringEnvVar];
+
+  if (!connectionString) {
+    throw new Error(`${connectionStringEnvVar} environment variables not specified.`);
+  }
+
+  return connectionString;
 }

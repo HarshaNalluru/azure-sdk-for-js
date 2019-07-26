@@ -1,10 +1,12 @@
 import { AnonymousCredential } from "../../src/credentials/AnonymousCredential";
-import { ServiceURL } from "../../src/ServiceURL";
-import { StorageURL } from "../../src/StorageURL";
-
+import { newPipeline } from "../../src/Pipeline";
+import { QueueServiceClient } from "../../src/QueueServiceClient";
 export * from "./testutils.common";
 
-export function getGenericQSU(accountType: string, accountNameSuffix: string = ""): ServiceURL {
+export function getGenericQSU(
+  accountType: string,
+  accountNameSuffix: string = ""
+): QueueServiceClient {
   const accountNameEnvVar = `${accountType}ACCOUNT_NAME`;
   const accountSASEnvVar = `${accountType}ACCOUNT_SAS`;
 
@@ -24,19 +26,19 @@ export function getGenericQSU(accountType: string, accountNameSuffix: string = "
   }
 
   const credentials = new AnonymousCredential();
-  const pipeline = StorageURL.newPipeline(credentials, {
+  const pipeline = newPipeline(credentials, {
     // Enable logger when debugging
     // logger: new ConsoleHttpPipelineLogger(HttpPipelineLogLevel.INFO)
   });
   const filePrimaryURL = `https://${accountName}${accountNameSuffix}.queue.core.windows.net${accountSAS}`;
-  return new ServiceURL(filePrimaryURL, pipeline);
+  return new QueueServiceClient(filePrimaryURL, pipeline);
 }
 
-export function getQSU(): ServiceURL {
+export function getQSU(): QueueServiceClient {
   return getGenericQSU("");
 }
 
-export function getAlternateQSU(): ServiceURL {
+export function getAlternateQSU(): QueueServiceClient {
   return getGenericQSU("SECONDARY_", "-secondary");
 }
 

@@ -4,17 +4,36 @@
 
 import fs from "fs";
 import {
-  AnonymousCredential,
-  downloadBlobToBuffer,
-  uploadFileToBlockBlob,
-  uploadStreamToBlockBlob,
   Aborter,
-  BlobURL,
-  BlockBlobURL,
-  ContainerURL,
-  ServiceURL,
-  StorageURL
-} from "../.."; // Change to "@azure/storage-blob" in your package
+  AnonymousCredential,
+  BlobServiceClient,
+  newPipeline,
+  HttpPipelineLogLevel
+} from "../../src"; // Change to "@azure/storage-blob" in your package
+
+class ConsoleHttpPipelineLogger {
+  minimumLogLevel: any;
+  constructor(minimumLogLevel: any) {
+    this.minimumLogLevel = minimumLogLevel;
+  }
+  log(logLevel: number, message: any) {
+    const logMessage = `${new Date().toISOString()} ${HttpPipelineLogLevel[logLevel]}: ${message}`;
+    switch (logLevel) {
+      case HttpPipelineLogLevel.ERROR:
+        // tslint:disable-next-line:no-console
+        console.error(logMessage);
+        break;
+      case HttpPipelineLogLevel.WARNING:
+        // tslint:disable-next-line:no-console
+        console.warn(logMessage);
+        break;
+      case HttpPipelineLogLevel.INFO:
+        // tslint:disable-next-line:no-console
+        console.log(logMessage);
+        break;
+    }
+  }
+}
 
 async function main() {
   // Fill in following settings before running this sample
@@ -22,56 +41,56 @@ async function main() {
   const accountSas = "";
   const localFilePath = "";
 
-  const pipeline = StorageURL.newPipeline(new AnonymousCredential(), {
+  const pipeline = newPipeline(new AnonymousCredential(), {
     // httpClient: MyHTTPClient, // A customized HTTP client implementing IHttpClient interface
     // logger: MyLogger, // A customized logger implementing IHttpPipelineLogger interface
+    logger: new ConsoleHttpPipelineLogger(HttpPipelineLogLevel.INFO),
     retryOptions: { maxTries: 4 }, // Retry options
-    telemetry: { value: "HighLevelSample V1.0.0" } // Customized telemetry string
+    telemetry: { value: "AdvancedSample V1.0.0" } // Customized telemetry string
   });
 
-  const serviceURL = new ServiceURL(
+  const blobServiceClient = new BlobServiceClient(
     `https://${account}.blob.core.windows.net${accountSas}`,
     pipeline
   );
 
   // Create a container
   const containerName = `newcontainer${new Date().getTime()}`;
-  const containerURL = ContainerURL.fromServiceURL(serviceURL, containerName);
-  await containerURL.create(Aborter.none);
+  const containerClient = blobServiceClient.getContainerClient(containerName);
+  await containerClient.create();
 
   // Create a blob
   const blobName = "newblob" + new Date().getTime();
-  const blobURL = BlobURL.fromContainerURL(containerURL, blobName);
-  const blockBlobURL = BlockBlobURL.fromBlobURL(blobURL);
+  const blobClient = containerClient.getBlobClient(blobName);
+  const blockBlobClient = blobClient.getBlockBlobClient();
 
-  // Parallel uploading with uploadFileToBlockBlob in Node.js runtime
-  // uploadFileToBlockBlob is only available in Node.js
-  await uploadFileToBlockBlob(Aborter.none, localFilePath, blockBlobURL, {
+  // Parallel uploading with BlockBlobClient.uploadFile() in Node.js runtime
+  // BlockBlobClient.uploadFile() is only available in Node.js
+  await blockBlobClient.uploadFile(localFilePath, {
     blockSize: 4 * 1024 * 1024, // 4MB block size
     parallelism: 20, // 20 concurrency
-    progress: ev => console.log(ev)
+    progress: (ev) => console.log(ev)
   });
-  console.log("uploadFileToBlockBlob success");
+  console.log("uploadFile success");
 
-  // Parallel uploading a Readable stream with uploadStreamToBlockBlob in Node.js runtime
-  // uploadStreamToBlockBlob is only available in Node.js
-  await uploadStreamToBlockBlob(
-    Aborter.timeout(30 * 60 * 1000), // Abort uploading with timeout in 30mins
+  // Parallel uploading a Readable stream with BlockBlobClient.uploadStream() in Node.js runtime
+  // BlockBlobClient.uploadStream() is only available in Node.js
+  await blockBlobClient.uploadStream(
     fs.createReadStream(localFilePath),
-    blockBlobURL,
     4 * 1024 * 1024,
     20,
     {
-      progress: ev => console.log(ev)
+      abortSignal: Aborter.timeout(30 * 60 * 1000), // Abort uploading with timeout in 30mins
+      progress: (ev) => console.log(ev)
     }
   );
-  console.log("uploadStreamToBlockBlob success");
+  console.log("uploadStream success");
 
-  // Parallel uploading a browser File/Blob/ArrayBuffer in browsers with uploadBrowserDataToBlockBlob
-  // Uncomment following code in browsers because uploadBrowserDataToBlockBlob is only available in browsers
+  // Parallel uploading a browser File/Blob/ArrayBuffer in browsers with BlockBlobClient.uploadBrowserData()
+  // Uncomment following code in browsers because BlockBlobClient.uploadBrowserData() is only available in browsers
   /*
   const browserFile = document.getElementById("fileinput").files[0];
-  await uploadBrowserDataToBlockBlob(Aborter.none, browserFile, blockBlobURL, {
+  await blockBlobClient.uploadBrowserData(browserFile, {
     blockSize: 4 * 1024 * 1024, // 4MB block size
     parallelism: 20, // 20 concurrency
     progress: ev => console.log(ev)
@@ -79,25 +98,24 @@ async function main() {
   */
 
   // Parallel downloading a block blob into Node.js buffer
-  // downloadBlobToBuffer is only available in Node.js
+  // downloadToBuffer is only available in Node.js
   const fileSize = fs.statSync(localFilePath).size;
   const buffer = Buffer.alloc(fileSize);
-  await downloadBlobToBuffer(
-    Aborter.timeout(30 * 60 * 1000),
+  await blockBlobClient.downloadToBuffer(
     buffer,
-    blockBlobURL,
     0,
     undefined,
     {
+      abortSignal: Aborter.timeout(30 * 60 * 1000), // Abort uploading with timeout in 30mins
       blockSize: 4 * 1024 * 1024, // 4MB block size
       parallelism: 20, // 20 concurrency
       progress: ev => console.log(ev)
     }
   );
-  console.log("downloadBlobToBuffer success");
+  console.log("downloadToBuffer success");
 
   // Delete container
-  await containerURL.delete(Aborter.none);
+  await containerClient.delete();
   console.log("deleted container");
 }
 
@@ -106,6 +124,6 @@ main()
   .then(() => {
     console.log("Successfully executed sample.");
   })
-  .catch(err => {
+  .catch((err) => {
     console.log(err.message);
   });

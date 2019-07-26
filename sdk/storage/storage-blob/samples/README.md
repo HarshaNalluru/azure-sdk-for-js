@@ -5,7 +5,7 @@
 Run the below in your samples folder to install the npm package for Azure Storage Blob library.
 
 ```bash
-npm install @azure/storage-blob
+npm install @azure/storage-blob@12.0.0-preview.1
 ```
 
 ## Get account credentials of your storage account
@@ -13,6 +13,10 @@ npm install @azure/storage-blob
 - In the [Azure Portal](https://portal.azure.com), go to **Dashboard > Storage > _your-storage-account_**.
 - Note down the "AccountName", "AccountKey" obtained at **Access keys** and "AccountSAS" from **Shared access signature** under **Settings** tab.
   Before running any of the samples, update with the credentials you have noted down above.
+
+### Authenticating with Azure Active Directory
+
+If you have [registered an application](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) with an Azure Active Directory tenant, you can [assign it to an RBAC role](https://docs.microsoft.com/en-us/azure/storage/common/storage-auth-aad) in your Azure Storage account. This enables you to use the Azure.Identity library to authenticate with Azure Storage as shown in the [azureAdAuth.ts sample](./samples/azureAdAuth.ts).
 
 ## Running Samples
 
