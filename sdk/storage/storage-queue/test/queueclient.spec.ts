@@ -1,11 +1,12 @@
 import * as assert from "assert";
 import { getQSU } from "./utils";
-import { record } from "./utils/recorder";
+import { record, setEnviromentOnLoad } from "@azure/test-utils-recorder";
 import * as dotenv from "dotenv";
 import { QueueClient } from "../src";
 dotenv.config({ path: "../.env" });
 
-describe("QueueClient", () => {
+describe.only("QueueClient", () => {
+  setEnviromentOnLoad();
   const queueServiceClient = getQSU();
   let queueName: string;
   let queueClient: QueueClient;
