@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import { getQSU, getConnectionStringFromEnvironment } from "../utils";
-import { record } from "../utils/recorder";
+import { record, setEnviromentOnLoad } from "@azure/test-utils-recorder";
 import { QueueClient } from "../../src/QueueClient";
 import { MessagesClient } from "../../src/MessagesClient";
 import { SharedKeyCredential } from "../../src/credentials/SharedKeyCredential";
@@ -8,6 +8,7 @@ import { TokenCredential } from "@azure/core-http";
 import { assertClientUsesTokenCredential } from "../utils/assert";
 
 describe("MessagesClient Node.js only", () => {
+  setEnviromentOnLoad();
   const queueServiceClient = getQSU();
   let queueName: string;
   let queueClient: QueueClient;

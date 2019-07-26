@@ -2,10 +2,11 @@ import * as assert from "assert";
 import * as dotenv from "dotenv";
 import { HttpHeaders } from "../src";
 import { sanitizeHeaders, sanitizeURL } from "../src/utils/utils.common";
-import { record } from "./utils/recorder";
+import { record, setEnviromentOnLoad } from "@azure/test-utils-recorder";
 dotenv.config({ path: "../.env" });
 
 describe("Utility Helpers", () => {
+  setEnviromentOnLoad();
   let recorder: any;
 
   beforeEach(async function() {
