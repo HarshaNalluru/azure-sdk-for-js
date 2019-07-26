@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 import { QueueClient } from "../src";
 dotenv.config({ path: "../.env" });
 
-describe("QueueClient", () => {
+describe.only("QueueClient", () => {
   setEnviromentOnLoad();
   const queueServiceClient = getQSU();
   let queueName: string;
