@@ -29,6 +29,7 @@ dependencies:
   '@rush-temp/storage-file': 'file:projects/storage-file.tgz'
   '@rush-temp/storage-queue': 'file:projects/storage-queue.tgz'
   '@rush-temp/template': 'file:projects/template.tgz'
+  '@rush-temp/test-utils-recorder': 'file:projects/test-utils-recorder.tgz'
   '@rush-temp/testhub': 'file:projects/testhub.tgz'
   '@types/async-lock': 1.1.1
   '@types/chai': 4.1.7
@@ -10673,7 +10674,7 @@ packages:
     dev: false
     name: '@rush-temp/storage-queue'
     resolution:
-      integrity: sha512-71xJVOcx25+m4X852HbknjV1kMpt0itdtxhTPF804gVomy4Ymrj8AQhwAmMVzzt3Q/+5LU51VpLtH10FF5Hxfg==
+      integrity: sha512-9ySsNqyGb+J7AZ72zHsKX+I5kXG5CAHgLrxjIjacT5siwd8TbhXFgXWCeR7LS08hw9l2W6TbiuhkedkgJn9LSw==
       tarball: 'file:projects/storage-queue.tgz'
     version: 0.0.0
   'file:projects/template.tgz':
@@ -10726,6 +10727,34 @@ packages:
     resolution:
       integrity: sha512-aCJAMfdHDb3AD+e4HRiGpK0k0J17hCxw9MbtTZiFmGn65a+yA2M9yEDtF2bAoVCGlM9CjzWzLLUPBdyoNiSevw==
       tarball: 'file:projects/template.tgz'
+    version: 0.0.0
+  'file:projects/test-utils-recorder.tgz':
+    dependencies:
+      '@types/fs-extra': 8.0.0
+      '@types/mocha': 5.2.7
+      '@types/nise': 1.4.0
+      '@types/nock': 10.0.3
+      '@types/query-string': 6.2.0
+      fs-extra: 8.1.0
+      nise: 1.5.0
+      nock: 10.0.6
+      query-string: 5.1.1
+      rimraf: 2.6.3
+      rollup: 1.17.0
+      rollup-plugin-commonjs: 10.0.1_rollup@1.17.0
+      rollup-plugin-multi-entry: 2.1.0
+      rollup-plugin-node-resolve: 5.2.0_rollup@1.17.0
+      rollup-plugin-replace: 2.2.0
+      rollup-plugin-shim: 1.0.0
+      rollup-plugin-sourcemaps: 0.4.2_rollup@1.17.0
+      rollup-plugin-terser: 5.1.1_rollup@1.17.0
+      rollup-plugin-visualizer: 2.5.4_rollup@1.17.0
+      tslib: 1.10.0
+    dev: false
+    name: '@rush-temp/test-utils-recorder'
+    resolution:
+      integrity: sha512-GTOfxWUv++j6o1isCo9mmxYvhxndiDXGpAYQajAYajDB38RoMRQ8CB1yrxdvwb7iqt4X7SE8N2ztcmF4e1zaBQ==
+      tarball: 'file:projects/test-utils-recorder.tgz'
     version: 0.0.0
   'file:projects/testhub.tgz':
     dependencies:
@@ -10784,6 +10813,7 @@ specifiers:
   '@rush-temp/storage-file': 'file:./projects/storage-file.tgz'
   '@rush-temp/storage-queue': 'file:./projects/storage-queue.tgz'
   '@rush-temp/template': 'file:./projects/template.tgz'
+  '@rush-temp/test-utils-recorder': 'file:./projects/test-utils-recorder.tgz'
   '@rush-temp/testhub': 'file:./projects/testhub.tgz'
   '@types/async-lock': ^1.1.0
   '@types/chai': ^4.1.6
