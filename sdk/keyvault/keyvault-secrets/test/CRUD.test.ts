@@ -8,7 +8,7 @@ import { authenticate } from "./utils/testAuthentication";
 import TestClient from "./utils/testClient";
 import { AbortController } from "@azure/abort-controller";
 
-describe("Secret client - create, read, update and delete operations", () => {
+describe.only("Secret client - create, read, update and delete operations", () => {
   const secretValue = "SECRET_VALUE";
   const secretPrefix = `CRUD${env.SECRET_NAME || "SecretName"}`;
   let secretSuffix: string;
@@ -30,7 +30,7 @@ describe("Secret client - create, read, update and delete operations", () => {
 
   // The tests follow
 
-  it("can add a secret", async function () {
+  it.only("can add a secret", async function () {
     const secretName = testClient.formatName(
       `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
     );
