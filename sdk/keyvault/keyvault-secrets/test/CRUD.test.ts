@@ -8,7 +8,7 @@ import { authenticate } from "./utils/testAuthentication";
 import TestClient from "./utils/testClient";
 import { AbortController } from "@azure/abort-controller";
 
-describe.only("Secret client - create, read, update and delete operations", () => {
+describe("Secret client - create, read, update and delete operations", () => {
   const secretValue = "SECRET_VALUE";
   const secretPrefix = `CRUD${env.SECRET_NAME || "SecretName"}`;
   let secretSuffix: string;
@@ -16,7 +16,7 @@ describe.only("Secret client - create, read, update and delete operations", () =
   let testClient: TestClient;
   let recorder: any;
 
-  before(async function () {
+  beforeEach(async function () {
     const authentication = await authenticate(this);
     secretSuffix = authentication.secretSuffix;
     client = authentication.client;
@@ -24,13 +24,13 @@ describe.only("Secret client - create, read, update and delete operations", () =
     recorder = authentication.recorder;
   });
 
-  after(async function () {
+  afterEach(async function () {
     recorder.stop();
   });
 
   // The tests follow
 
-  it.only("can add a secret", async function () {
+  it("can add a secret", async function () {
     const secretName = testClient.formatName(
       `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
     );
