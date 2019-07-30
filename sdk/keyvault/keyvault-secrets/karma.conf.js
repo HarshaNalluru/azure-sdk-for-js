@@ -98,7 +98,7 @@ module.exports = function(config) {
 
     // --no-sandbox allows our tests to run in Linux without having to change the system.
     // --disable-web-security allows us to authenticate from the browser without having to write tests using interactive auth, which would be far more complex.
-    browsers: ["ChromeHeadlessNoSandbox"],
+    browsers: ["Chrome"],
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: "ChromeHeadless",
