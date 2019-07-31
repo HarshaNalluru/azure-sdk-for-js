@@ -58,7 +58,7 @@ describe("Secret client - create, read, update and delete operations", () => {
     if (isNode) {
       assert.equal(error.message, "The request was aborted");
     } else {
-      assert.equal(error.message, "Failed to send the request.");
+      assert.equal(error.message, "The request was aborted");
     }
   });
 
