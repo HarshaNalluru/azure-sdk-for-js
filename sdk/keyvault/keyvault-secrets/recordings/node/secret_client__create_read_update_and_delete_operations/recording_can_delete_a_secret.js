@@ -3,7 +3,7 @@ let nock = require('nock');
 module.exports.testInfo = {"uniqueName":{},"newDate":{}}
 
 nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
-  .put('/secrets/CRUDSecretName-canaddasecret-')
+  .put('/secrets/CRUDSecretName-candeleteasecret-')
   .query(true)
   .reply(401, "", [ 'Cache-Control',
   'no-cache',
@@ -18,7 +18,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'x-ms-keyvault-region',
   'westus',
   'x-ms-request-id',
-  '47063054-8ecc-4e28-a634-74ed93bb685c',
+  '3f2b1ed3-845c-42f0-8402-743147548d1b',
   'x-ms-keyvault-service-version',
   '1.1.0.872',
   'x-ms-keyvault-network-info',
@@ -32,7 +32,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'X-Content-Type-Options',
   'nosniff',
   'Date',
-  'Wed, 31 Jul 2019 17:54:42 GMT',
+  'Wed, 31 Jul 2019 17:57:18 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -54,17 +54,17 @@ nock('https://login.microsoftonline.com:443', {"encodedQueryParams":true})
   'X-Content-Type-Options',
   'nosniff',
   'x-ms-request-id',
-  'a4fcc85b-964d-4c8b-939a-d110f7882c00',
+  'dbf6e0f5-c97d-4899-8762-6eeb9a2a3000',
   'P3P',
   'CP="DSP CUR OTPi IND OTRi ONL FIN"',
   'Set-Cookie',
-  'fpc=AhalEYhjVMJPjL8tVHvpoTg_aSJHAQAAAOHM09QOAAAA; expires=Fri, 30-Aug-2019 17:54:42 GMT; path=/; secure; HttpOnly',
+  'fpc=AiuACLHzGO5KvJWd-OD2ip0_aSJHAQAAAH7N09QOAAAA; expires=Fri, 30-Aug-2019 17:57:18 GMT; path=/; secure; HttpOnly',
   'Set-Cookie',
   'x-ms-gateway-slice=prod; path=/; secure; HttpOnly',
   'Set-Cookie',
   'stsservicecookie=ests; path=/; secure; HttpOnly',
   'Date',
-  'Wed, 31 Jul 2019 17:54:42 GMT',
+  'Wed, 31 Jul 2019 17:57:18 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -72,9 +72,9 @@ nock('https://login.microsoftonline.com:443', {"encodedQueryParams":true})
 
 
 nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
-  .put('/secrets/CRUDSecretName-canaddasecret-', {"value":"SECRET_VALUE"})
+  .put('/secrets/CRUDSecretName-candeleteasecret-', {"value":"SECRET_VALUE"})
   .query(true)
-  .reply(200, {"value":"SECRET_VALUE","id":"https://keyvault_name.vault.azure.net/secrets/CRUDSecretName-canaddasecret-/deac7265ef684f63a8fc87b25c043dd5","attributes":{"enabled":true,"created":1564595683,"updated":1564595683,"recoveryLevel":"Recoverable+Purgeable"}}, [ 'Cache-Control',
+  .reply(200, {"value":"SECRET_VALUE","id":"https://keyvault_name.vault.azure.net/secrets/CRUDSecretName-candeleteasecret-/66fdf8a7a3c84621a66992c809753eca","attributes":{"enabled":true,"created":1564595839,"updated":1564595839,"recoveryLevel":"Recoverable+Purgeable"}}, [ 'Cache-Control',
   'no-cache',
   'Pragma',
   'no-cache',
@@ -87,7 +87,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'x-ms-keyvault-region',
   'westus',
   'x-ms-request-id',
-  'e5ae5a68-6d17-4583-952e-2f0789ad5265',
+  '9ba6f18d-43e6-4925-aa40-7dfd68facd93',
   'x-ms-keyvault-service-version',
   '1.1.0.872',
   'x-ms-keyvault-network-info',
@@ -101,15 +101,15 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'X-Content-Type-Options',
   'nosniff',
   'Date',
-  'Wed, 31 Jul 2019 17:54:43 GMT',
+  'Wed, 31 Jul 2019 17:57:19 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '265' ]);
+  '270' ]);
 
 
 nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
-  .delete('/secrets/CRUDSecretName-canaddasecret-')
+  .delete('/secrets/CRUDSecretName-candeleteasecret-')
   .query(true)
   .reply(401, "", [ 'Cache-Control',
   'no-cache',
@@ -124,7 +124,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'x-ms-keyvault-region',
   'westus',
   'x-ms-request-id',
-  '925968f0-3ee7-4f0f-9420-7f1799e3ea91',
+  '656bcf9c-831e-4f56-83ef-f0d98526d0eb',
   'x-ms-keyvault-service-version',
   '1.1.0.872',
   'x-ms-keyvault-network-info',
@@ -138,7 +138,113 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'X-Content-Type-Options',
   'nosniff',
   'Date',
-  'Wed, 31 Jul 2019 17:54:42 GMT',
+  'Wed, 31 Jul 2019 17:57:20 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0' ]);
+
+
+nock('https://login.microsoftonline.com:443', {"encodedQueryParams":true})
+  .post('/azure_tenant_id/oauth2/v2.0/token', "response_type=token&grant_type=client_credentials&client_id=azure_client_id&client_secret=azure_client_secret&scope=https%3A%2F%2Fvault.azure.net%2F.default")
+  .reply(200, {"token_type":"Bearer","expires_in":3599,"ext_expires_in":3599,"access_token":"access_token"}, [ 'Cache-Control',
+  'no-cache, no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains',
+  'X-Content-Type-Options',
+  'nosniff',
+  'x-ms-request-id',
+  '02e22367-38c0-4fdf-bf6e-fa4a90951900',
+  'P3P',
+  'CP="DSP CUR OTPi IND OTRi ONL FIN"',
+  'Set-Cookie',
+  'fpc=AiuACLHzGO5KvJWd-OD2ip0_aSJHAgAAAH7N09QOAAAA; expires=Fri, 30-Aug-2019 17:57:20 GMT; path=/; secure; HttpOnly',
+  'Set-Cookie',
+  'x-ms-gateway-slice=prod; path=/; secure; HttpOnly',
+  'Set-Cookie',
+  'stsservicecookie=ests; path=/; secure; HttpOnly',
+  'Date',
+  'Wed, 31 Jul 2019 17:57:20 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '1231' ]);
+
+
+nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
+  .delete('/secrets/CRUDSecretName-candeleteasecret-')
+  .query(true)
+  .reply(200, {"recoveryId":"https://keyvault_name.vault.azure.net/deletedsecrets/CRUDSecretName-candeleteasecret-","deletedDate":1564595841,"scheduledPurgeDate":1572371841,"id":"https://keyvault_name.vault.azure.net/secrets/CRUDSecretName-candeleteasecret-/66fdf8a7a3c84621a66992c809753eca","attributes":{"enabled":true,"created":1564595839,"updated":1564595839,"recoveryLevel":"Recoverable+Purgeable"}}, [ 'Cache-Control',
+  'no-cache',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'Server',
+  'Microsoft-IIS/10.0',
+  'x-ms-keyvault-region',
+  'westus',
+  'x-ms-request-id',
+  'b08a3453-0df9-45fa-b333-8b9922326482',
+  'x-ms-keyvault-service-version',
+  '1.1.0.872',
+  'x-ms-keyvault-network-info',
+  'addr=13.68.221.190;act_addr_fam=InterNetwork;',
+  'X-AspNet-Version',
+  '4.0.30319',
+  'X-Powered-By',
+  'ASP.NET',
+  'Strict-Transport-Security',
+  'max-age=31536000;includeSubDomains',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Date',
+  'Wed, 31 Jul 2019 17:57:20 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '420' ]);
+
+
+nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
+  .get('/secrets/CRUDSecretName-candeleteasecret-/')
+  .query(true)
+  .reply(401, "", [ 'Cache-Control',
+  'no-cache',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'Server',
+  'Microsoft-IIS/10.0',
+  'WWW-Authenticate',
+  'Bearer authorization="https://login.windows.net/azure_tenant_id", resource="https://vault.azure.net"',
+  'x-ms-keyvault-region',
+  'westus',
+  'x-ms-request-id',
+  'b45becd2-4a01-4b4a-b18f-bbdf4c3547a4',
+  'x-ms-keyvault-service-version',
+  '1.1.0.872',
+  'x-ms-keyvault-network-info',
+  'addr=13.68.221.190;act_addr_fam=InterNetwork;',
+  'X-AspNet-Version',
+  '4.0.30319',
+  'X-Powered-By',
+  'ASP.NET',
+  'Strict-Transport-Security',
+  'max-age=31536000;includeSubDomains',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Date',
+  'Wed, 31 Jul 2019 17:57:20 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -160,17 +266,17 @@ nock('https://login.microsoftonline.com:443', {"encodedQueryParams":true})
   'X-Content-Type-Options',
   'nosniff',
   'x-ms-request-id',
-  '5f65eaf8-e6af-4ff4-a120-5957c57d3400',
+  '79923615-d76a-4b1c-a815-ef2e6a8a1800',
   'P3P',
   'CP="DSP CUR OTPi IND OTRi ONL FIN"',
   'Set-Cookie',
-  'fpc=AhalEYhjVMJPjL8tVHvpoTg_aSJHAgAAAOHM09QOAAAA; expires=Fri, 30-Aug-2019 17:54:43 GMT; path=/; secure; HttpOnly',
+  'fpc=AiuACLHzGO5KvJWd-OD2ip0_aSJHAwAAAH7N09QOAAAA; expires=Fri, 30-Aug-2019 17:57:21 GMT; path=/; secure; HttpOnly',
   'Set-Cookie',
   'x-ms-gateway-slice=prod; path=/; secure; HttpOnly',
   'Set-Cookie',
   'stsservicecookie=ests; path=/; secure; HttpOnly',
   'Date',
-  'Wed, 31 Jul 2019 17:54:43 GMT',
+  'Wed, 31 Jul 2019 17:57:20 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -178,12 +284,14 @@ nock('https://login.microsoftonline.com:443', {"encodedQueryParams":true})
 
 
 nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
-  .delete('/secrets/CRUDSecretName-canaddasecret-')
+  .get('/secrets/CRUDSecretName-candeleteasecret-/')
   .query(true)
-  .reply(200, {"recoveryId":"https://keyvault_name.vault.azure.net/deletedsecrets/CRUDSecretName-canaddasecret-","deletedDate":1564595684,"scheduledPurgeDate":1572371684,"id":"https://keyvault_name.vault.azure.net/secrets/CRUDSecretName-canaddasecret-/deac7265ef684f63a8fc87b25c043dd5","attributes":{"enabled":true,"created":1564595683,"updated":1564595683,"recoveryLevel":"Recoverable+Purgeable"}}, [ 'Cache-Control',
+  .reply(404, {"error":{"code":"SecretNotFound","message":"Secret not found: CRUDSecretName-candeleteasecret-"}}, [ 'Cache-Control',
   'no-cache',
   'Pragma',
   'no-cache',
+  'Content-Length',
+  '115',
   'Content-Type',
   'application/json; charset=utf-8',
   'Expires',
@@ -193,7 +301,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'x-ms-keyvault-region',
   'westus',
   'x-ms-request-id',
-  'ac85cc0f-b07d-4cfe-83f9-b78ec6606e29',
+  '33ec02dc-5f60-4328-aad1-a573e5cefb13',
   'x-ms-keyvault-service-version',
   '1.1.0.872',
   'x-ms-keyvault-network-info',
@@ -207,15 +315,13 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'X-Content-Type-Options',
   'nosniff',
   'Date',
-  'Wed, 31 Jul 2019 17:54:43 GMT',
+  'Wed, 31 Jul 2019 17:57:21 GMT',
   'Connection',
-  'close',
-  'Content-Length',
-  '410' ]);
+  'close' ]);
 
 
 nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
-  .delete('/deletedsecrets/CRUDSecretName-canaddasecret-')
+  .delete('/deletedsecrets/CRUDSecretName-candeleteasecret-')
   .query(true)
   .reply(401, "", [ 'Cache-Control',
   'no-cache',
@@ -230,7 +336,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'x-ms-keyvault-region',
   'westus',
   'x-ms-request-id',
-  '71ceb822-d841-46fe-8eae-d885929d72aa',
+  'e77c78c0-987f-4efd-8c86-064a13cd31df',
   'x-ms-keyvault-service-version',
   '1.1.0.872',
   'x-ms-keyvault-network-info',
@@ -244,7 +350,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'X-Content-Type-Options',
   'nosniff',
   'Date',
-  'Wed, 31 Jul 2019 17:54:43 GMT',
+  'Wed, 31 Jul 2019 17:57:22 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -253,7 +359,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
 
 nock('https://login.microsoftonline.com:443', {"encodedQueryParams":true})
   .post('/azure_tenant_id/oauth2/v2.0/token', "response_type=token&grant_type=client_credentials&client_id=azure_client_id&client_secret=azure_client_secret&scope=https%3A%2F%2Fvault.azure.net%2F.default")
-  .reply(200, {"token_type":"Bearer","expires_in":3600,"ext_expires_in":3600,"access_token":"access_token"}, [ 'Cache-Control',
+  .reply(200, {"token_type":"Bearer","expires_in":3599,"ext_expires_in":3599,"access_token":"access_token"}, [ 'Cache-Control',
   'no-cache, no-store',
   'Pragma',
   'no-cache',
@@ -266,17 +372,17 @@ nock('https://login.microsoftonline.com:443', {"encodedQueryParams":true})
   'X-Content-Type-Options',
   'nosniff',
   'x-ms-request-id',
-  '886d237f-4078-4fcb-b43e-f471a9282e00',
+  '83a9301d-0b2f-423b-9ccd-46d482c02c00',
   'P3P',
   'CP="DSP CUR OTPi IND OTRi ONL FIN"',
   'Set-Cookie',
-  'fpc=AhalEYhjVMJPjL8tVHvpoTg_aSJHAwAAAOHM09QOAAAA; expires=Fri, 30-Aug-2019 17:54:44 GMT; path=/; secure; HttpOnly',
+  'fpc=AiuACLHzGO5KvJWd-OD2ip0_aSJHBAAAAH7N09QOAAAA; expires=Fri, 30-Aug-2019 17:57:22 GMT; path=/; secure; HttpOnly',
   'Set-Cookie',
   'x-ms-gateway-slice=prod; path=/; secure; HttpOnly',
   'Set-Cookie',
   'stsservicecookie=ests; path=/; secure; HttpOnly',
   'Date',
-  'Wed, 31 Jul 2019 17:54:44 GMT',
+  'Wed, 31 Jul 2019 17:57:21 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -284,7 +390,7 @@ nock('https://login.microsoftonline.com:443', {"encodedQueryParams":true})
 
 
 nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
-  .delete('/deletedsecrets/CRUDSecretName-canaddasecret-')
+  .delete('/deletedsecrets/CRUDSecretName-candeleteasecret-')
   .query(true)
   .reply(409, {"error":{"code":"Conflict","message":"Secret is currently being deleted.","innererror":{"code":"ObjectIsBeingDeleted"}}}, [ 'Cache-Control',
   'no-cache',
@@ -301,7 +407,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'x-ms-keyvault-region',
   'westus',
   'x-ms-request-id',
-  'fb8ae69f-7c5d-49ed-b5b4-97d2aa037550',
+  '30d8f0c1-775c-4741-b75a-af10020792b7',
   'x-ms-keyvault-service-version',
   '1.1.0.872',
   'x-ms-keyvault-network-info',
@@ -315,13 +421,13 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'X-Content-Type-Options',
   'nosniff',
   'Date',
-  'Wed, 31 Jul 2019 17:54:44 GMT',
+  'Wed, 31 Jul 2019 17:57:21 GMT',
   'Connection',
   'close' ]);
 
 
 nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
-  .delete('/deletedsecrets/CRUDSecretName-canaddasecret-')
+  .delete('/deletedsecrets/CRUDSecretName-candeleteasecret-')
   .query(true)
   .reply(401, "", [ 'Cache-Control',
   'no-cache',
@@ -336,7 +442,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'x-ms-keyvault-region',
   'westus',
   'x-ms-request-id',
-  '7a86b702-7530-415c-a43c-72680f251edc',
+  '2b910f2c-1ae6-4552-a51f-171d1acde216',
   'x-ms-keyvault-service-version',
   '1.1.0.872',
   'x-ms-keyvault-network-info',
@@ -350,7 +456,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'X-Content-Type-Options',
   'nosniff',
   'Date',
-  'Wed, 31 Jul 2019 17:54:55 GMT',
+  'Wed, 31 Jul 2019 17:57:32 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -372,17 +478,17 @@ nock('https://login.microsoftonline.com:443', {"encodedQueryParams":true})
   'X-Content-Type-Options',
   'nosniff',
   'x-ms-request-id',
-  '99ef9612-e508-4038-bbc0-c96dbabe3200',
+  'a9214492-af22-49ec-b688-397859a62900',
   'P3P',
   'CP="DSP CUR OTPi IND OTRi ONL FIN"',
   'Set-Cookie',
-  'fpc=AhalEYhjVMJPjL8tVHvpoTg_aSJHBAAAAOHM09QOAAAA; expires=Fri, 30-Aug-2019 17:54:55 GMT; path=/; secure; HttpOnly',
+  'fpc=AiuACLHzGO5KvJWd-OD2ip0_aSJHBQAAAH7N09QOAAAA; expires=Fri, 30-Aug-2019 17:57:33 GMT; path=/; secure; HttpOnly',
   'Set-Cookie',
   'x-ms-gateway-slice=prod; path=/; secure; HttpOnly',
   'Set-Cookie',
   'stsservicecookie=ests; path=/; secure; HttpOnly',
   'Date',
-  'Wed, 31 Jul 2019 17:54:54 GMT',
+  'Wed, 31 Jul 2019 17:57:32 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -390,113 +496,7 @@ nock('https://login.microsoftonline.com:443', {"encodedQueryParams":true})
 
 
 nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
-  .delete('/deletedsecrets/CRUDSecretName-canaddasecret-')
-  .query(true)
-  .reply(409, {"error":{"code":"Conflict","message":"Secret is currently being deleted.","innererror":{"code":"ObjectIsBeingDeleted"}}}, [ 'Cache-Control',
-  'no-cache',
-  'Pragma',
-  'no-cache',
-  'Content-Length',
-  '121',
-  'Content-Type',
-  'application/json; charset=utf-8',
-  'Expires',
-  '-1',
-  'Server',
-  'Microsoft-IIS/10.0',
-  'x-ms-keyvault-region',
-  'westus',
-  'x-ms-request-id',
-  'a8c98ed1-4216-4617-a5f8-749cc7c7cd47',
-  'x-ms-keyvault-service-version',
-  '1.1.0.872',
-  'x-ms-keyvault-network-info',
-  'addr=13.68.221.190;act_addr_fam=InterNetwork;',
-  'X-AspNet-Version',
-  '4.0.30319',
-  'X-Powered-By',
-  'ASP.NET',
-  'Strict-Transport-Security',
-  'max-age=31536000;includeSubDomains',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Date',
-  'Wed, 31 Jul 2019 17:54:55 GMT',
-  'Connection',
-  'close' ]);
-
-
-nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
-  .delete('/deletedsecrets/CRUDSecretName-canaddasecret-')
-  .query(true)
-  .reply(401, "", [ 'Cache-Control',
-  'no-cache',
-  'Pragma',
-  'no-cache',
-  'Expires',
-  '-1',
-  'Server',
-  'Microsoft-IIS/10.0',
-  'WWW-Authenticate',
-  'Bearer authorization="https://login.windows.net/azure_tenant_id", resource="https://vault.azure.net"',
-  'x-ms-keyvault-region',
-  'westus',
-  'x-ms-request-id',
-  '58a32b45-a0d6-423b-ad31-db188e00b5c4',
-  'x-ms-keyvault-service-version',
-  '1.1.0.872',
-  'x-ms-keyvault-network-info',
-  'addr=13.68.221.190;act_addr_fam=InterNetwork;',
-  'X-AspNet-Version',
-  '4.0.30319',
-  'X-Powered-By',
-  'ASP.NET',
-  'Strict-Transport-Security',
-  'max-age=31536000;includeSubDomains',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Date',
-  'Wed, 31 Jul 2019 17:55:05 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '0' ]);
-
-
-nock('https://login.microsoftonline.com:443', {"encodedQueryParams":true})
-  .post('/azure_tenant_id/oauth2/v2.0/token', "response_type=token&grant_type=client_credentials&client_id=azure_client_id&client_secret=azure_client_secret&scope=https%3A%2F%2Fvault.azure.net%2F.default")
-  .reply(200, {"token_type":"Bearer","expires_in":3600,"ext_expires_in":3600,"access_token":"access_token"}, [ 'Cache-Control',
-  'no-cache, no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json; charset=utf-8',
-  'Expires',
-  '-1',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains',
-  'X-Content-Type-Options',
-  'nosniff',
-  'x-ms-request-id',
-  '3cfbbfb3-7f4a-4e46-acea-e56802372f00',
-  'P3P',
-  'CP="DSP CUR OTPi IND OTRi ONL FIN"',
-  'Set-Cookie',
-  'fpc=AhalEYhjVMJPjL8tVHvpoTg_aSJHBQAAAOHM09QOAAAA; expires=Fri, 30-Aug-2019 17:55:06 GMT; path=/; secure; HttpOnly',
-  'Set-Cookie',
-  'x-ms-gateway-slice=prod; path=/; secure; HttpOnly',
-  'Set-Cookie',
-  'stsservicecookie=ests; path=/; secure; HttpOnly',
-  'Date',
-  'Wed, 31 Jul 2019 17:55:05 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '1231' ]);
-
-
-nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
-  .delete('/deletedsecrets/CRUDSecretName-canaddasecret-')
+  .delete('/deletedsecrets/CRUDSecretName-candeleteasecret-')
   .query(true)
   .reply(204, "", [ 'Cache-Control',
   'no-cache',
@@ -509,7 +509,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'x-ms-keyvault-region',
   'westus',
   'x-ms-request-id',
-  '7457af6f-bae6-4cb7-9238-7e81a6289bb4',
+  '2da68c8c-cf0f-44ad-aeec-c03bc50a06ab',
   'x-ms-keyvault-service-version',
   '1.1.0.872',
   'x-ms-keyvault-network-info',
@@ -523,7 +523,7 @@ nock('https://keyvault_name.vault.azure.net:443', {"encodedQueryParams":true})
   'X-Content-Type-Options',
   'nosniff',
   'Date',
-  'Wed, 31 Jul 2019 17:55:06 GMT',
+  'Wed, 31 Jul 2019 17:57:33 GMT',
   'Connection',
   'close' ]);
 
