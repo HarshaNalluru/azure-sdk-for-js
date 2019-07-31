@@ -102,18 +102,20 @@ export abstract class BaseRecorder {
     }
 
     // Handling storage environment variables separately
-    if (env.ACCOUNT_NAME) {
-      updatedRecording = recording.replace(new RegExp(env.ACCOUNT_NAME, "g"), "fakestorageaccount");
-    }
-    if (env.ACCOUNT_KEY) {
-      updatedRecording = updatedRecording.replace(new RegExp(env.ACCOUNT_KEY, "g"), "aaaaa");
-    }
-    if (env.ACCOUNT_SAS) {
-      updatedRecording = updatedRecording.replace(
-        new RegExp(env.ACCOUNT_SAS.match("(.*)&sig=(.*)")[2], "g"),
-        "aaaaa"
-      );
-    }
+    // if (env.ACCOUNT_NAME) {
+    //   console.log("hello");
+    //   console.log(env.ACCOUNT_NAME);
+    //   updatedRecording = recording.replace(new RegExp(env.ACCOUNT_NAME, "g"), "fakestorageaccount");
+    // }
+    // if (env.ACCOUNT_KEY) {
+    //   updatedRecording = updatedRecording.replace(new RegExp(env.ACCOUNT_KEY, "g"), "aaaaa");
+    // }
+    // if (env.ACCOUNT_SAS) {
+    //   updatedRecording = updatedRecording.replace(
+    //     new RegExp(env.ACCOUNT_SAS.match("(.*)&sig=(.*)")[2], "g"),
+    //     "aaaaa"
+    //   );
+    // }
     return updatedRecording;
   }
 
