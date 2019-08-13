@@ -8,16 +8,25 @@ export interface TestInfo {
 
 export const env = isBrowser() ? (window as any).__env__ : process.env;
 
-export function isRecording() {
+export function isRecordMode() {
   return env.TEST_MODE === "record";
 }
 
-export function isPlayingBack() {
+export function isPlaybackMode() {
   return env.TEST_MODE === "playback";
 }
 
 export function escapeRegExp(str: string): string {
-  return encodeURIComponent(str).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+  return encodeURIComponent(str)
+    .replace(
+      /[!'()*]/g,
+      (x) =>
+        `%${x
+          .charCodeAt(0)
+          .toString(16)
+          .toUpperCase()}`
+    ) // RFC 3986.
+    .replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); // All the RegExp sensitive characters.
 }
 
 /**
@@ -75,4 +84,16 @@ export function getUniqueName(prefix: string): string {
  */
 export function isBrowser(): boolean {
   return typeof window !== "undefined";
+}
+
+/**
+ * Usage - `await delay(<milliseconds>)`
+ * This `delay` has no effect if the `TEST_MODE` is `"playback"`.
+ * If the `TEST_MODE` is not `"playback"`, `delay` is a wrapper for setTimeout that resolves a promise after t milliseconds.
+ *
+ * @param {number} milliseconds The number of milliseconds to be delayed.
+ * @returns {Promise<T>} Resolved promise
+ */
+export function delay(milliseconds: number): Promise<void> | null {
+  return isPlaybackMode() ? null : new Promise((resolve) => setTimeout(resolve, milliseconds));
 }

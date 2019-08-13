@@ -10,8 +10,8 @@ import {
   escapeRegExp,
   env,
   TestInfo,
-  isPlayingBack,
-  isRecording
+  isPlaybackMode,
+  isRecordMode
 } from "./utils";
 import { customConsoleLog } from "./customConsoleLog";
 
@@ -20,7 +20,7 @@ let nock: any;
 let replaceableVariables: { [x: string]: string } = {};
 export function setReplaceableVariables(a: { [x: string]: string }): void {
   replaceableVariables = a;
-  if (isPlayingBack()) {
+  if (isPlaybackMode()) {
     // Providing dummy values to avoid the error
     Object.keys(a).map((k) => {
       env[k] = a[k];
@@ -34,15 +34,16 @@ export function setReplacements(maps: any): void {
 }
 
 export function setEnviromentOnLoad() {
-  if (!isBrowser() && (isRecording || isPlayingBack)) {
+  if (!isBrowser() && (isRecordMode || isPlaybackMode)) {
     nock = require("nock");
   }
 
-  if (isBrowser() && isRecording()) {
+  if (isBrowser() && isRecordMode()) {
     customConsoleLog();
   }
 
-  if (isPlayingBack()) {
+  // TODO - The following will be moved to the storage sdks when @azure/test-utils-recorder is imported
+  if (isPlaybackMode()) {
     // Providing dummy values to avoid the error [ENVs for storage packages]
     env.ACCOUNT_NAME = "fakestorageaccount";
     env.ACCOUNT_KEY = "aaaaa";
@@ -53,6 +54,7 @@ export function setEnviromentOnLoad() {
   }
 }
 
+// TODO - skip list will be removed - #4336
 const skip = [
   // Abort
   "browsers/aborter/recording_should_abort_after_aborter_timeout.json"
@@ -62,11 +64,16 @@ export abstract class BaseRecorder {
   protected readonly filepath: string;
   public uniqueTestInfo: TestInfo = { uniqueName: {}, newDate: {} };
 
-  constructor(runtime: string, testHierarchy: string, testTitle: string, ext: string) {
+  constructor(platform: "node" | "browsers", testSuiteTitle: string, testTitle: string) {
+    // File Extension
+    // nock recordings for node tests - .js extension
+    // recordings are saved in json format for browser tests - .json extension
+    const ext = platform === "node" ? "js" : "json";
+    // Filepath - `recordings/{node|browsers}/<describe-block-title>/recording_<test-title>.{js|json}`
     this.filepath =
-      runtime +
+      platform +
       "/" +
-      this.formatPath(testHierarchy) +
+      this.formatPath(testSuiteTitle) +
       "/recording_" +
       this.formatPath(testTitle) +
       "." +
@@ -101,6 +108,7 @@ export abstract class BaseRecorder {
       updatedRecording = map(updatedRecording);
     }
 
+    // TODO - The following will be moved to the storage sdks when @azure/test-utils-recorder is imported
     // Handling storage environment variables separately
     if (env.ACCOUNT_NAME) {
       updatedRecording = recording.replace(new RegExp(env.ACCOUNT_NAME, "g"), "fakestorageaccount");
@@ -127,8 +135,8 @@ export abstract class BaseRecorder {
 }
 
 export class NockRecorder extends BaseRecorder {
-  constructor(testHierarchy: string, testTitle: string) {
-    super("node", testHierarchy, testTitle, "js");
+  constructor(testSuiteTitle: string, testTitle: string) {
+    super("node", testSuiteTitle, testTitle);
   }
 
   public record(): void {
@@ -138,6 +146,15 @@ export class NockRecorder extends BaseRecorder {
   }
 
   public playback(filePath: string): void {
+    /**
+     * `@azure/test-utils-recorder` package is used for both the browser and node tests
+     *
+     * During the playback mode,
+     *  `path` module is leveraged to import the node test recordings and `path` module can't be imported in the browser.
+     *  So, instead of `import`-ing the `path` library, `require` is being used and this code path is never executed in the browser.
+     *
+     * [A diiferent strategy is in place to import recordings for browser tests by leveraging `karma` plugins.]
+     */
     let path = require("path");
     this.uniqueTestInfo = require(path.resolve(
       filePath,
@@ -146,7 +163,14 @@ export class NockRecorder extends BaseRecorder {
   }
 
   public stop(): void {
-    const importNock = "let nock = require('nock');\n";
+    // Importing "nock" library in the recording and appending the testInfo part in the recording
+    const importNockStatement =
+      "let nock = require('nock');\n" +
+      "\n" +
+      "module.exports.testInfo = " +
+      JSON.stringify(this.uniqueTestInfo) +
+      "\n";
+
     const fixtures = nock.recorder.play();
 
     // Create the directories recursively incase they don't exist
@@ -170,10 +194,9 @@ export class NockRecorder extends BaseRecorder {
       throw err;
     });
 
-    file.write(
-      importNock + "\n" + "module.exports.testInfo = " + JSON.stringify(this.uniqueTestInfo) + "\n"
-    );
+    file.write(importNockStatement);
 
+    // Saving the recording to the file
     for (const fixture of fixtures) {
       // We're not matching query string parameters because they may contain sensitive information, and Nock does not allow us to customize it easily
       const updatedFixture = fixture.toString().replace(/\.query\(.*\)/, ".query(true)");
@@ -205,8 +228,8 @@ export class NiseRecorder extends BaseRecorder {
   private readonly sasQueryParameters = ["se", "sig", "sp", "spr", "srt", "ss", "st", "sv"];
   private recordings: any[] = [];
 
-  constructor(testHierarchy: string, testTitle: string) {
-    super("browsers", testHierarchy, testTitle, "json");
+  constructor(testSuiteTitle: string, testTitle: string) {
+    super("browsers", testSuiteTitle, testTitle);
   }
 
   // Inserts a request/response pair into the recordings array
