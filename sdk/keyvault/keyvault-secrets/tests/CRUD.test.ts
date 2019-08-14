@@ -6,7 +6,6 @@ import { SecretsClient } from "../src";
 import { retry, env } from "./utils/recorder";
 import { authenticate } from "./utils/testAuthentication";
 import TestClient from "./utils/testClient";
-import { AbortController } from "@azure/abort-controller";
 
 describe("Secret client - create, read, update and delete operations", () => {
   const secretValue = "SECRET_VALUE";
@@ -16,7 +15,7 @@ describe("Secret client - create, read, update and delete operations", () => {
   let testClient: TestClient;
   let recorder: any;
 
-  before(async function() {
+  beforeEach(async function() {
     const authentication = await authenticate(this);
     secretSuffix = authentication.secretSuffix;
     client = authentication.client;
@@ -24,7 +23,7 @@ describe("Secret client - create, read, update and delete operations", () => {
     recorder = authentication.recorder;
   });
 
-  after(async function() {
+  afterEach(async function() {
     recorder.stop();
   });
 
@@ -40,25 +39,27 @@ describe("Secret client - create, read, update and delete operations", () => {
     await testClient.flushSecret(secretName);
   });
 
-  it("can abort adding a secret", async function() {
-    const secretName = testClient.formatName(
-      `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
-    );
-    const controller = new AbortController();
-    const resultPromise = client.setSecret(secretName, secretValue, {
-      requestOptions: {
-        abortSignal: controller.signal
-      }
-    });
-    controller.abort();
-    let error;
-    try {
-      await resultPromise;
-    } catch (e) {
-      error = e;
-    }
-    assert.equal(error.message, "The request was aborted");
-  });
+  // it("can abort adding a secret", async function () {
+  //   const secretName = testClient.formatName(
+  //     `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
+  //   );
+  //   const controller = new AbortController();
+  //   const resultPromise = client.setSecret(secretName, secretValue, {
+  //     abortSignal: controller.signal
+  //   });
+  //   controller.abort();
+  //   let error;
+  //   try {
+  //     await resultPromise;
+  //   } catch (e) {
+  //     error = e;
+  //   }
+  //   if (isNode) {
+  //     assert.equal(error.message, "The request was aborted");
+  //   } else {
+  //     assert.equal(error.message, "The request was aborted");
+  //   }
+  // });
 
   it("cannot create a secret with an empty name", async function() {
     const secretName = "";

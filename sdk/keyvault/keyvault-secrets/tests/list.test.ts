@@ -17,7 +17,7 @@ describe("Secret client - list secrets in various ways", () => {
   let testClient: TestClient;
   let recorder: any;
 
-  before(async function() {
+  beforeEach(async function() {
     const authentication = await authenticate(this);
     secretSuffix = authentication.secretSuffix;
     client = authentication.client;
@@ -25,7 +25,7 @@ describe("Secret client - list secrets in various ways", () => {
     recorder = authentication.recorder;
   });
 
-  after(async function() {
+  afterEach(async function() {
     recorder.stop();
   });
 
@@ -130,7 +130,7 @@ describe("Secret client - list secrets in various ways", () => {
     assert.equal(totalVersions, 0, `Unexpected total versions for secret ${secretName}`);
   });
 
-  it("can list secrets", async function() {
+  it("can list secrets (by page)", async function() {
     const secretName = testClient.formatName(
       `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
     );
@@ -152,7 +152,7 @@ describe("Secret client - list secrets in various ways", () => {
     }
   });
 
-  it("can list deleted secrets", async function() {
+  it("can list deleted secrets (by page)", async function() {
     const secretName = testClient.formatName(
       `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
     );
@@ -181,7 +181,7 @@ describe("Secret client - list secrets in various ways", () => {
     }
   });
 
-  it("can retrieve all versions of a secret", async function() {
+  it("can retrieve all versions of a secret (by page)", async function() {
     const secretName = testClient.formatName(
       `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
     );
@@ -214,7 +214,7 @@ describe("Secret client - list secrets in various ways", () => {
     await testClient.flushSecret(secretName);
   });
 
-  it("can list secret versions (non existing)", async function() {
+  it("can list secret versions (non existing) (by pages)", async function() {
     const secretName = testClient.formatName(
       `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
     );
