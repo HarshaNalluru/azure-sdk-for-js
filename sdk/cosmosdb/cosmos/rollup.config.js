@@ -1,7 +1,7 @@
 import resolve from "rollup-plugin-local-resolve";
 export default [
   {
-    input: "dist-esm/index.js",
+    input: "dist-esm/src/index.js",
     output: {
       file: "dist/index.js",
       format: "umd",
