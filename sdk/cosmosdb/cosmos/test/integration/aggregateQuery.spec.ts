@@ -1,9 +1,13 @@
 import assert from "assert";
-import { Container, ContainerDefinition, Database } from "../../dist-esm/client";
-import { DataType, IndexKind } from "../../dist-esm/documents";
-import { QueryIterator } from "../../dist-esm/index";
-import { SqlQuerySpec } from "../../dist-esm/queryExecutionContext";
-import { FeedOptions } from "../../dist-esm/request";
+import {
+  Container,
+  ContainerDefinition,
+  DataType,
+  IndexKind,
+  QueryIterator,
+  SqlQuerySpec,
+  FeedOptions
+} from "../../src";
 import { TestData } from "../common/TestData";
 import { bulkInsertItems, getTestContainer, removeAllDatabases } from "../common/TestHelpers";
 

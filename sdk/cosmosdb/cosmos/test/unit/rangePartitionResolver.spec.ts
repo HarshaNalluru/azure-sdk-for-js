@@ -1,6 +1,6 @@
 ﻿import assert from "assert";
-import { Range, RangePartitionResolver } from "../../dist-esm/range";
-import { CompareFunction } from "../../dist-esm/range";
+import { Range, RangePartitionResolver } from "../../src/range";
+import { CompareFunction } from "../../src/range";
 
 describe("RangePartitionResolver", function() {
   describe("constructor", function() {

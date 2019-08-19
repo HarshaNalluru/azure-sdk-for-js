@@ -1,5 +1,5 @@
 import assert from "assert";
-import { Database, DataType, IndexKind } from "../../dist-esm";
+import { Database, DataType, IndexKind } from "../../src";
 import { createOrUpsertItem, getTestDatabase, removeAllDatabases } from "../common/TestHelpers";
 
 describe("Spatial Indexes", function() {

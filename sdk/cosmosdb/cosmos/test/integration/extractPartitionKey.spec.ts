@@ -1,5 +1,5 @@
 import assert from "assert";
-import { extractPartitionKey } from "../../dist-esm/extractPartitionKey";
+import { extractPartitionKey } from "../../src";
 
 describe("extractPartitionKey", function() {
   describe("With undefined partitionKeyDefinition", function() {

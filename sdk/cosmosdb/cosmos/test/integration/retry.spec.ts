@@ -1,7 +1,3 @@
-import assert from "assert";
-import { ConnectionPolicy, Constants, CosmosClient, RetryOptions } from "../../dist-esm";
-import * as request from "../../dist-esm/request";
-
 describe("retry policy tests", function() {
   this.timeout(300000);
   const collectionDefinition = {

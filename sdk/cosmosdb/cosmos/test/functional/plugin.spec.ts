@@ -1,6 +1,6 @@
-import { CosmosClient, CosmosClientOptions } from "../../dist-esm";
-import { RequestContext } from "../../dist-esm/request/RequestContext";
-import { Plugin, Next, PluginConfig } from "../../dist-esm/plugins/Plugin";
+import { CosmosClient, CosmosClientOptions } from "../../src";
+import { RequestContext } from "../../src/request/RequestContext";
+import { Plugin, Next, PluginConfig } from "../../src/plugins/Plugin";
 
 import * as assert from "assert";
 

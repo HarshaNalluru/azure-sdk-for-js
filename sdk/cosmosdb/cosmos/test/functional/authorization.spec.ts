@@ -1,6 +1,6 @@
 import assert from "assert";
-import { CosmosClient, PermissionMode } from "../../dist-esm";
-import { PermissionDefinition } from "../../dist-esm/client";
+import { CosmosClient, PermissionMode } from "../../src";
+import { PermissionDefinition } from "../../src/client";
 import { endpoint, masterKey } from "../common/_testConfig";
 import {
   createOrUpsertPermission,

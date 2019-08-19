@@ -1,5 +1,5 @@
 import assert from "assert";
-import { UserDefinedFunctionDefinition, Container } from "../../dist-esm/client";
+import { UserDefinedFunctionDefinition, Container } from "../../src/client";
 import { removeAllDatabases, getTestContainer } from "../common/TestHelpers";
 
 describe("User Defined Function", function() {

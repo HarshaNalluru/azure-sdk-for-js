@@ -1,7 +1,7 @@
 import assert from "assert";
 
-import { CosmosClient } from "../../dist-esm/CosmosClient";
-import { DatabaseAccount } from "../../dist-esm/documents";
+import { CosmosClient } from "../../src";
+import { DatabaseAccount } from "../../src";
 
 import { endpoint, masterKey } from "../common/_testConfig";
 

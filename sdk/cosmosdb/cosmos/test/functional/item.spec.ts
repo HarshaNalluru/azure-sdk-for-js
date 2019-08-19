@@ -1,6 +1,6 @@
 import assert from "assert";
-import { Container } from "../../dist-esm";
-import { ItemDefinition } from "../../dist-esm/client";
+import { Container } from "../../src";
+import { ItemDefinition } from "../../src/client";
 import {
   bulkDeleteItems,
   bulkInsertItems,

@@ -1,6 +1,5 @@
 import assert from "assert";
-import { Container, CosmosClient, PermissionMode } from "../../dist-esm";
-import { Database } from "../../dist-esm/client";
+import { Container, CosmosClient, PermissionMode, Database } from "../../src";
 import { endpoint } from "../common/_testConfig";
 import { getTestContainer, removeAllDatabases } from "../common/TestHelpers";
 

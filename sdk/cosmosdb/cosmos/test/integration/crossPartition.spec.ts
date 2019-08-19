@@ -1,11 +1,15 @@
 import assert from "assert";
 import * as util from "util";
-import { Container, ContainerDefinition } from "../../dist-esm/client";
-import { DataType, IndexKind } from "../../dist-esm/documents";
-import { SqlQuerySpec } from "../../dist-esm/queryExecutionContext";
-import { QueryIterator } from "../../dist-esm/queryIterator";
+import {
+  Container,
+  ContainerDefinition,
+  DataType,
+  IndexKind,
+  SqlQuerySpec,
+  QueryIterator,
+  FeedResponse
+} from "../../src";
 import { bulkInsertItems, getTestContainer, removeAllDatabases } from "../common/TestHelpers";
-import { FeedResponse } from "../../dist-esm";
 
 function compare(key: string) {
   return function(a: any, b: any): number {

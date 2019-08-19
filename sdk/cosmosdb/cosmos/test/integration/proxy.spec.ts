@@ -2,7 +2,7 @@
 import * as net from "net";
 import { URL } from "url";
 import ProxyAgent from "proxy-agent";
-import { CosmosClient } from "../../dist-esm/index";
+import { CosmosClient } from "../../src";
 import { endpoint, masterKey } from "../common/_testConfig";
 import { addEntropy } from "../common/TestHelpers";
 

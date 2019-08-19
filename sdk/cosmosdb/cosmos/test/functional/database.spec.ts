@@ -1,5 +1,5 @@
 import assert from "assert";
-import { CosmosClient, DatabaseDefinition } from "../../dist-esm";
+import { CosmosClient, DatabaseDefinition } from "../../src";
 import { endpoint, masterKey } from "../common/_testConfig";
 import { addEntropy, removeAllDatabases } from "../common/TestHelpers";
 

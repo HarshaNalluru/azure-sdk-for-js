@@ -5,10 +5,10 @@ import {
   Container,
   PluginConfig,
   CosmosClientOptions
-} from "../../dist-esm";
+} from "../../src";
 import { removeAllDatabases, getTestContainer } from "../common/TestHelpers";
 import { endpoint, masterKey } from "../common/_testConfig";
-import { ResourceType, HTTPMethod, StatusCodes } from "../../dist-esm/common";
+import { ResourceType, HTTPMethod, StatusCodes } from "../../src/common";
 
 const plugins: PluginConfig[] = [
   {

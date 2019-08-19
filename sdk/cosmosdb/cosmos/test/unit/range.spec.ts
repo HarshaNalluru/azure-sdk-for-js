@@ -1,5 +1,5 @@
 ﻿import assert from "assert";
-import { Range } from "../../dist-esm/range";
+import { Range } from "../../src/range";
 
 describe("Range Tests", function() {
   describe("constructor", function() {

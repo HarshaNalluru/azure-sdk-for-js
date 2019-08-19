@@ -1,10 +1,10 @@
 ﻿import assert from "assert";
-import { ClientContext } from "../../dist-esm/ClientContext";
+import { ClientContext } from "../../src/ClientContext";
 import {
   PartitionKeyRangeCache,
   QueryRange,
   SmartRoutingMapProvider
-} from "../../dist-esm/routing";
+} from "../../src/routing";
 import { MockedClientContext } from "../common/MockClientContext";
 
 describe("Smart Routing Map Provider OverlappingRanges", function() {

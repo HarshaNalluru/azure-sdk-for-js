@@ -1,12 +1,11 @@
 import assert from "assert";
-import { Constants } from "../../dist-esm/common";
 import {
   ClientSideMetrics,
   QueryMetrics,
   QueryPreparationTimes,
   RuntimeExecutionTimes,
   TimeSpan
-} from "../../dist-esm/queryMetrics";
+} from "../../src";
 
 describe("QueryMetrics", function() {
   // Properties

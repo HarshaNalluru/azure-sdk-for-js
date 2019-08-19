@@ -1,5 +1,5 @@
 import assert from "assert";
-import { IndexingMode } from "../../dist-esm/documents";
+import { IndexingMode } from "../../src";
 import { getTestDatabase, removeAllDatabases } from "../common/TestHelpers";
 
 const testDoc = {

@@ -1,14 +1,14 @@
 import assert from "assert";
-import { Constants } from "../../dist-esm";
-import { ContainerDefinition, Database } from "../../dist-esm/client";
-import { ContainerRequest } from "../../dist-esm/client/Container/ContainerRequest";
+import { Constants } from "../../src";
+import { ContainerDefinition, Database } from "../../src/client";
+import { ContainerRequest } from "../../src/client/Container/ContainerRequest";
 import {
   DataType,
   IndexedPath,
   IndexingMode,
   IndexingPolicy,
   IndexKind
-} from "../../dist-esm/documents";
+} from "../../src/documents";
 import { getTestDatabase, removeAllDatabases, getTestContainer } from "../common/TestHelpers";
 
 describe("Containers", function() {

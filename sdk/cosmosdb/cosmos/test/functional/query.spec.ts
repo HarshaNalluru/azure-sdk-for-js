@@ -1,6 +1,6 @@
 import assert from "assert";
-import { CosmosClient } from "../../dist-esm";
-import { Container } from "../../dist-esm/client";
+import { CosmosClient } from "../../src";
+import { Container } from "../../src/client";
 import { endpoint, masterKey } from "../common/_testConfig";
 import {
   bulkInsertItems,

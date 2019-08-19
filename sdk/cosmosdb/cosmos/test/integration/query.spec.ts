@@ -1,5 +1,5 @@
 import assert from "assert";
-import { FeedOptions } from "../../dist-esm";
+import { FeedOptions } from "../../src";
 import { getTestContainer, getTestDatabase, removeAllDatabases } from "../common/TestHelpers";
 
 const doc = { id: "myId", pk: "pk" };

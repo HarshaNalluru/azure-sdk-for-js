@@ -1,6 +1,6 @@
 import assert from "assert";
-import { RequestOptions } from "../../dist-esm";
-import { Container, ContainerDefinition } from "../../dist-esm/client";
+import { RequestOptions } from "../../src";
+import { Container, ContainerDefinition } from "../../src";
 import { getTestContainer, removeAllDatabases } from "../common/TestHelpers";
 
 describe("Change Feed Iterator", function() {

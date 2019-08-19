@@ -1,14 +1,14 @@
-import { CosmosClientOptions } from "../../dist-esm/CosmosClientOptions";
+import { CosmosClientOptions } from "../../src/CosmosClientOptions";
 import {
   ConnectionPolicy,
   DatabaseAccount,
   defaultConnectionPolicy,
   Location
-} from "../../dist-esm/documents";
-import { LocationCache } from "../../dist-esm/LocationCache";
+} from "../../src/documents";
+import { LocationCache } from "../../src/LocationCache";
 
 import * as assert from "assert";
-import { OperationType, ResourceType } from "../../dist-esm/common";
+import { OperationType, ResourceType } from "../../src/common";
 
 const scenarios: Scenario[] = [];
 const regions = ["westus", "East US", "eastus2", "south Centralus", "sEasIa"];
