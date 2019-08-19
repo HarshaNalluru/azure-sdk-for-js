@@ -93,11 +93,7 @@ export class ClientContext {
     path: string;
     resourceType: ResourceType;
     resourceId: string;
-    resultFn: (
-      result: {
-        [key: string]: any;
-      }
-    ) => any[];
+    resultFn: (result: { [key: string]: any }) => any[];
     query: SqlQuerySpec | string;
     options: FeedOptions;
     partitionKeyRangeId?: string;
@@ -180,15 +176,19 @@ export class ClientContext {
     return response as any;
   }
 
-  public queryPartitionKeyRanges(collectionLink: string, query?: string | SqlQuerySpec, options?: FeedOptions) {
+  public queryPartitionKeyRanges(
+    collectionLink: string,
+    query?: string | SqlQuerySpec,
+    options?: FeedOptions
+  ) {
     const path = getPathFromLink(collectionLink, ResourceType.pkranges);
     const id = getIdFromLink(collectionLink);
-    const cb: FetchFunctionCallback = innerOptions => {
+    const cb: FetchFunctionCallback = (innerOptions) => {
       return this.queryFeed({
         path,
         resourceType: ResourceType.pkranges,
         resourceId: id,
-        resultFn: result => result.PartitionKeyRanges,
+        resultFn: (result) => result.PartitionKeyRanges,
         query,
         options: innerOptions
       });
@@ -466,7 +466,9 @@ export class ClientContext {
    * @param {string} [options.urlConnection]   - The endpoint url whose database account needs to be retrieved. \
    * If not present, current client's url will be used.
    */
-  public async getDatabaseAccount(options: RequestOptions = {}): Promise<Response<DatabaseAccount>> {
+  public async getDatabaseAccount(
+    options: RequestOptions = {}
+  ): Promise<Response<DatabaseAccount>> {
     const endpoint = options.urlConnection || this.cosmosClientOptions.endpoint;
     const request: RequestContext = {
       endpoint,
@@ -512,7 +514,8 @@ export class ClientContext {
       (!this.isMasterResource(request.resourceType) &&
         (err.code === StatusCodes.PreconditionFailed ||
           err.code === StatusCodes.Conflict ||
-          (err.code === StatusCodes.NotFound && err.substatus !== SubStatusCodes.ReadSessionNotAvailable)))
+          (err.code === StatusCodes.NotFound &&
+            err.substatus !== SubStatusCodes.ReadSessionNotAvailable)))
     ) {
       this.sessionContainer.set(request, resHeaders);
     }
@@ -559,7 +562,10 @@ export class ClientContext {
   private buildHeaders(requestContext: RequestContext) {
     return getHeaders({
       clientOptions: this.cosmosClientOptions,
-      defaultHeaders: { ...this.cosmosClientOptions.defaultHeaders, ...requestContext.options.initialHeaders },
+      defaultHeaders: {
+        ...this.cosmosClientOptions.defaultHeaders,
+        ...requestContext.options.initialHeaders
+      },
       verb: requestContext.method,
       path: requestContext.path,
       resourceId: requestContext.resourceId,

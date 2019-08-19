@@ -1,5 +1,12 @@
 import { ClientContext } from "../ClientContext";
-import { Constants, getIdFromLink, getPathFromLink, ResourceType, StatusCodes, SubStatusCodes } from "../common";
+import {
+  Constants,
+  getIdFromLink,
+  getPathFromLink,
+  ResourceType,
+  StatusCodes,
+  SubStatusCodes
+} from "../common";
 import { FeedOptions } from "../request";
 import { Response } from "../request";
 import { DefaultQueryExecutionContext } from "./defaultQueryExecutionContext";
@@ -149,7 +156,10 @@ export class DocumentProducer {
     }
 
     try {
-      const { result: resources, headers: headerResponse } = await this.internalExecutionContext.fetchMore();
+      const {
+        result: resources,
+        headers: headerResponse
+      } = await this.internalExecutionContext.fetchMore();
       this._updateStates(undefined, resources === undefined);
       if (resources !== undefined) {
         // some more results
@@ -166,7 +176,9 @@ export class DocumentProducer {
 
         // Wraping query metrics in a object where the keys are the partition key range.
         headerResponse[Constants.HttpHeaders.QueryMetrics] = {};
-        headerResponse[Constants.HttpHeaders.QueryMetrics][this.targetPartitionKeyRange.id] = queryMetrics;
+        headerResponse[Constants.HttpHeaders.QueryMetrics][
+          this.targetPartitionKeyRange.id
+        ] = queryMetrics;
       }
 
       return { result: resources, headers: headerResponse };

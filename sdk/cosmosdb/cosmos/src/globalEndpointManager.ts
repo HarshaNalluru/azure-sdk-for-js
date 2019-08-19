@@ -31,7 +31,9 @@ export class GlobalEndpointManager {
    */
   constructor(
     options: CosmosClientOptions,
-    private readDatabaseAccount: (opts: RequestOptions) => Promise<ResourceResponse<DatabaseAccount>>
+    private readDatabaseAccount: (
+      opts: RequestOptions
+    ) => Promise<ResourceResponse<DatabaseAccount>>
   ) {
     this.defaultEndpoint = options.endpoint;
     this.enableEndpointDiscovery = options.connectionPolicy.enableEndpointDiscovery;
@@ -171,7 +173,10 @@ export class GlobalEndpointManager {
     if (this.locationCache.prefferredLocations) {
       for (const location of this.locationCache.prefferredLocations) {
         try {
-          const locationalEndpoint = GlobalEndpointManager.getLocationalEndpoint(this.defaultEndpoint, location);
+          const locationalEndpoint = GlobalEndpointManager.getLocationalEndpoint(
+            this.defaultEndpoint,
+            location
+          );
           const options = { urlConnection: locationalEndpoint };
           const { resource: databaseAccount } = await this.readDatabaseAccount(options);
           if (databaseAccount) {
@@ -208,7 +213,8 @@ export class GlobalEndpointManager {
         const globalDatabaseAccountName = hostnameParts[0];
 
         // Prepare the locationalDatabaseAccountName as contoso-EastUS for location_name 'East US'
-        const locationalDatabaseAccountName = globalDatabaseAccountName + "-" + locationName.replace(" ", "");
+        const locationalDatabaseAccountName =
+          globalDatabaseAccountName + "-" + locationName.replace(" ", "");
 
         // Replace 'contoso' with 'contoso-EastUS' and
         // return locationalEndpoint as https://contoso-EastUS.documents.azure.com:443/

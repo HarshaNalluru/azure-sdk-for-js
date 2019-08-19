@@ -1,6 +1,6 @@
 require("source-map-support").install();
 
-process.on("unhandledRejection", error => {
+process.on("unhandledRejection", (error) => {
   if (error.body) {
     try {
       error.body = JSON.parse(error.body);

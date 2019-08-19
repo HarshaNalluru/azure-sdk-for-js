@@ -98,7 +98,10 @@ async function httpRequest(requestContext: RequestContext) {
     }
 
     if (Constants.HttpHeaders.RetryAfterInMilliseconds in headers) {
-      errorResponse.retryAfterInMilliseconds = parseInt(headers[Constants.HttpHeaders.RetryAfterInMilliseconds], 10);
+      errorResponse.retryAfterInMilliseconds = parseInt(
+        headers[Constants.HttpHeaders.RetryAfterInMilliseconds],
+        10
+      );
     }
 
     throw errorResponse;
