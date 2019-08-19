@@ -1,24 +1,31 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/api-extractor.schema.json",
-  "compiler": {
-    "configType": "tsconfig",
-    "rootFolder": "./src"
+  "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+  "mainEntryPointFilePath": "types/src/index.d.ts",
+  "docModel": {
+    "enabled": false
   },
-  "project": {
-    "entryPointSourceFile": "../dist-esm/index.d.ts"
-  },
-  "validationRules": {
-    "missingReleaseTags": "allow"
+  "apiReport": {
+    "enabled": true,
+    "reportFolder": "./review"
   },
   "dtsRollup": {
     "enabled": true,
-    "publishFolder": "",
-    "mainDtsRollupPath": "./dist/index.d.ts"
+    "untrimmedFilePath": "",
+    "publicTrimmedFilePath": "./types/azure-cosmos.d.ts"
   },
-  "apiReviewFile": {
-    "enabled": false
-  },
-  "apiJsonFile": {
-    "enabled": false
+  "messages": {
+    "tsdocMessageReporting": {
+      "default": {
+        "logLevel": "none"
+      }
+    },
+    "extractorMessageReporting": {
+      "ae-missing-release-tag": {
+        "logLevel": "none"
+      },
+      "ae-unresolved-link": {
+        "logLevel": "none"
+      }
+    }
   }
 }
