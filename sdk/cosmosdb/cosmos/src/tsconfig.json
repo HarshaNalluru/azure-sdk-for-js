@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "./types" /* Output directory for generated declaration files.*/,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "../dist-esm/src",
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "target": "es6",
+    "sourceMap": true,
+    "newLine": "LF",
+    "resolveJsonModule": true,
+    "composite": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "stripInternal": true
+  },
+  "include": ["./**/*.ts"]
+}

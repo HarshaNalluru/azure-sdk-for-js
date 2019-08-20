@@ -763,7 +763,7 @@ export enum PluginOn {
 // @public
 export class QueryIterator<T> {
     // Warning: (ae-forgotten-export) The symbol "FetchFunctionCallback" needs to be exported by the entry point index.d.ts
-    constructor(clientContext: ClientContext, query: SqlQuerySpec | string, options: FeedOptions, fetchFunctions: FetchFunctionCallback | FetchFunctionCallback[], resourceLink?: string | undefined, resourceType?: ResourceType | undefined);
+    constructor(clientContext: ClientContext, query: SqlQuerySpec | string, options: FeedOptions, fetchFunctions: FetchFunctionCallback | FetchFunctionCallback[], resourceLink?: string, resourceType?: ResourceType);
     fetchAll(): Promise<FeedResponse<T>>;
     fetchNext(): Promise<FeedResponse<T>>;
     getAsyncIterator(): AsyncIterable<FeedResponse<T>>;
@@ -951,7 +951,7 @@ export interface Resource {
 
 // @public (undocumented)
 export class ResourceResponse<TResource> {
-    constructor(resource: TResource, headers: CosmosHeaders_2, statusCode: StatusCode, substatus?: number | undefined);
+    constructor(resource: TResource, headers: CosmosHeaders_2, statusCode: StatusCode, substatus?: SubStatusCode);
     // (undocumented)
     readonly activityId: string;
     // (undocumented)
@@ -966,8 +966,10 @@ export class ResourceResponse<TResource> {
     // 
     // (undocumented)
     readonly statusCode: StatusCode;
+    // Warning: (ae-forgotten-export) The symbol "SubStatusCode" needs to be exported by the entry point index.d.ts
+    // 
     // (undocumented)
-    readonly substatus?: number | undefined;
+    readonly substatus?: SubStatusCode;
 }
 
 // @public (undocumented)
@@ -1092,8 +1094,8 @@ export class TimeSpan {
     // (undocumented)
     static additionDoesOverflow(a: number, b: number): boolean;
     // (undocumented)
-    static compare(t1: TimeSpan, t2: TimeSpan): 1 | -1 | 0;
-    compareTo(value: TimeSpan): 1 | -1 | 0;
+    static compare(t1: TimeSpan, t2: TimeSpan): 0 | 1 | -1;
+    compareTo(value: TimeSpan): 0 | 1 | -1;
     // (undocumented)
     days(): number;
     duration(): TimeSpan;

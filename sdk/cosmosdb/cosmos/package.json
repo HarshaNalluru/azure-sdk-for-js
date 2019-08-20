@@ -4,18 +4,16 @@
   "description": "Microsoft Azure Cosmos DB Service Node.js SDK for SQL API",
   "sdk-type": "client",
   "main": "./dist/index.js",
-  "module": "./dist-esm/index.js",
+  "module": "./dist-esm/src/index.js",
   "browser": {
-    "./dist-esm/request/defaultAgent.js": "./dist-esm/request/defaultAgent.browser.js"
+    "./dist-esm/src/request/defaultAgent.js": "./dist-esm/src/request/defaultAgent.browser.js"
   },
-  "types": "./dist/index.d.ts",
-  "scripts": {
-    "audit": "node ../../../common/scripts/rush-audit.js && rimraf node_modules package-lock.json && npm i --package-lock-only 2>&1 && npm audit",
-    "build:samples": "cd samples && tsc -p .",
+  "types": "./types/azure-cosmos.d.ts",
+  "scripts-old": {
     "clean": "rimraf dist && rimraf dist-esm",
     "lint": "tslint --project ./src/tsconfig.json",
-    "format": "prettier --write --config ../../.prettierrc.json \"src/**/*.ts\" \"test/**/*.ts\" \"*.{js,json}\"",
-    "check-format": "prettier --list-different --config ../../.prettierrc.json \"src/**/*.ts\" \"test/**/*.ts\" \"*.{js,json}\"",
+    "format": "prettier --write --config .prettierrc.json \"src/**/*.ts\" \"test/**/*.ts\"",
+    "check-format": "prettier --list-different --config .prettierrc.json \"src/**/*.ts\" \"test/**/*.ts\"",
     "compile": "echo Using TypeScript && tsc --version && tsc -b --pretty",
     "compile:samples": "tsc -b samples",
     "docs": "typedoc --tsconfig ./src/tsconfig.json --excludePrivate --mode file --out ./dist/docs ./src",
@@ -26,6 +24,34 @@
     "prepack": "npm install && npm run build",
     "test-browser": "karma start ./karma.config.js --single-run",
     "test-consumer": "node consumer-test.js"
+  },
+  "scripts": {
+    "audit": "node ../../../common/scripts/rush-audit.js && rimraf node_modules package-lock.json && npm i --package-lock-only 2>&1 && npm audit",
+    "build:samples": "tsc -b samples",
+    "build:test": "tsc -b src test --verbose",
+    "build": "npm run clean && npm run extract-api && rollup -c && node writeSDKVersion.js && npm run docs",
+    "bundle-types": "node bundle-types.js",
+    "check-format": "prettier --list-different --config ../../.prettierrc.json \"src/**/*.ts\" \"test/**/*.ts\" \"*.{js,json}\"",
+    "clean": "rimraf dist dist-esm types *.tgz *.log test/**/*.{js,js.map,d.ts}",
+    "docs": "typedoc --tsconfig tsconfig.json --excludePrivate --mode file --out ./dist/docs ./src",
+    "extract-api": "tsc --version && tsc -b --pretty && api-extractor run --local",
+    "format": "prettier --write --config ../../.prettierrc.json \"src/**/*.ts\" \"test/**/*.ts\" \"*.{js,json}\"",
+    "integration-test:browser": "echo skipped",
+    "integration-test:node": "mocha -r esm -r dotenv/config -r ./test/common/setup.js \"./test/**/*.spec.js\" --timeout 100000",
+    "integration-test": "npm run integration-test:node && npm run integration-test:browser",
+    "lint:fix": "eslint \"src/**/*.ts\" \"test/**/*.ts\" -c ../../.eslintrc.json --fix --fix-type [problem,suggestion]",
+    "lint": "eslint -c ../../.eslintrc.json src test --ext .ts -f html -o cosmos-lintReport.html || exit 0",
+    "pack": "npm pack 2>&1",
+    "prebuild": "npm run clean",
+    "prepack": "npm install && npm run build",
+    "test:browser": "npm run build:test && npm run unit-test:browser && npm run integration-test:browser",
+    "test:node": "npm run build:test && npm run unit-test:node && npm run integration-test:node",
+    "test-browser": "karma start ./karma.config.js --single-run",
+    "test-consumer": "node consumer-test.js",
+    "test": "npm run build:test && npm run unit-test && npm run integration-test",
+    "unit-test:browser": "npm run integration-test:browser",
+    "unit-test:node": "npm run integration-test:node",
+    "unit-test": "npm run unit-test:node && npm run unit-test:browser"
   },
   "files": [
     "dist",
@@ -54,6 +80,9 @@
     "node": ">=6.0.0"
   },
   "homepage": "https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/cosmosdb/cosmos#readme",
+  "tsdoc": {
+    "tsdocFlavor": "AEDoc"
+  },
   "dependencies": {
     "@azure/cosmos-sign": "1.0.2",
     "atob": "2.1.2",
@@ -80,10 +109,17 @@
     "@types/tunnel": "^0.0.1",
     "@types/underscore": "^1.8.8",
     "@types/uuid": "^3.4.3",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
     "abort-controller": "3.0.0",
     "cross-env": "^5.2.0",
     "dotenv": "^8.0.0",
     "esm": "3.2.18",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-no-null": "^1.0.2",
+    "eslint-plugin-no-only-tests": "^2.3.0",
+    "eslint-plugin-promise": "^4.1.1",
     "execa": "1.0.0",
     "karma": "^4.0.1",
     "karma-chrome-launcher": "^3.0.0",
@@ -108,12 +144,7 @@
     "sinon": "^7.1.0",
     "source-map-support": "^0.5.9",
     "ts-node": "^8.3.0",
-    "tslint": "5.16.0",
-    "tslint-config-prettier": "^1.14.0",
     "typedoc": "0.14.2",
     "typescript": "^3.2.2"
-  },
-  "tsdoc": {
-    "tsdocFlavor": "AEDoc"
   }
 }
