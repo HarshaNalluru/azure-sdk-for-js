@@ -1,3 +1,7 @@
+parameters:
+  PackagePath: "sdk/cosmosdb/cosmos/"
+  PackageName: "@azure/cosmos"
+
 steps:
   - script: |
       node common/scripts/install-run-rush.js test:consumer -t "${{parameters.PackageName}}" --verbose
