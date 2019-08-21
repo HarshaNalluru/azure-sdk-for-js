@@ -1,4 +1,4 @@
-paramters:
+parameters:
   Matrix:
     Linux_Node8:
       OSVmImage: "ubuntu-16.04"
