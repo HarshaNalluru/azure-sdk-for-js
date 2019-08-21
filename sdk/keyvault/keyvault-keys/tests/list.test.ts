@@ -28,6 +28,20 @@ describe("Keys client - list keys in various ways", () => {
 
   // The tests follow
 
+  it("can purge all keys", async function() {
+    // WARNING: When running integration-tests, or having TEST_MODE="record", all of the keys in the indicated KEYVAULT_NAME will be deleted as part of this test.
+    for await (const key of client.listKeys()) {
+      try {
+        await testClient.flushKey(key.name);
+      } catch(e) {}
+    }
+    for await (const key of client.listDeletedKeys()) {
+      try {
+        await testClient.purgeKey(key.name);
+      } catch(e) {}
+    }
+  });
+
   it("can get the versions of a key", async function() {
     const keyName = testClient.formatName(`${keyPrefix}-${this!.test!.title}-${keySuffix}`);
     await client.createKey(keyName, "RSA");
@@ -138,8 +152,10 @@ describe("Keys client - list keys in various ways", () => {
       await client.deleteKey(name);
     }
 
-    // Waiting until the key is deleted
-    await retry(async () => client.getDeletedKey(keyNames[0]));
+    // Waiting until the keys are deleted
+    for (const name of keyNames) {
+      await retry(async () => client.getDeletedKey(name));
+    }
 
     let found = 0;
     for await (const key of client.listDeletedKeys()) {
@@ -165,8 +181,10 @@ describe("Keys client - list keys in various ways", () => {
       await client.deleteKey(name);
     }
 
-    // Waiting until the key is deleted
-    await retry(async () => client.getDeletedKey(keyNames[0]));
+    // Waiting until the keys are deleted
+    for (const name of keyNames) {
+      await retry(async () => client.getDeletedKey(name));
+    }
 
     let found = 0;
     for await (const page of client.listDeletedKeys().byPage()) {

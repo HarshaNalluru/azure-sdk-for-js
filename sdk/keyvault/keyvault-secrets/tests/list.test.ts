@@ -31,6 +31,20 @@ describe("Secret client - list secrets in various ways", () => {
 
   // The tests follow
 
+  it("can purge all secrets", async function() {
+    // WARNING: When running integration-tests, or having TEST_MODE="record", all of the secrets in the indicated KEYVAULT_NAME will be deleted as part of this test.
+    for await (const secret of client.listSecrets()) {
+      try {
+        await testClient.flushSecret(secret.name);
+      } catch(e) {}
+    }
+    for await (const secret of client.listDeletedSecrets()) {
+      try {
+        await testClient.purgeSecret(secret.name);
+      } catch(e) {}
+    }
+  });
+
   it("can list secrets", async function() {
     const secretName = testClient.formatName(
       `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
@@ -66,8 +80,10 @@ describe("Secret client - list secrets in various ways", () => {
       await client.deleteSecret(name);
     }
 
-    // Waiting until the key is deleted
-    await retry(async () => client.getDeletedSecret(secretNames[0]));
+    // Waiting until the secrets are deleted
+    for (const name of secretNames) {
+      await retry(async () => client.getDeletedSecret(name));
+    }
 
     let found = 0;
     for await (const secret of client.listDeletedSecrets()) {
@@ -164,8 +180,10 @@ describe("Secret client - list secrets in various ways", () => {
       await client.deleteSecret(name);
     }
 
-    // Waiting until the key is deleted
-    await retry(async () => client.getDeletedSecret(secretNames[0]));
+    // Waiting until the secrets are deleted
+    for (const name of secretNames) {
+      await retry(async () => client.getDeletedSecret(name));
+    }
 
     let found = 0;
     for await (const page of client.listDeletedSecrets().byPage()) {
