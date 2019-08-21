@@ -35,6 +35,7 @@ jobs:
           NodeVersion: "8.x"
           TestType: "node"
       PreIntegrationSteps: cosmos-integration-public
+      PostIntegrationSteps: cosmos-additional-steps
       EnvVars:
         ACCOUNT_HOST: $(CosmosDbEmulator.Endpoint)
         MOCHA_TIMEOUT: 100000
