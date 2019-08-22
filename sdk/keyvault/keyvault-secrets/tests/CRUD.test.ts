@@ -4,10 +4,11 @@
 import * as assert from "assert";
 import { SecretsClient } from "../src";
 import { retry } from "./utils/recorder";
-import {  env } from "@azure/test-utils-recorder";
+import { env } from "@azure/test-utils-recorder";
 import { authenticate } from "./utils/testAuthentication";
 import TestClient from "./utils/testClient";
 import { AbortController } from "@azure/abort-controller";
+import { isNode } from "@azure/core-http";
 
 describe("Secret client - create, read, update and delete operations", () => {
   const secretValue = "SECRET_VALUE";
@@ -41,25 +42,28 @@ describe("Secret client - create, read, update and delete operations", () => {
     await testClient.flushSecret(secretName);
   });
 
-  it("can abort adding a secret", async function() {
-    const secretName = testClient.formatName(
-      `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
-    );
-    const controller = new AbortController();
-    const resultPromise = client.setSecret(secretName, secretValue, {
-      requestOptions: {
-        abortSignal: controller.signal
+  if (!isNode && (env.TEST_MODE === "record" || env.TEST_MODE === "playback")) {
+  } else {
+    it("can abort adding a secret", async function() {
+      const secretName = testClient.formatName(
+        `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
+      );
+      const controller = new AbortController();
+      const resultPromise = client.setSecret(secretName, secretValue, {
+        requestOptions: {
+          abortSignal: controller.signal
+        }
+      });
+      controller.abort();
+      let error;
+      try {
+        await resultPromise;
+      } catch (e) {
+        error = e;
       }
+      assert.equal(error.message, "The request was aborted");
     });
-    controller.abort();
-    let error;
-    try {
-      await resultPromise;
-    } catch (e) {
-      error = e;
-    }
-    assert.equal(error.message, "The request was aborted");
-  });
+  }
 
   it("cannot create a secret with an empty name", async function() {
     const secretName = "";
