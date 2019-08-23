@@ -18,3 +18,8 @@ steps:
     condition: succeededOrFailed()
     displayName: "Run Samples - Cosmos"
     workingDirectory: "${{parameters.PackagePath}}"
+    PreIntegrationSteps: cosmos-integration-public
+    EnvVars:
+      ACCOUNT_HOST: $(CosmosDbEmulator.Endpoint)
+      MOCHA_TIMEOUT: 100000
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
