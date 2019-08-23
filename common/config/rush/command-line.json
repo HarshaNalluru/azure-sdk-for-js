@@ -109,7 +109,7 @@
     },
     {
       "commandKind": "bulk",
-      "name": "test:consumer",
+      "name": "test-consumer",
       "summary": "Execute consumer tests defined in projects",
       "enableParallelism": true
     },
