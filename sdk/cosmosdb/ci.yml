@@ -22,11 +22,8 @@ pr:
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
-      # Unit-tests are being skipped, the huge matrix with different variations is not needed
-      Matrix:
-        Linux_Node10:
-          OSVmImage: "ubuntu-16.04"
-          TestType: "node"
+      # Unit-tests are being skipped. So, matrix is not needed.
+      Matrix: {}
       ServiceDirectory: cosmosdb
 
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-integration.yml
