@@ -20,20 +20,24 @@
     "./dist-esm/request/defaultAgent.js": "./dist-esm/request/defaultAgent.browser.js"
   },
   "files": [
-    "dist",
-    "dist-esm"
+    "changelog.md",
+    "dist/",
+    "dist-esm/",
+    "LICENSE",
+    "src/",
+    "tsconfig.json"
   ],
   "homepage": "https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/cosmosdb/cosmos#readme",
   "types": "./dist/index.d.ts",
   "engine": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "scripts": {
     "audit": "node ../../../common/scripts/rush-audit.js && rimraf node_modules package-lock.json && npm i --package-lock-only 2>&1 && npm audit",
     "build:samples": "tsc -b samples",
     "build:src": "echo Using TypeScript && tsc --version && tsc -b --pretty",
     "build:test": "tsc -b src test --verbose",
-    "build": "npm run clean && npm run extract-api && npm run bundle && node writeSDKVersion.js && npm run docs",
+    "build": "npm run clean && npm run extract-api && npm run bundle && node writeSDKVersion.js",
     "bundle": "rollup -c",
     "bundle-types": "node bundle-types.js",
     "check-format": "prettier --list-different --config ../../.prettierrc.json \"src/**/*.ts\" \"test/**/*.ts\" \"*.{js,json}\"",
@@ -49,11 +53,10 @@
     "lint": "eslint -c ../../.eslintrc.json src test --ext .ts -f html -o cosmos-lintReport.html || exit 0",
     "pack": "npm pack 2>&1",
     "prebuild": "npm run clean",
-    "prepack": "npm install && npm run build",
     "test:browser": "npm run build:test && npm run unit-test:browser && npm run integration-test:browser",
     "test:node": "npm run build:test && npm run unit-test:node && npm run integration-test:node",
     "test-browser": "karma start ./karma.config.js --single-run",
-    "test:consumer": "node consumer-test.js",
+    "test-consumer": "node consumer-test.js",
     "test": "npm run build:test && npm run unit-test && npm run integration-test",
     "unit-test:browser": "echo skipped",
     "unit-test:node": "echo skipped",
@@ -106,10 +109,10 @@
     "karma-requirejs": "^1.1.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^4.0.0-rc.6",
-    "mocha": "^5.2.0",
     "mocha-junit-reporter": "^1.18.0",
-    "mocha-multi": "1.1.0",
     "prettier": "^1.16.4",
+    "mocha": "^6.2.0",
+    "mocha-multi": "^1.1.3",
     "proxy-agent": "3.0.3",
     "requirejs": "^2.3.5",
     "rimraf": "^2.6.2",
