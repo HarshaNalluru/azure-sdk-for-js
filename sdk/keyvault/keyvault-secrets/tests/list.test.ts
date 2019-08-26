@@ -4,7 +4,8 @@
 import * as assert from "assert";
 import chai from "chai";
 import { SecretsClient } from "../src";
-import { retry, env } from "./utils/recorder";
+import { retry } from "./utils/recorder";
+import { env } from "@azure/test-utils-recorder";
 import { authenticate } from "./utils/testAuthentication";
 import TestClient from "./utils/testClient";
 const { expect } = chai;
@@ -17,7 +18,7 @@ describe("Secret client - list secrets in various ways", () => {
   let testClient: TestClient;
   let recorder: any;
 
-  before(async function() {
+  beforeEach(async function() {
     const authentication = await authenticate(this);
     secretSuffix = authentication.secretSuffix;
     client = authentication.client;
@@ -25,7 +26,7 @@ describe("Secret client - list secrets in various ways", () => {
     recorder = authentication.recorder;
   });
 
-  after(async function() {
+  afterEach(async function() {
     recorder.stop();
   });
 
@@ -36,12 +37,12 @@ describe("Secret client - list secrets in various ways", () => {
     for await (const secret of client.listSecrets()) {
       try {
         await testClient.flushSecret(secret.name);
-      } catch(e) {}
+      } catch (e) {}
     }
     for await (const secret of client.listDeletedSecrets()) {
       try {
         await testClient.purgeSecret(secret.name);
-      } catch(e) {}
+      } catch (e) {}
     }
   });
 
@@ -146,7 +147,7 @@ describe("Secret client - list secrets in various ways", () => {
     assert.equal(totalVersions, 0, `Unexpected total versions for secret ${secretName}`);
   });
 
-  it("can list secrets", async function() {
+  it("can list secrets - byPage()", async function() {
     const secretName = testClient.formatName(
       `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
     );
@@ -168,7 +169,7 @@ describe("Secret client - list secrets in various ways", () => {
     }
   });
 
-  it("can list deleted secrets", async function() {
+  it("can list deleted secrets - byPage()", async function() {
     const secretName = testClient.formatName(
       `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
     );
@@ -199,7 +200,7 @@ describe("Secret client - list secrets in various ways", () => {
     }
   });
 
-  it("can retrieve all versions of a secret", async function() {
+  it("can retrieve all versions of a secret - byPage()", async function() {
     const secretName = testClient.formatName(
       `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
     );
@@ -232,7 +233,7 @@ describe("Secret client - list secrets in various ways", () => {
     await testClient.flushSecret(secretName);
   });
 
-  it("can list secret versions (non existing)", async function() {
+  it("can list secret versions (non existing) - byPage()", async function() {
     const secretName = testClient.formatName(
       `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
     );

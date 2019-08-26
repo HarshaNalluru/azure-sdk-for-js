@@ -3,7 +3,9 @@
 
 import * as assert from "assert";
 import { SecretsClient } from "../src";
-import { retry, isNode, env } from "./utils/recorder";
+import { retry } from "./utils/recorder";
+import { isNode } from "@azure/core-http";
+import { env } from "@azure/test-utils-recorder";
 import { authenticate } from "./utils/testAuthentication";
 import TestClient from "./utils/testClient";
 
@@ -14,7 +16,7 @@ describe("Secret client - restore secrets and recover backups", () => {
   let testClient: TestClient;
   let recorder: any;
 
-  before(async function() {
+  beforeEach(async function() {
     const authentication = await authenticate(this);
     secretSuffix = authentication.secretSuffix;
     client = authentication.client;
@@ -22,7 +24,7 @@ describe("Secret client - restore secrets and recover backups", () => {
     recorder = authentication.recorder;
   });
 
-  after(async function() {
+  afterEach(async function() {
     recorder.stop();
   });
 
