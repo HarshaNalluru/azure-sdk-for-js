@@ -18,8 +18,9 @@ async function main() {
     sharedKeyCredential,
     {
       proxy: {
-        // username and password can be passed as additional arguments
-        url: "http://localhost:3128"
+        url: "http://localhost:3128",
+        username: "username",
+        password: "password"
       }
     }
   );
