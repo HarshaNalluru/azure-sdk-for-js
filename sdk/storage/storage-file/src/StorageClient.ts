@@ -3,8 +3,17 @@
 
 import { StorageClientContext } from "./generated/src/storageClientContext";
 import { Pipeline } from "./Pipeline";
-import { escapeURLPath } from "./utils/utils.common";
+import { escapeURLPath, getAccountNameFromUrl } from "./utils/utils.common";
 import { SERVICE_VERSION } from "./utils/constants";
+import { SpanOptions } from "@azure/core-tracing";
+
+/**
+ * An interface for options common to every remote operation.
+ */
+export interface CommonOptions {
+  spanOptions?: SpanOptions;
+}
+
 /**
  * A StorageClient represents a base client class for ServiceClient, ContainerClient and etc.
  *
@@ -19,6 +28,7 @@ export abstract class StorageClient {
    * @memberof StorageClient
    */
   public readonly url: string;
+  public readonly accountName: string;
 
   /**
    * Request policy pipeline.
@@ -49,6 +59,7 @@ export abstract class StorageClient {
   protected constructor(url: string, pipeline: Pipeline) {
     // URL should be encoded and only once, protocol layer shouldn't encode URL again
     this.url = escapeURLPath(url);
+    this.accountName = getAccountNameFromUrl(url);
 
     this.pipeline = pipeline;
     this.storageClientContext = new StorageClientContext(

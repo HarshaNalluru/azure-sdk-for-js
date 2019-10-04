@@ -9,6 +9,7 @@ import { HttpPipelineLogger } from '@azure/core-http';
 import * as msRest from '@azure/core-http';
 import { PagedAsyncIterableIterator } from '@azure/core-paging';
 import { PageSettings } from '@azure/core-paging';
+import { ServiceClientCredentials } from '@azure/core-http';
 import { ServiceClientOptions } from '@azure/core-http';
 import { TokenCredential } from '@azure/core-http';
 

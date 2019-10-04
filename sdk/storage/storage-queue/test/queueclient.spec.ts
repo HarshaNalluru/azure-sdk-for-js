@@ -3,6 +3,7 @@ import { getQSU, getSASConnectionStringFromEnvironment } from "./utils";
 import { record } from "./utils/recorder";
 import * as dotenv from "dotenv";
 import { QueueClient } from "../src";
+import { TestTracer, setTracer, SpanGraph } from "@azure/core-tracing";
 dotenv.config({ path: "../.env" });
 
 describe("QueueClient", () => {
@@ -77,19 +78,19 @@ describe("QueueClient", () => {
 
   // create with invalid queue name
   it("create negative", async () => {
-    const qClient = queueServiceClient.getQueueClient("");
     let error;
     try {
+      const qClient = queueServiceClient.getQueueClient("");
       await qClient.create();
     } catch (err) {
       error = err;
     }
     assert.ok(error);
-    assert.ok(error.statusCode);
-    assert.deepEqual(error.statusCode, 400);
-    assert.ok(error.response);
-    assert.ok(error.response.body);
-    assert.ok(error.response.body.includes("InvalidResourceName"));
+    assert.equal(
+      error.message,
+      "Unable to extract queueName with provided information.",
+      "Unexpected error caught: " + error
+    );
   });
 
   it("delete", (done) => {
@@ -151,5 +152,45 @@ describe("QueueClient", () => {
         "Error message is different than expected."
       );
     }
+  });
+
+  it("verify accountName and queueName passed to the client", async () => {
+    const accountName = "myaccount";
+    const newClient = new QueueClient(`https://${accountName}.queue.core.windows.net/` + queueName);
+    assert.equal(newClient.queueName, queueName, "Queue name is not the same as the one provided.");
+    assert.equal(
+      newClient.accountName,
+      accountName,
+      "Account name is not the same as the one provided."
+    );
+  });
+
+  it("getProperties with tracing", async () => {
+    const tracer = new TestTracer();
+    setTracer(tracer);
+    const rootSpan = tracer.startSpan("root");
+    await queueClient.getProperties({ spanOptions: { parent: rootSpan } });
+    rootSpan.end();
+
+    const rootSpans = tracer.getRootSpans();
+    assert.strictEqual(rootSpans.length, 1, "Should only have one root span.");
+    assert.strictEqual(rootSpan, rootSpans[0], "The root span should match what was passed in.");
+
+    const expectedGraph: SpanGraph = {
+      roots: [
+        {
+          name: rootSpan.name,
+          children: [
+            {
+              name: "Azure.Storage.Queue.QueueClient-getProperties",
+              children: []
+            }
+          ]
+        }
+      ]
+    };
+
+    assert.deepStrictEqual(tracer.getSpanGraph(rootSpan.context().traceId), expectedGraph);
+    assert.strictEqual(tracer.getActiveSpans().length, 0, "All spans should have had end called");
   });
 });

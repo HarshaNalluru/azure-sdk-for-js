@@ -1,5 +1,6 @@
 import * as assert from "assert";
 import * as dotenv from "dotenv";
+import { TestTracer, setTracer, SpanGraph } from "@azure/core-tracing";
 import { bodyToString, getBSU, getSASConnectionStringFromEnvironment, isSuperSet } from "./utils";
 import { record } from "./utils/recorder";
 import { ContainerClient, BlockBlobTier } from "../src";
@@ -115,7 +116,11 @@ describe("ContainerClient", () => {
 
     const result = (await containerClient
       .listBlobsFlat({
-        include: ["snapshots", "metadata", "uncommittedblobs", "copy", "deleted"],
+        includeCopy: true,
+        includeDeleted: true,
+        includeMetadata: true,
+        includeSnapshots: true,
+        includeUncommitedBlobs: true,
         prefix
       })
       .byPage({ maxPageSize: 1 })
@@ -132,7 +137,11 @@ describe("ContainerClient", () => {
 
     const result2 = (await containerClient
       .listBlobsFlat({
-        include: ["snapshots", "metadata", "uncommittedblobs", "copy", "deleted"],
+        includeCopy: true,
+        includeDeleted: true,
+        includeMetadata: true,
+        includeSnapshots: true,
+        includeUncommitedBlobs: true,
         prefix
       })
       .byPage({ continuationToken: result.nextMarker, maxPageSize: 2 })
@@ -171,7 +180,11 @@ describe("ContainerClient", () => {
 
     const result = (await containerClient
       .listBlobsFlat({
-        include: ["snapshots", "metadata", "uncommittedblobs", "copy", "deleted"],
+        includeCopy: true,
+        includeDeleted: true,
+        includeMetadata: true,
+        includeSnapshots: true,
+        includeUncommitedBlobs: true,
         prefix
       })
       .byPage({ maxPageSize: 1 })
@@ -202,7 +215,11 @@ describe("ContainerClient", () => {
 
     let i = 0;
     for await (const blob of containerClient.listBlobsFlat({
-      include: ["snapshots", "metadata", "uncommittedblobs", "copy", "deleted"],
+      includeCopy: true,
+      includeDeleted: true,
+      includeMetadata: true,
+      includeSnapshots: true,
+      includeUncommitedBlobs: true,
       prefix
     })) {
       assert.ok(blobClients[i].url.indexOf(blob.name));
@@ -232,7 +249,11 @@ describe("ContainerClient", () => {
     }
 
     const iterator = await containerClient.listBlobsFlat({
-      include: ["snapshots", "metadata", "uncommittedblobs", "copy", "deleted"],
+      includeCopy: true,
+      includeDeleted: true,
+      includeMetadata: true,
+      includeSnapshots: true,
+      includeUncommitedBlobs: true,
       prefix
     });
 
@@ -268,7 +289,11 @@ describe("ContainerClient", () => {
     let i = 0;
     for await (const response of containerClient
       .listBlobsFlat({
-        include: ["snapshots", "metadata", "uncommittedblobs", "copy", "deleted"],
+        includeCopy: true,
+        includeDeleted: true,
+        includeMetadata: true,
+        includeSnapshots: true,
+        includeUncommitedBlobs: true,
         prefix
       })
       .byPage({ maxPageSize: 2 })) {
@@ -303,7 +328,11 @@ describe("ContainerClient", () => {
     let i = 0;
     let iter = containerClient
       .listBlobsFlat({
-        include: ["snapshots", "metadata", "uncommittedblobs", "copy", "deleted"],
+        includeCopy: true,
+        includeDeleted: true,
+        includeMetadata: true,
+        includeSnapshots: true,
+        includeUncommitedBlobs: true,
         prefix
       })
       .byPage({ maxPageSize: 2 });
@@ -318,7 +347,11 @@ describe("ContainerClient", () => {
     // Passing next marker as continuationToken
     iter = containerClient
       .listBlobsFlat({
-        include: ["snapshots", "metadata", "uncommittedblobs", "copy", "deleted"],
+        includeCopy: true,
+        includeDeleted: true,
+        includeMetadata: true,
+        includeSnapshots: true,
+        includeUncommitedBlobs: true,
         prefix
       })
       .byPage({ continuationToken: marker, maxPageSize: 2 });
@@ -389,7 +422,10 @@ describe("ContainerClient", () => {
 
     const result = (await containerClient
       .listBlobsByHierarchy(delimiter, {
-        include: ["metadata", "uncommittedblobs", "copy", "deleted"],
+        includeCopy: true,
+        includeDeleted: true,
+        includeMetadata: true,
+        includeUncommitedBlobs: true,
         prefix
       })
       .byPage({ maxPageSize: 1 })
@@ -403,7 +439,10 @@ describe("ContainerClient", () => {
 
     const result2 = (await containerClient
       .listBlobsByHierarchy(delimiter, {
-        include: ["metadata", "uncommittedblobs", "copy", "deleted"],
+        includeCopy: true,
+        includeDeleted: true,
+        includeMetadata: true,
+        includeUncommitedBlobs: true,
         prefix
       })
       .byPage({ continuationToken: result.nextMarker, maxPageSize: 2 })
@@ -417,7 +456,10 @@ describe("ContainerClient", () => {
 
     const result3 = (await containerClient
       .listBlobsByHierarchy(delimiter, {
-        include: ["metadata", "uncommittedblobs", "copy", "deleted"],
+        includeCopy: true,
+        includeDeleted: true,
+        includeMetadata: true,
+        includeUncommitedBlobs: true,
         prefix: `${prefix}0${delimiter}`
       })
       .byPage({ maxPageSize: 2 })
@@ -457,7 +499,7 @@ describe("ContainerClient", () => {
 
     let i = 0;
     for await (const item of containerClient.listBlobsByHierarchy("/", {
-      include: ["metadata"]
+      includeMetadata: true
     })) {
       if (item.kind === "prefix") {
         assert.equal(item.name, prefix + "/");
@@ -494,6 +536,68 @@ describe("ContainerClient", () => {
     const result = await blockBlobClient.download(0);
     assert.deepStrictEqual(await bodyToString(result, body.length), body);
     assert.deepStrictEqual(result.cacheControl, options.blobCacheControl);
+
+    await containerClient.deleteBlob(blobName);
+    try {
+      await blockBlobClient.getProperties();
+      assert.fail(
+        "Expecting an error in getting properties from a deleted block blob but didn't get one."
+      );
+    } catch (error) {
+      assert.ok((error.statusCode as number) === 404);
+    }
+  });
+
+  it("uploadBlockBlob and deleteBlob with tracing", async () => {
+    const tracer = new TestTracer();
+    setTracer(tracer);
+    const rootSpan = tracer.startSpan("root");
+    const body: string = recorder.getUniqueName("randomstring");
+    const options = {
+      blobCacheControl: "blobCacheControl",
+      blobContentDisposition: "blobContentDisposition",
+      blobContentEncoding: "blobContentEncoding",
+      blobContentLanguage: "blobContentLanguage",
+      blobContentType: "blobContentType",
+      metadata: {
+        keya: "vala",
+        keyb: "valb"
+      }
+    };
+    const blobName: string = recorder.getUniqueName("blob");
+    const { blockBlobClient } = await containerClient.uploadBlockBlob(blobName, body, body.length, {
+      blobHTTPHeaders: options,
+      metadata: options.metadata,
+      spanOptions: { parent: rootSpan }
+    });
+
+    rootSpan.end();
+
+    const rootSpans = tracer.getRootSpans();
+    assert.strictEqual(rootSpans.length, 1, "Should only have one root span.");
+    assert.strictEqual(rootSpan, rootSpans[0], "The root span should match what was passed in.");
+
+    const expectedGraph: SpanGraph = {
+      roots: [
+        {
+          name: rootSpan.name,
+          children: [
+            {
+              name: "Azure.Storage.Blob.ContainerClient-uploadBlockBlob",
+              children: [
+                {
+                  name: "Azure.Storage.Blob.BlockBlobClient-upload",
+                  children: []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    assert.deepStrictEqual(tracer.getSpanGraph(rootSpan.context().traceId), expectedGraph);
+    assert.strictEqual(tracer.getActiveSpans().length, 0, "All spans should have had end called");
 
     await containerClient.deleteBlob(blobName);
     try {
@@ -571,5 +675,18 @@ describe("ContainerClient", () => {
       accountName,
       "Account name is not the same as the one provided."
     );
+  });
+
+  it("exists returns true on an existing container", async () => {
+    const result = await containerClient.exists();
+    assert.ok(result, "exists() should return true for an existing container");
+  });
+
+  it("exists returns false on non-existing container", async () => {
+    const newContainerClient = blobServiceClient.getContainerClient(
+      recorder.getUniqueName("newcontainer")
+    );
+    const result = await newContainerClient.exists();
+    assert.ok(result === false, "exists() should return true for an existing container");
   });
 });

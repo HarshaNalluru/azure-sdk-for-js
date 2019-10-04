@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 
 import { AbortController } from "@azure/abort-controller";
 import { isNode } from "@azure/core-http";
+import { TestTracer, setTracer, SpanGraph } from "@azure/core-tracing";
 import { bodyToString, getBSU, getSASConnectionStringFromEnvironment } from "./utils";
 import { record, delay } from "./utils/recorder";
 import { BlobClient, BlockBlobClient, ContainerClient, BlockBlobTier } from "../src";
@@ -156,7 +157,7 @@ describe("BlobClient", () => {
 
     const result2 = (await containerClient
       .listBlobsFlat({
-        include: ["snapshots"]
+        includeSnapshots: true
       })
       .byPage()
       .next()).value;
@@ -174,7 +175,7 @@ describe("BlobClient", () => {
 
     const result3 = (await containerClient
       .listBlobsFlat({
-        include: ["snapshots"]
+        includeSnapshots: true
       })
       .byPage()
       .next()).value;
@@ -213,7 +214,7 @@ describe("BlobClient", () => {
 
     const result = (await containerClient
       .listBlobsFlat({
-        include: ["deleted"]
+        includeDeleted: true
       })
       .byPage()
       .next()).value;
@@ -224,7 +225,7 @@ describe("BlobClient", () => {
 
     const result2 = (await containerClient
       .listBlobsFlat({
-        include: ["deleted"]
+        includeDeleted: true
       })
       .byPage()
       .next()).value;
@@ -446,5 +447,94 @@ describe("BlobClient", () => {
       accountName,
       "Account name is not the same as the one provided."
     );
+  });
+
+  it("download with default parameters and tracing", async () => {
+    const tracer = new TestTracer();
+    setTracer(tracer);
+
+    const rootSpan = tracer.startSpan("root");
+
+    const result = await blobClient.download(undefined, undefined, {
+      spanOptions: { parent: rootSpan }
+    });
+    assert.deepStrictEqual(await bodyToString(result, content.length), content);
+
+    rootSpan.end();
+
+    const rootSpans = tracer.getRootSpans();
+    assert.strictEqual(rootSpans.length, 1, "Should only have one root span.");
+    assert.strictEqual(rootSpan, rootSpans[0], "The root span should match what was passed in.");
+
+    const expectedGraph: SpanGraph = {
+      roots: [
+        {
+          name: rootSpan.name,
+          children: [
+            {
+              name: "Azure.Storage.Blob.BlobClient-download",
+              children: []
+            }
+          ]
+        }
+      ]
+    };
+
+    assert.deepStrictEqual(tracer.getSpanGraph(rootSpan.context().traceId), expectedGraph);
+    assert.strictEqual(tracer.getActiveSpans().length, 0, "All spans should have had end called");
+  });
+
+  it("exists returns true on an existing blob", async () => {
+    const result = await blobClient.exists();
+    assert.ok(result, "exists() should return true for an existing blob");
+  });
+
+  it("exists returns false on non-existing blob", async () => {
+    const newBlobClient = containerClient.getBlobClient(recorder.getUniqueName("newblob"));
+    const result = await newBlobClient.exists();
+    assert.ok(result === false, "exists() should return true for an existing blob");
+  });
+
+  it("exists works with customer provided key", async () => {
+    blobName = recorder.getUniqueName("blobCPK");
+    blobClient = containerClient.getBlobClient(blobName);
+    blockBlobClient = blobClient.getBlockBlobClient();
+    await blockBlobClient.upload(content, content.length, {
+      customerProvidedKey: Test_CPK_INFO
+    });
+
+    const metadata = { a: "a" };
+    const smResp = await blobClient.setMetadata(metadata, {
+      customerProvidedKey: Test_CPK_INFO
+    });
+    assert.equal(smResp.encryptionKeySha256, Test_CPK_INFO.encryptionKeySha256);
+
+    const result = await blobClient.exists({
+      customerProvidedKey: Test_CPK_INFO
+    });
+    assert.ok(result, "exists() should return true");
+  });
+
+  it("exists re-throws error from getProperties", async () => {
+    blobName = recorder.getUniqueName("blobCPK");
+    blobClient = containerClient.getBlobClient(blobName);
+    blockBlobClient = blobClient.getBlockBlobClient();
+    await blockBlobClient.upload(content, content.length, {
+      customerProvidedKey: Test_CPK_INFO
+    });
+
+    const metadata = { a: "a" };
+    const smResp = await blobClient.setMetadata(metadata, {
+      customerProvidedKey: Test_CPK_INFO
+    });
+    assert.equal(smResp.encryptionKeySha256, Test_CPK_INFO.encryptionKeySha256);
+
+    let exceptionCaught = false;
+    try {
+      await blobClient.exists();
+    } catch (err) {
+      exceptionCaught = true;
+    }
+    assert.ok(exceptionCaught);
   });
 });

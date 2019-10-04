@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-export const SDK_VERSION: string = "12.0.0-preview.3";
+export const SDK_VERSION: string = "12.0.0-preview.4";
 export const SERVICE_VERSION: string = "2019-02-02";
 
 export const BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES: number = 256 * 1024 * 1024; // 256MB
@@ -9,7 +9,7 @@ export const BLOCK_BLOB_MAX_STAGE_BLOCK_BYTES: number = 100 * 1024 * 1024; // 10
 export const BLOCK_BLOB_MAX_BLOCKS: number = 50000;
 export const DEFAULT_BLOB_DOWNLOAD_BLOCK_BYTES: number = 4 * 1024 * 1024; // 4MB
 export const DEFAULT_MAX_DOWNLOAD_RETRY_REQUESTS: number = 5;
-export const DefaultStorageScope: string = "https://storage.azure.com/.default";
+export const StorageOAuthScopes: string | string[] = "https://storage.azure.com/.default";
 
 export const URLConstants = {
   Parameters: {
