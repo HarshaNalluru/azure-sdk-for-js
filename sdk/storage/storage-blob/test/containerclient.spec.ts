@@ -555,4 +555,21 @@ describe("ContainerClient", () => {
       );
     }
   });
+
+  it("verify containerName passed to the client", async () => {
+    const accountName = "myaccount";
+    const newClient = new ContainerClient(
+      `https://${accountName}.blob.core.windows.net/` + containerName
+    );
+    assert.equal(
+      newClient.containerName,
+      containerName,
+      "Container name is not the same as the one provided."
+    );
+    assert.equal(
+      newClient.accountName,
+      accountName,
+      "Account name is not the same as the one provided."
+    );
+  });
 });

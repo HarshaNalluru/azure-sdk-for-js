@@ -429,4 +429,22 @@ describe("BlobClient", () => {
       assert.equal(properties.archiveStatus.toLowerCase(), "rehydrate-pending-to-cool");
     }
   });
+
+  it("verify blobName and containerName passed to the client", async () => {
+    const accountName = "myaccount";
+    const newClient = new BlobClient(
+      `https://${accountName}.blob.core.windows.net/` + containerName + "/" + blobName
+    );
+    assert.equal(
+      newClient.containerName,
+      containerName,
+      "Container name is not the same as the one provided."
+    );
+    assert.equal(newClient.blobName, blobName, "Blob name is not the same as the one provided.");
+    assert.equal(
+      newClient.accountName,
+      accountName,
+      "Account name is not the same as the one provided."
+    );
+  });
 });
