@@ -5,13 +5,13 @@ Azure Files offers fully managed file shares in the cloud that are accessible vi
 This project provides a client library in JavaScript that makes it easy to consume Microsoft Azure File Storage service.
 
 > Note: This package was previously published under the name `@azure/storage-file`.
-It has been renamed to `@azure/storage-file-share` to better align with the upcoming new package
-for Azure Storage Files DataLake and provide a consistent set of APIs for working with files on Azure.
+> It has been renamed to `@azure/storage-file-share` to better align with the upcoming new package
+> for Azure Storage Files DataLake and provide a consistent set of APIs for working with files on Azure.
 
 Version: 12.0.0-preview.5
 
 - [Package (npm)](https://www.npmjs.com/package/@azure/storage-file-share/v/12.0.0-preview.5)
-- [Samples](https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/storage/storage-file-share/samples)
+- [Examples to get started](https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/storage/storage-file-share/samples)
 - [API Reference Documentation](https://azure.github.io/azure-sdk-for-js/storage.html#azure-storage-file-share)
 - [Product documentation](https://docs.microsoft.com/en-us/azure/storage/files/storage-files-introduction)
 - [Source code](https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/storage/storage-file-share)
@@ -59,7 +59,7 @@ There are differences between Node.js and browsers runtime. When getting started
 ##### Following features, interfaces, classes or functions are only available in Node.js
 
 - Shared Key Authorization based on account name and account key
-  - `SharedKeyCredential`
+  - `StorageSharedKeyCredential`
 - Shared Access Signature(SAS) generation
   - `generateAccountSASQueryParameters()`
   - `generateFileSASQueryParameters()`
@@ -128,7 +128,7 @@ You can use the `const Azure = require("@azure/storage-file-share");` shown abov
 Or you can selectively import certain types,
 
 ```javascript
-const { ShareServiceClient, SharedKeyCredential } = require("@azure/storage-file-share");
+const { ShareServiceClient, StorageSharedKeyCredential } = require("@azure/storage-file-share");
 ```
 
 ### Create the file service client
@@ -140,9 +140,9 @@ Use the constructor to create a instance of `ShareServiceClient`, passing in the
 const account = "";
 const accountKey = "";
 
-// Use SharedKeyCredential with storage account and account key
-// SharedKeyCredential is only avaiable in Node.js runtime, not in browsers
-const sharedKeyCredential = new SharedKeyCredential(account, accountKey);
+// Use StorageSharedKeyCredential with storage account and account key
+// StorageSharedKeyCredential is only avaiable in Node.js runtime, not in browsers
+const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
 const serviceClient = new ShareServiceClient(
   // When using AnonymousCredential, following url should include a valid SAS
   `https://${account}.file.core.windows.net`,

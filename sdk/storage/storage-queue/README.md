@@ -7,7 +7,7 @@ This project provides a client library in JavaScript that makes it easy to consu
 Version: 12.0.0-preview.5
 
 - [Package (npm)](https://www.npmjs.com/package/@azure/storage-queue/v/12.0.0-preview.5)
-- [Samples](https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/storage/storage-queue/samples)
+- [Examples to get started](https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/storage/storage-queue/samples)
 - [API Reference Documentation](https://azure.github.io/azure-sdk-for-js/storage.html#azure-storage-queue)
 - [Product documentation](https://docs.microsoft.com/azure/storage/queues/storage-queues-introduction)
 - [Source code](https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/storage/storage-queue)
@@ -20,7 +20,7 @@ Version: 12.0.0-preview.5
 - Queue Storage
   - Get/Set Queue Service Properties
   - Create/List/Delete Queues
-  - Enqueue/Dequeue/Peek/Clear/Update/Delete Queue Messages
+  - Send/Receive/Peek/Clear/Update/Delete Queue Messages
 - Features new
   - Asynchronous I/O for all operations using the async methods
   - HttpPipeline which enables a high degree of per-request configurability
@@ -54,7 +54,7 @@ There are differences between Node.js and browsers runtime. When getting started
 ##### Following features, interfaces, classes or functions are only available in Node.js
 
 - Shared Key Authorization based on account name and account key
-  - `SharedKeyCredential`
+  - `StorageSharedKeyCredential`
 - Shared Access Signature(SAS) generation
   - `generateAccountSASQueryParameters()`
   - `generateQueueSASQueryParameters()`
@@ -64,7 +64,7 @@ There are differences between Node.js and browsers runtime. When getting started
 The preferred way to install the Azure Queue Storage client library for JavaScript is to use the npm package manager. Simply type the following into a terminal window:
 
 ```bash
-npm install @azure/storage-queue@12.0.0-preview.5
+npm install @azure/storage-queue
 ```
 
 In your TypeScript or JavaScript file, import via following:
@@ -99,7 +99,7 @@ You can use the `const Azure = require("@azure/storage-queue");` shown above the
 Or you can selectively import certain types,
 
 ```javascript
-const { QueueServiceClient, SharedKeyCredential } = require("@azure/storage-queue");
+const { QueueServiceClient, StorageSharedKeyCredential } = require("@azure/storage-queue");
 ```
 
 ### Create the queue service client
@@ -111,9 +111,9 @@ Use the constructor to create an instance of `QueueServiceClient`, passing in th
 const account = "<account>";
 const accountKey = "<accountkey>";
 
-// Use SharedKeyCredential with storage account and account key
-// SharedKeyCredential is only avaiable in Node.js runtime, not in browsers
-const sharedKeyCredential = new SharedKeyCredential(account, accountKey);
+// Use StorageSharedKeyCredential with storage account and account key
+// StorageSharedKeyCredential is only avaiable in Node.js runtime, not in browsers
+const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
 
 const queueServiceClient = new QueueServiceClient(
   `https://${account}.queue.core.windows.net`,

@@ -7,7 +7,7 @@ This project provides a client library in JavaScript that makes it easy to consu
 Version: 12.0.0-preview.5
 
 - [Package (npm)](https://www.npmjs.com/package/@azure/storage-blob/v/12.0.0-preview.5)
-- [Samples](https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/storage/storage-blob/samples)
+- [Examples to get started](https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/storage/storage-blob/samples)
 - [API Reference Documentation](https://azure.github.io/azure-sdk-for-js/storage.html#azure-storage-blob)
 - [Product documentation](https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview)
 - [Source code](https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/storage/storage-blob)
@@ -56,7 +56,7 @@ There are differences between Node.js and browsers runtime. When getting started
 ##### Following features, interfaces, classes or functions are only available in Node.js
 
 - Shared Key Authorization based on account name and account key
-  - `SharedKeyCredential`
+  - `StorageSharedKeyCredential`
 - Shared Access Signature(SAS) generation
   - `generateAccountSASQueryParameters()`
   - `generateBlobSASQueryParameters()`
@@ -76,7 +76,7 @@ There are differences between Node.js and browsers runtime. When getting started
 The preferred way to install the Azure Blob Storage client library for JavaScript is to use the npm package manager. Simply type the following into a terminal window:
 
 ```bash
-npm install @azure/storage-blob@12.0.0-preview.5
+npm install @azure/storage-blob
 ```
 
 In your TypeScript or JavaScript file, import via following:
@@ -98,7 +98,7 @@ You need to set up [Cross-Origin Resource Sharing (CORS)](https://docs.microsoft
 For example, you can create following CORS settings for debugging. But please customize the settings carefully according to your requirements in production environment.
 
 - Allowed origins: \*
-- Allowed verbs: DELETE,GET,HEAD,MERGE,POST,OPTIONS,PUT
+- Allowed verbs: DELETE,GET,HEAD,MERGE,POST,OPTIONS,PUT,PATCH
 - Allowed headers: \*
 - Exposed headers: \*
 - Maximum age (seconds): 86400
@@ -118,7 +118,7 @@ You can use the `const Azure = require("@azure/storage-blob");` shown above then
 Or you can selectively import certain types,
 
 ```javascript
-const { BlobServiceClient, SharedKeyCredential } = require("@azure/storage-blob");
+const { BlobServiceClient, StorageSharedKeyCredential } = require("@azure/storage-blob");
 ```
 
 ### Create the blob service client
@@ -156,7 +156,7 @@ Use the constructor to create a instance of `BlobServiceClient`.
 
   [Note - Above steps are only for Node.js]
 
-- Alternatively, you instantiate a `BlobServiceClient` with a `SharedKeyCredential` by passing account-name and account-key as arguments. (account-name and account-key can be obtained from the azure portal)
+- Alternatively, you instantiate a `BlobServiceClient` with a `StorageSharedKeyCredential` by passing account-name and account-key as arguments. (account-name and account-key can be obtained from the azure portal)
   [ONLY AVAILABLE IN NODE.JS RUNTIME]
 
   ```javascript
@@ -164,9 +164,9 @@ Use the constructor to create a instance of `BlobServiceClient`.
   const account = "account";
   const accountKey = "accountkey";
 
-  // Use SharedKeyCredential with storage account and account key
-  // SharedKeyCredential is only avaiable in Node.js runtime, not in browsers
-  const sharedKeyCredential = new SharedKeyCredential(account, accountKey);
+  // Use StorageSharedKeyCredential with storage account and account key
+  // StorageSharedKeyCredential is only avaiable in Node.js runtime, not in browsers
+  const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
   const blobServiceClient = new BlobServiceClient(
     `https://${account}.blob.core.windows.net`,
     sharedKeyCredential
