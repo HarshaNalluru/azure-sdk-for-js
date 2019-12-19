@@ -1,13 +1,6 @@
 {
     "include": [
-      "dist-esm/test/*.spec.js",
-      "dist-esm/test/node/*.spec.js"
-    ],
-    "exclude": [
-      "**/*.d.ts",
-      "src/credentials/SharedKeyCredential.browser.ts",
-      "src/models.ts",
-      "src/generated/lib/storageClient.ts"
+      "src/**/*.ts"
     ],
     "extension": [
       ".ts"
