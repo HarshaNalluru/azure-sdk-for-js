@@ -76,25 +76,19 @@ describe("Certificates client - create, read, update and delete", () => {
     });
   }
 
-  if (isNode && !isPlayingBack) {
-    // On playback mode, the tests happen too fast for the timeout to work
-    it("can create a certificate with requestOptions timeout", async function() {
-      const certificateName = testClient.formatName(`${prefix}-${this!.test!.title}-${suffix}`);
+  // On playback mode, the tests happen too fast for the timeout to work
+  it.only("can create a certificate with requestOptions timeout", async function() {
+    const certificateName = testClient.formatName(`${prefix}-${this!.test!.title}-${suffix}`);
 
-      await assertThrowsAbortError(async () => {
-        await client.beginCreateCertificate(
-          certificateName,
-          basicCertificatePolicy,
-          {
-            ...testPollerProperties,
-            requestOptions: {
-              timeout: 1
-            }
-          }
-        );
+    await assertThrowsAbortError(async () => {
+      await client.beginCreateCertificate(certificateName, basicCertificatePolicy, {
+        ...testPollerProperties,
+        requestOptions: {
+          timeout: 1
+        }
       });
     });
-  }
+  });
 
   it("cannot create a certificate with an empty name", async function() {
     const certificateName = "";
@@ -339,10 +333,7 @@ describe("Certificates client - create, read, update and delete", () => {
         }
       ]
     });
-    assert.equal(
-      createResponse.administratorContacts![0].email,
-      "admin@microsoft.com"
-    );
+    assert.equal(createResponse.administratorContacts![0].email, "admin@microsoft.com");
 
     // Creating a certificate with that issuer
     await client.beginCreateCertificate(
@@ -376,10 +367,7 @@ describe("Certificates client - create, read, update and delete", () => {
       ]
     });
     getResponse = await client.getIssuer(issuerName);
-    assert.equal(
-      getResponse.administratorContacts![0].email,
-      "admin@microsoft.com"
-    );
+    assert.equal(getResponse.administratorContacts![0].email, "admin@microsoft.com");
 
     // Delete
     await client.deleteIssuer(issuerName);
@@ -470,8 +458,14 @@ describe("Certificates client - create, read, update and delete", () => {
     await client.setContacts(contacts);
 
     let getResponse = await client.getContacts();
-    assert.equal( (getResponse && getResponse[0] && getResponse[0].name) ? getResponse[0].name : undefined, "a");
-    assert.equal( (getResponse && getResponse[1] && getResponse[1].name) ? getResponse[1].name : undefined, "b");
+    assert.equal(
+      getResponse && getResponse[0] && getResponse[0].name ? getResponse[0].name : undefined,
+      "a"
+    );
+    assert.equal(
+      getResponse && getResponse[1] && getResponse[1].name ? getResponse[1].name : undefined,
+      "b"
+    );
 
     await client.deleteContacts();
 
