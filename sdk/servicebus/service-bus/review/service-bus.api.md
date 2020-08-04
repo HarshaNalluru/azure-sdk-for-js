@@ -274,20 +274,20 @@ export class ServiceBusClient {
     }): Receiver<ReceivedMessage>;
     createReceiver(queueName: string): Receiver<ReceivedMessageWithLock>;
     createReceiver(queueName: string, options: {
-        receiveMode: "receiveAndDelete";
+        isReceiveAndDeleteMode: true;
     }): Receiver<ReceivedMessage>;
     createReceiver(topicName: string, subscriptionName: string): Receiver<ReceivedMessageWithLock>;
     createReceiver(topicName: string, subscriptionName: string, options: {
-        receiveMode: "receiveAndDelete";
+        isReceiveAndDeleteMode: true;
     }): Receiver<ReceivedMessage>;
     createSender(queueOrTopicName: string): Sender;
     createSessionReceiver(queueName: string, options?: CreateSessionReceiverOptions): Promise<SessionReceiver<ReceivedMessageWithLock>>;
     createSessionReceiver(queueName: string, options: CreateSessionReceiverOptions & {
-        receiveMode: "receiveAndDelete";
+        isReceiveAndDeleteMode: true;
     }): Promise<SessionReceiver<ReceivedMessage>>;
     createSessionReceiver(topicName: string, subscriptionName: string, options?: CreateSessionReceiverOptions): Promise<SessionReceiver<ReceivedMessageWithLock>>;
     createSessionReceiver(topicName: string, subscriptionName: string, options: CreateSessionReceiverOptions & {
-        receiveMode: "receiveAndDelete";
+        isReceiveAndDeleteMode: true;
     }): Promise<SessionReceiver<ReceivedMessage>>;
     fullyQualifiedNamespace: string;
 }

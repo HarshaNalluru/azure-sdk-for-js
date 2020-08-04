@@ -12,8 +12,8 @@ import { ConnectionContext } from "./connectionContext";
 import { ClientEntityContext } from "./clientEntityContext";
 import { Sender, SenderImpl } from "./sender";
 import { BaseCreateReceiverOptions, CreateSessionReceiverOptions } from "./models";
-import { Receiver, ReceiverImpl } from "./receivers/receiver";
-import { SessionReceiver, SessionReceiverImpl } from "./receivers/sessionReceiver";
+import { Receiver } from "./receivers/receiver";
+import { SessionReceiver } from "./receivers/sessionReceiver";
 import { ReceivedMessage, ReceivedMessageWithLock } from "./serviceBusMessage";
 
 /**
@@ -113,9 +113,7 @@ export class ServiceBusClient {
    * @returns {Receiver<ReceivedMessageWithLock>}
    * @memberof ServiceBusClient
    */
-  createReceiver(
-    queueName: string
-  ): Receiver<ReceivedMessageWithLock>;
+  createReceiver(queueName: string): Receiver<ReceivedMessageWithLock>;
   /**
    * Creates a receiver for an Azure Service Bus queue in receiveAndDelete mode.
    * If the receiveMode is not provided in the options, it defaults to the "peekLock" mode.
@@ -129,7 +127,7 @@ export class ServiceBusClient {
    */
   createReceiver(
     queueName: string,
-    options: { receiveMode: "receiveAndDelete" }
+    options: { isReceiveAndDeleteMode: true }
   ): Receiver<ReceivedMessage>;
   /**
    * Creates a receiver for an Azure Service Bus subscription in peekLock mode.
@@ -153,10 +151,7 @@ export class ServiceBusClient {
    * @returns {Receiver<ReceivedMessageWithLock>}
    * @memberof ServiceBusClient
    */
-  createReceiver(
-    topicName: string,
-    subscriptionName: string
-  ): Receiver<ReceivedMessageWithLock>;
+  createReceiver(topicName: string, subscriptionName: string): Receiver<ReceivedMessageWithLock>;
   /**
    * Creates a receiver for an Azure Service Bus subscription in receiveAndDelete mode.
    * If the receiveMode is not provided in the options, it defaults to the "peekLock" mode.
@@ -172,40 +167,44 @@ export class ServiceBusClient {
   createReceiver(
     topicName: string,
     subscriptionName: string,
-    options: { receiveMode: "receiveAndDelete" }
+    options: { isReceiveAndDeleteMode: true }
   ): Receiver<ReceivedMessage>;
   createReceiver(
     queueOrTopicName1: string,
-    optionsOrSubscriptionName2?: BaseCreateReceiverOptions | string,
-    options3?: BaseCreateReceiverOptions
+    optionsOrSubscriptionName2?: { isReceiveAndDeleteMode?: true | false } | string,
+    options3?: { isReceiveAndDeleteMode?: true | false }
   ): Receiver<ReceivedMessage> | Receiver<ReceivedMessageWithLock> {
     // NOTE: we don't currently have any options for this kind of receiver but
     // when we do make sure you pass them in and extract them.
-    const { entityPath, receiveMode } = extractReceiverArguments(
-      queueOrTopicName1,
-      optionsOrSubscriptionName2,
-      options3
-    );
+    // const { entityPath, receiveMode } = extractReceiverArguments(
+    //   queueOrTopicName1,
+    //   optionsOrSubscriptionName2,
+    //   options3
+    // );
 
-    const clientEntityContext = ClientEntityContext.create(
-      entityPath,
-      this._connectionContext,
-      `${entityPath}/${generate_uuid()}`
-    );
+    // const clientEntityContext = ClientEntityContext.create(
+    //   entityPath,
+    //   this._connectionContext,
+    //   `${entityPath}/${generate_uuid()}`
+    // );
 
-    if (receiveMode === "peekLock") {
-      return new ReceiverImpl<ReceivedMessageWithLock>(
-        clientEntityContext,
-        receiveMode,
-        this._clientOptions.retryOptions
-      );
-    } else {
-      return new ReceiverImpl<ReceivedMessage>(
-        clientEntityContext,
-        receiveMode,
-        this._clientOptions.retryOptions
-      );
-    }
+    // if (receiveMode === "peekLock") {
+    //   return new ReceiverImpl<ReceivedMessageWithLock>(
+    //     clientEntityContext,
+    //     receiveMode,
+    //     this._clientOptions.retryOptions
+    //   );
+    // } else {
+    //   return new ReceiverImpl<ReceivedMessage>(
+    //     clientEntityContext,
+    //     receiveMode,
+    //     this._clientOptions.retryOptions
+    //   );
+    // }
+    queueOrTopicName1;
+    optionsOrSubscriptionName2;
+    options3;
+    return 1 as any;
   }
 
   /**
@@ -247,7 +246,7 @@ export class ServiceBusClient {
    */
   createSessionReceiver(
     queueName: string,
-    options: CreateSessionReceiverOptions & { receiveMode: "receiveAndDelete" }
+    options: CreateSessionReceiverOptions & { isReceiveAndDeleteMode: true }
   ): Promise<SessionReceiver<ReceivedMessage>>;
   /**
    * Creates a receiver for a session enabled Azure Service Bus subscription in peekLock mode.
@@ -292,36 +291,38 @@ export class ServiceBusClient {
   createSessionReceiver(
     topicName: string,
     subscriptionName: string,
-    options: CreateSessionReceiverOptions & { receiveMode: "receiveAndDelete" }
+    options: CreateSessionReceiverOptions & { isReceiveAndDeleteMode: true }
   ): Promise<SessionReceiver<ReceivedMessage>>;
   async createSessionReceiver(
     queueOrTopicName1: string,
     optionsOrSubscriptionName2?:
-      | (CreateSessionReceiverOptions & BaseCreateReceiverOptions)
+      | (CreateSessionReceiverOptions & { isReceiveAndDeleteMode?: true | false })
       | string,
-    options3?: CreateSessionReceiverOptions & BaseCreateReceiverOptions
+    options3?: CreateSessionReceiverOptions & { isReceiveAndDeleteMode?: true | false }
   ): Promise<SessionReceiver<ReceivedMessage> | SessionReceiver<ReceivedMessageWithLock>> {
-    const { entityPath, receiveMode, options } = extractReceiverArguments(
-      queueOrTopicName1,
-      optionsOrSubscriptionName2,
-      options3
-    );
-
-    const clientEntityContext = ClientEntityContext.create(
-      entityPath,
-      this._connectionContext,
-      `${entityPath}/${generate_uuid()}`
-    );
-
-    return SessionReceiverImpl.createInitializedSessionReceiver(
-      clientEntityContext,
-      receiveMode,
-      {
-        sessionId: options?.sessionId,
-        autoRenewLockDurationInMs: options?.autoRenewLockDurationInMs
-      },
-      this._clientOptions.retryOptions
-    );
+    // const { entityPath, receiveMode, options } = extractReceiverArguments(
+    //   queueOrTopicName1,
+    //   optionsOrSubscriptionName2,
+    //   options3
+    // );
+    // const clientEntityContext = ClientEntityContext.create(
+    //   entityPath,
+    //   this._connectionContext,
+    //   `${entityPath}/${generate_uuid()}`
+    // );
+    // return SessionReceiverImpl.createInitializedSessionReceiver(
+    //   clientEntityContext,
+    //   receiveMode,
+    //   {
+    //     sessionId: options?.sessionId,
+    //     autoRenewLockDurationInMs: options?.autoRenewLockDurationInMs
+    //   },
+    //   this._clientOptions.retryOptions
+    // );
+    queueOrTopicName1;
+    optionsOrSubscriptionName2;
+    options3;
+    return 1 as any;
   }
   /**
    * Creates a Sender which can be used to send messages, schedule messages to be
@@ -445,7 +446,7 @@ export class ServiceBusClient {
 
     const deadLetterEntityPath = `${entityPath}/$DeadLetterQueue`;
     if (receiveMode === "receiveAndDelete") {
-      return this.createReceiver(deadLetterEntityPath, { receiveMode: "receiveAndDelete" });
+      return this.createReceiver(deadLetterEntityPath, { isReceiveAndDeleteMode: true });
     } else {
       return this.createReceiver(deadLetterEntityPath);
     }
