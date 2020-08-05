@@ -363,12 +363,12 @@ export class ServiceBusTestHelpers {
       entityNames.queue
         ? await this._serviceBusClient.createSessionReceiver(
             entityNames.queue,
-            getSessionReceiverOptions
+            getSessionReceiverOptions || {}
           )
         : await this._serviceBusClient.createSessionReceiver(
             entityNames.topic!,
             entityNames.subscription!,
-            getSessionReceiverOptions
+            getSessionReceiverOptions || {}
           )
     );
   }
