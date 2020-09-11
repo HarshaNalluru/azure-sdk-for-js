@@ -573,6 +573,12 @@ export function serializeRequestBody(
               { rootName: xmlName || serializedName }
             );
           } else if (!isStream) {
+            console.log(
+              "from core-http (serialization fails after this) :",
+              value,
+              xmlName,
+              serializedName
+            );
             httpRequest.body = stringifyXML(value, {
               rootName: xmlName || serializedName
             });

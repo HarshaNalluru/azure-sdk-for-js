@@ -46,6 +46,7 @@ export async function executeAtomXmlOperation(
 ): Promise<HttpOperationResponse> {
   if (webResource.body) {
     const content: object = serializer.serialize(webResource.body);
+    console.log("(For the request that works)... Just before stringifyXML :", content);
     webResource.body = stringifyXML(content, { rootName: "entry" });
   }
 
