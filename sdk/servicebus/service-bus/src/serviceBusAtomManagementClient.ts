@@ -379,7 +379,7 @@ export class ServiceBusManagementClient extends ServiceBusManagementClientIntern
       options
     );
 
-    console.log(response);
+    console.log("create queue response (with codegen): ", response);
     return {};
   }
 
