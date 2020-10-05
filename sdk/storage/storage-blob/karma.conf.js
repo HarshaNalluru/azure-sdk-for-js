@@ -8,7 +8,7 @@ const {
   isRecordMode
 } = require("@azure/test-utils-recorder");
 
-module.exports = function (config) {
+module.exports = function(config) {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: "./",
@@ -73,7 +73,11 @@ module.exports = function (config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ["mocha", "coverage", "junit", "json-to-file",
+    reporters: [
+      "mocha",
+      "coverage",
+      "junit",
+      "json-to-file",
       //"karma-remap-istanbul"
       "karma-remap-plugin"
     ],
