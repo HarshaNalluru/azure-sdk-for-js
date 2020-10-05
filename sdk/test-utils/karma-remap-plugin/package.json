@@ -1,0 +1,31 @@
+{
+  "name": "@azure/test-utils-karma-remap-plugin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Azure/azure-sdk-for-js/issues"
+  },
+  "homepage": "https://github.com/Azure/azure-sdk-for-js#readme",
+  "keywords": [
+    "karma-plugin",
+    "karma-reporter"
+  ],
+  "dependencies": {
+    "istanbul": "^0.4.3",
+    "remap-istanbul": "^0.9.0"
+  },
+  "devDependencies": {
+    "@types/istanbul":"^0.4.30"
+  },
+  "peerDependencies": {
+    "karma": ">=0.9"
+  },
+  "scripts": {
+    "build": "echo skipped"
+  }
+}

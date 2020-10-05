@@ -578,6 +578,11 @@
       "versionPolicyName": "utility"
     },
     {
+      "packageName": "@azure/test-utils-karma-remap-plugin",
+      "projectFolder": "sdk/test-utils/karma-remap-plugin",
+      "versionPolicyName": "utility"
+    },
+    {
       "packageName": "@azure/digital-twins",
       "projectFolder": "sdk/digitaltwins/digital-twins",
       "versionPolicyName": "client"

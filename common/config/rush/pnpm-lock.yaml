@@ -48,6 +48,7 @@ dependencies:
   '@rush-temp/storage-internal-avro': 'file:projects/storage-internal-avro.tgz'
   '@rush-temp/storage-queue': 'file:projects/storage-queue.tgz'
   '@rush-temp/template': 'file:projects/template.tgz'
+  '@rush-temp/test-utils-karma-remap-plugin': 'file:projects/test-utils-karma-remap-plugin.tgz'
   '@rush-temp/test-utils-perfstress': 'file:projects/test-utils-perfstress.tgz'
   '@rush-temp/test-utils-recorder': 'file:projects/test-utils-recorder.tgz'
   '@rush-temp/testhub': 'file:projects/testhub.tgz'
@@ -864,6 +865,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-sz7iLqvVUg1gIedBOvlkxPlc8/uVzyS5OwGz1cKjXzkl3FpL3al0crU8YGU1WoHkxn0Wxbw5tyi6hvzJKNzFsw==
+  /@types/istanbul/0.4.30:
+    dev: false
+    resolution:
+      integrity: sha512-+hQU4fh2G96ze78uI5/V6+SRDZD1UnVrFn23i2eDetwfbBq3s0/zYP92xj/3qyvVMM3WnvS88N56zjz+HmL04A==
   /@types/json-schema/7.0.5:
     dev: false
     resolution:
@@ -11262,7 +11267,7 @@ packages:
     dev: false
     name: '@rush-temp/storage-blob'
     resolution:
-      integrity: sha512-mqmWTh6ixzHBWNWDXJj4Da0518lkLGlDygVMA2JD38j6xM6om2ZxAT0NrKZOlSWxf/vMSAyLVyG8P6e+BoXhGw==
+      integrity: sha512-MLi/YhTZb/OBz91EKx7oIyczQfMaKl/V/a4aDN9XCckQFYaIWz6mQWdem4LTVh0I8FKp3ad8C9mTSCvU3S49WQ==
       tarball: 'file:projects/storage-blob.tgz'
     version: 0.0.0
   'file:projects/storage-file-datalake.tgz':
@@ -11570,6 +11575,18 @@ packages:
       integrity: sha512-92SZ7vUoqPzfEgb2N1KIdamZtDFFHQoX74LPdAwyrv6SCpkeN6QMLPNOjBGiQtY0bAzz4eTqKfss+uCCBEmRHQ==
       tarball: 'file:projects/template.tgz'
     version: 0.0.0
+  'file:projects/test-utils-karma-remap-plugin.tgz':
+    dependencies:
+      '@types/istanbul': 0.4.30
+      istanbul: 0.4.5
+      karma: 5.1.1
+      remap-istanbul: 0.9.6
+    dev: false
+    name: '@rush-temp/test-utils-karma-remap-plugin'
+    resolution:
+      integrity: sha512-GunC2xyw4wsktgVdPphpJJZ9JVxae4CzMQJOhiP6khfL77I2Ptzd/Zfi6xh8XWU3B1zi7/IxxS/COEL7r8ix2w==
+      tarball: 'file:projects/test-utils-karma-remap-plugin.tgz'
+    version: 0.0.0
   'file:projects/test-utils-perfstress.tgz':
     dependencies:
       '@opentelemetry/api': 0.10.2
@@ -11729,6 +11746,7 @@ specifiers:
   '@rush-temp/storage-internal-avro': 'file:./projects/storage-internal-avro.tgz'
   '@rush-temp/storage-queue': 'file:./projects/storage-queue.tgz'
   '@rush-temp/template': 'file:./projects/template.tgz'
+  '@rush-temp/test-utils-karma-remap-plugin': 'file:./projects/test-utils-karma-remap-plugin.tgz'
   '@rush-temp/test-utils-perfstress': 'file:./projects/test-utils-perfstress.tgz'
   '@rush-temp/test-utils-recorder': 'file:./projects/test-utils-recorder.tgz'
   '@rush-temp/testhub': 'file:./projects/testhub.tgz'

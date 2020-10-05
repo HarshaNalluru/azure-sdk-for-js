@@ -8,7 +8,7 @@ const {
   isRecordMode
 } = require("@azure/test-utils-recorder");
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: "./",
@@ -26,7 +26,7 @@ module.exports = function(config) {
       "karma-ie-launcher",
       "karma-env-preprocessor",
       "karma-coverage",
-      "karma-remap-istanbul",
+      "@azure/test-utils-karma-remap-plugin",
       "karma-junit-reporter",
       "karma-json-to-file-reporter",
       "karma-json-preprocessor"
@@ -73,7 +73,10 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ["mocha", "coverage", "junit", "json-to-file", "karma-remap-istanbul"],
+    reporters: ["mocha", "coverage", "junit", "json-to-file",
+      //"karma-remap-istanbul"
+      "karma-remap-plugin"
+    ],
 
     coverageReporter: {
       // specify a common output directory
@@ -81,7 +84,16 @@ module.exports = function(config) {
       reporters: [{ type: "json", subdir: ".", file: "coverage.json" }]
     },
 
-    remapIstanbulReporter: {
+    // remapIstanbulReporter: {
+    //   src: "coverage-browser/coverage.json",
+    //   reports: {
+    //     lcovonly: "coverage-browser/lcov.info",
+    //     html: "coverage-browser/html/report",
+    //     "text-summary": null,
+    //     cobertura: "./coverage-browser/cobertura-coverage.xml"
+    //   }
+    // },
+    remapPluginReporter: {
       src: "coverage-browser/coverage.json",
       reports: {
         lcovonly: "coverage-browser/lcov.info",
