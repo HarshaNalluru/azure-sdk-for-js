@@ -59,6 +59,53 @@ function afterEachTest(): Promise<void> {
 }
 
 describe("Batching Receiver", () => {
+  describe("Unending batch - investigate", async function() {
+    const startedAt = new Date();
+    const testDurationInMs = 50000;
+    const testDurationForSendInMs = 0.7 * testDurationInMs;
+    const totalNumberOfMessagesToSend = Infinity;
+    const numberOfMessagesPerSend = 100;
+    let messagesSent = 0;
+    let messagesReceived = 0;
+    let maxMessageCount = 100;
+    let maxWaitTimeInMs = 10000;
+    it.only("keeps sending and looping over receiveBatch", async () => {
+      serviceBusClient = createServiceBusClientForTests();
+      await beforeEachTest(TestClientType.PartitionedQueue);
+      async function sendMessages() {
+        let elapsedTime = new Date().valueOf() - startedAt.valueOf();
+        while (
+          elapsedTime < testDurationForSendInMs &&
+          messagesSent < totalNumberOfMessagesToSend
+        ) {
+          const msgs: ServiceBusMessage[] = [];
+          for (let i = 0; i < numberOfMessagesPerSend; i++) {
+            msgs.push({ body: `message body ${Math.floor(Math.random() * 1000)}` });
+          }
+          await sender.sendMessages(msgs);
+          messagesSent += msgs.length;
+          if (messagesSent % 1000 === 0) console.log(`Total sent so far: ${messagesSent}`);
+          elapsedTime = new Date().valueOf() - startedAt.valueOf();
+        }
+      }
+      async function receiveMessages() {
+        let elapsedTime = new Date().valueOf() - startedAt.valueOf();
+        while (elapsedTime < testDurationInMs) {
+          console.log(`New receive started... ${elapsedTime / 1000} seconds`);
+          messagesReceived += (await receiver.receiveMessages(maxMessageCount, { maxWaitTimeInMs }))
+            .length;
+          elapsedTime = new Date().valueOf() - startedAt.valueOf();
+          console.log(
+            `Receive ended... ${elapsedTime /
+              1000} seconds. Total received so far = ${messagesReceived}`
+          );
+        }
+      }
+      await Promise.all([sendMessages(), receiveMessages()]);
+      await serviceBusClient.close();
+    }).timeout(120000);
+  });
+
   describe("Batch Receiver - default values", function(): void {
     before(() => {
       serviceBusClient = createServiceBusClientForTests();
