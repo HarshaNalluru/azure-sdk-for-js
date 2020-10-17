@@ -71,7 +71,7 @@ describe("Batching Receiver", () => {
     let maxWaitTimeInMs = 10000;
     it.only("keeps sending and looping over receiveBatch", async () => {
       serviceBusClient = createServiceBusClientForTests();
-      await beforeEachTest(TestClientType.PartitionedQueue);
+      await beforeEachTest(TestClientType.UnpartitionedQueue);
       async function sendMessages() {
         let elapsedTime = new Date().valueOf() - startedAt.valueOf();
         while (
