@@ -64,14 +64,15 @@ describe("Batching Receiver", () => {
     const testDurationInMs = 50000;
     const testDurationForSendInMs = 0.7 * testDurationInMs;
     const totalNumberOfMessagesToSend = Infinity;
-    const numberOfMessagesPerSend = 100;
+    const numberOfMessagesPerSend = 1000;
     let messagesSent = 0;
     let messagesReceived = 0;
     let maxMessageCount = 100;
     let maxWaitTimeInMs = 10000;
     it.only("keeps sending and looping over receiveBatch", async () => {
       serviceBusClient = createServiceBusClientForTests();
-      await beforeEachTest(TestClientType.UnpartitionedQueue);
+      // await beforeEachTest(TestClientType.UnpartitionedQueue);
+      await beforeEachTest(TestClientType.PartitionedQueue);
       async function sendMessages() {
         let elapsedTime = new Date().valueOf() - startedAt.valueOf();
         while (
@@ -80,12 +81,15 @@ describe("Batching Receiver", () => {
         ) {
           const msgs: ServiceBusMessage[] = [];
           for (let i = 0; i < numberOfMessagesPerSend; i++) {
-            msgs.push({ body: `message body ${Math.floor(Math.random() * 1000)}` });
+            msgs.push({
+              body: `message body ${Math.floor(Math.random() * 1000)}`
+            });
           }
           await sender.sendMessages(msgs);
           messagesSent += msgs.length;
           if (messagesSent % 1000 === 0) console.log(`Total sent so far: ${messagesSent}`);
           elapsedTime = new Date().valueOf() - startedAt.valueOf();
+          await delay(5000);
         }
       }
       async function receiveMessages() {
