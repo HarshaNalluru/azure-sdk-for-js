@@ -21,3 +21,9 @@
      - `npm run perfstress-test:node -- CoreHTTPDownloadWithSASTest --warmup 2 --duration 7 --iterations 2 --parallel 2`
    - download using sas with core-https
      - `npm run perfstress-test:node -- CoreHTTPSDownloadWithSASTest --warmup 2 --duration 7 --iterations 2 --parallel 2`
+   - list blobs - single client
+     - `npm run perfstress-test:node -- ListSingleClientTest --warmup 30 --duration 30 --iterations 3 --parallel 16 --count 50`
+   - list blobs - multiple clients in parallel
+     - `npm run perfstress-test:node -- ListMultiClientsInParallelTest --warmup 30 --duration 30 --iterations 3 --parallel 16 --count 50`
+   - list blobs - multiple clients in parallel
+     - `npm run perfstress-test:node -- ListNewClientPerReqTest --warmup 30 --duration 30 --iterations 3 --parallel 16 --count 50`

@@ -10,6 +10,9 @@ import { StorageBlobDownloadWithSASTest } from "./dowloadWithSAS.spec";
 import { CoreHTTPDownloadWithSASTest } from "./core-http.spec";
 import { NodeFetchDownloadWithSASTest } from "./node-fetch.spec";
 import { CoreHTTPSDownloadWithSASTest } from "./core-https.spec";
+import { ListSingleClientTest } from "./core-http-single-client.spec";
+import { ListMultiClientsInParallelTest } from "./core-http-multiple-clients-in-parallel.spec";
+import { ListNewClientPerReqTest } from "./core-http-new-client-per-req.spec";
 
 console.log("=== Starting the perfStress test ===");
 
@@ -22,7 +25,10 @@ const perfStressProgram = new PerfStressProgram(
     StorageBlobDownloadWithSASTest,
     CoreHTTPDownloadWithSASTest,
     CoreHTTPSDownloadWithSASTest,
-    NodeFetchDownloadWithSASTest
+    NodeFetchDownloadWithSASTest,
+    ListSingleClientTest,
+    ListMultiClientsInParallelTest,
+    ListNewClientPerReqTest
   ])
 );
 

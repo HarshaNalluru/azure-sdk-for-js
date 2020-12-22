@@ -18,7 +18,7 @@ export abstract class StorageBlobTest<TOptions> extends PerfStressTest<TOptions>
 
   constructor() {
     super();
-    const connectionString = StorageBlobTest.getEnvVar("STORAGE_CONNECTION_STRING");
+    const connectionString = getEnvVar("STORAGE_CONNECTION_STRING");
     this.sharedKeyCredential = new StorageSharedKeyCredential(
       getValueInConnString(connectionString, "AccountName"),
       getValueInConnString(connectionString, "AccountKey")
@@ -34,12 +34,12 @@ export abstract class StorageBlobTest<TOptions> extends PerfStressTest<TOptions>
   public async globalCleanup() {
     await this.containerClient.delete();
   }
+}
 
-  static getEnvVar(name: string) {
-    const val = process.env[name];
-    if (!val) {
-      throw `Environment variable ${name} is not defined.`;
-    }
-    return val;
+export function getEnvVar(name: string) {
+  const val = process.env[name];
+  if (!val) {
+    throw `Environment variable ${name} is not defined.`;
   }
+  return val;
 }
