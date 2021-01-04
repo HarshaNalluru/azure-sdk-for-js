@@ -46,6 +46,8 @@
     // To be reverted when the storage-blob releases a stable version.
     "@azure/storage-blob": ["^12.3.0"],
 
+    // The following is needed to test the "reusing the client fix in core-http from Jeff's PR #12966"
+    "@azure/core-http": ["^1.2.1"],
     "@azure/ms-rest-js": ["^2.0.0"],
     /**
      * For example, allow some projects to use an older TypeScript compiler
