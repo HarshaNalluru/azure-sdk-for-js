@@ -2,22 +2,24 @@
 // Licensed under the MIT license.
 
 import { StorageBlobDownloadWithSASTest } from "./dowloadWithSAS.spec";
-import { DefaultHttpsClient, createPipelineRequest } from "@azure/core-https";
-import { streamToBuffer3 } from "../../../src/utils/utils.node";
+import { DefaultHttpsClient, createPipelineRequest, PipelineRequest } from "@azure/core-https";
+import { drainStream } from "@azure/test-utils-perfstress";
 
 export class CoreHTTPSDownloadWithSASTest extends StorageBlobDownloadWithSASTest {
   client: DefaultHttpsClient;
+  request: PipelineRequest<any>;
   constructor() {
     super();
     this.client = new DefaultHttpsClient();
-  }
-  async runAsync(): Promise<void> {
-    const request = createPipelineRequest({
+    this.request = createPipelineRequest({
       url: this.sasUrl,
       streamResponseBody: true,
       keepAlive: true
     });
-    const response = await this.client.sendRequest(request);
-    await streamToBuffer3(response.readableStreamBody!);
+  }
+
+  async runAsync(): Promise<void> {
+    const response = await this.client.sendRequest(this.request);
+    await drainStream(response.readableStreamBody!);
   }
 }

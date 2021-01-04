@@ -1,14 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { PerfStressOptionDictionary } from "@azure/test-utils-perfstress";
+import { drainStream, PerfStressOptionDictionary } from "@azure/test-utils-perfstress";
 import { StorageBlobTest } from "./storageTest.spec";
-
-// Expects the .env file at the same level as the "test" folder
-import * as dotenv from "dotenv";
 import { BlockBlobClient } from "../../../src";
-import { streamToBuffer3 } from "../../../src/utils/utils.node";
-dotenv.config();
+import { generateUuid } from "@azure/core-http";
 
 interface StorageBlobDownloadTestOptions {
   size: number;
@@ -21,11 +17,11 @@ export class StorageBlobDownloadTest extends StorageBlobTest<StorageBlobDownload
       description: "Size in bytes",
       shortName: "sz",
       longName: "size",
-      defaultValue: 1024
+      defaultValue: 10240
     }
   };
 
-  static blobName = `newblob${new Date().getTime()}`;
+  static blobName = generateUuid();
   blockBlobClient: BlockBlobClient;
 
   constructor() {
@@ -47,6 +43,6 @@ export class StorageBlobDownloadTest extends StorageBlobTest<StorageBlobDownload
 
   async runAsync(): Promise<void> {
     const downloadResponse = await this.blockBlobClient.download();
-    await streamToBuffer3(downloadResponse.readableStreamBody!);
+    await drainStream(downloadResponse.readableStreamBody!);
   }
 }

@@ -1,20 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { PerfStressTest } from "@azure/test-utils-perfstress";
-
+import { generateUuid } from "@azure/core-http";
+import { PerfStressTest, getEnvVar } from "@azure/test-utils-perfstress";
 import { BlobServiceClient, ContainerClient, StorageSharedKeyCredential } from "../../../src";
-
-// Expects the .env file at the same level as the "test" folder
-import * as dotenv from "dotenv";
 import { getValueInConnString } from "../../../src/utils/utils.common";
-dotenv.config();
 
 export abstract class StorageBlobTest<TOptions> extends PerfStressTest<TOptions> {
   blobServiceClient: BlobServiceClient;
   containerClient: ContainerClient;
   sharedKeyCredential: StorageSharedKeyCredential;
-  static containerName = `newcontainer${new Date().getTime()}`;
+  static containerName = generateUuid();
 
   constructor() {
     super();
@@ -34,12 +30,4 @@ export abstract class StorageBlobTest<TOptions> extends PerfStressTest<TOptions>
   public async globalCleanup() {
     await this.containerClient.delete();
   }
-}
-
-export function getEnvVar(name: string) {
-  const val = process.env[name];
-  if (!val) {
-    throw `Environment variable ${name} is not defined.`;
-  }
-  return val;
 }
