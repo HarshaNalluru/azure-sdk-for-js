@@ -36,4 +36,5 @@ export class NodeFetchTest extends PerfStressTest<NodeFetchOptions> {
     const response = await fetch(this.url, NodeFetchTest.fetchOptions);
     await response.text();
   }
+  run() {}
 }

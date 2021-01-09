@@ -41,14 +41,14 @@ export abstract class PerfStressTest<TOptions = {}> {
   }
 
   // Before and after running a bunch of the same test.
-  public globalSetup?(): void | Promise<void>;
-  public globalCleanup?(): void | Promise<void>;
+  public globalSetup(): void | Promise<void> {}
+  public globalCleanup(): void | Promise<void> {}
 
-  public setup?(): void | Promise<void>;
-  public cleanup?(): void | Promise<void>;
+  public setup(): void | Promise<void> {}
+  public cleanup(): void | Promise<void> {}
 
-  public run?(abortSignal?: AbortSignalLike): void;
-  public async runAsync?(abortSignal?: AbortSignalLike): Promise<void>;
+  public abstract run(abortSignal?: AbortSignalLike): void;
+  public abstract runAsync(abortSignal?: AbortSignalLike): Promise<void>;
 }
 
 /**

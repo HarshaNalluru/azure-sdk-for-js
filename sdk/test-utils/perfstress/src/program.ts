@@ -288,19 +288,13 @@ export class PerfStressProgram {
     console.log("=== Parsed options ===");
     console.table(options);
 
-    if (this.tests[0].globalSetup) {
-      console.log(
-        `=== Calling globalSetup() once for (all) the instance(s) of ${this.testName} ===`
-      );
-      await this.tests[0].globalSetup();
-    }
-    if (this.tests[0].setup) {
-      console.log(
-        `=== Calling setup() for the ${this.parallelNumber} instantiated ${this.testName} tests ===`
-      );
-      for (const test of this.tests) {
-        await test.setup!();
-      }
+    console.log(`=== Calling globalSetup() once for (all) the instance(s) of ${this.testName} ===`);
+    await this.tests[0].globalSetup();
+    console.log(
+      `=== Calling setup() for the ${this.parallelNumber} instantiated ${this.testName} tests ===`
+    );
+    for (const test of this.tests) {
+      await test.setup!();
     }
 
     if (Number(options.warmup.value) > 0) {
@@ -322,12 +316,10 @@ export class PerfStressProgram {
     }
 
     if (!options["no-cleanup"].value) {
-      if (this.tests[0].globalCleanup) {
-        console.log(
-          `=== Calling globalCleanup() once for (all) the instance(s) of ${this.testName} ===`
-        );
-        await this.tests[0].globalCleanup();
-      }
+      console.log(
+        `=== Calling globalCleanup() once for (all) the instance(s) of ${this.testName} ===`
+      );
+      await this.tests[0].globalCleanup();
     }
   }
 }

@@ -24,4 +24,5 @@ export class SleepTest extends PerfStressTest {
   async runAsync(): Promise<void> {
     await delay(this.secondsPerOperation * 1000);
   }
+  run() {}
 }
