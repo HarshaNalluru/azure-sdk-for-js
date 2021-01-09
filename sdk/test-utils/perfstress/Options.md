@@ -2,7 +2,7 @@
 
 ```ts
 export abstract class PerfStressTest<TOptions = {}> {
-  // Framework program.run() makes sure that it runs the method only if defined
+  // Framework program.run() makes sure that it runs the method only if defined - what we have right now
   public globalSetup?(): void | Promise<void>;
   public globalCleanup?(): void | Promise<void>;
 
@@ -57,6 +57,7 @@ export class StorageBlobDownloadTest extends StorageBlobTest<StorageBlobDownload
 
 ```ts
 export abstract class PerfStressTest<TOptions = {}> {
+  // Framework forces the user to define all the methods in the test itself - new proposal
   public abstract globalSetup(): void | Promise<void>;
   public abstract globalCleanup(): void | Promise<void>;
 
@@ -114,6 +115,7 @@ export class StorageBlobDownloadTest extends StorageBlobTest<StorageBlobDownload
 
 ```ts
 export abstract class PerfStressTest<TOptions = {}> {
+  // Framework expects the users to call super.globalSetup(), etc from the test to make sure the base code(if added in future) gets loaded
   public globalSetup(): void | Promise<void> {}
   public globalCleanup(): void | Promise<void> {}
 
