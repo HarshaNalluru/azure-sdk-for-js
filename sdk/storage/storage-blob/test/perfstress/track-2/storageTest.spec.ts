@@ -34,4 +34,6 @@ export abstract class StorageBlobTest<TOptions> extends PerfStressTest<TOptions>
   public async globalCleanup() {
     await this.containerClient.delete();
   }
+
+  run() {}
 }
