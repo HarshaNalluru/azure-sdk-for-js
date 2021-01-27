@@ -19,7 +19,9 @@ export class NockRecorder extends BaseRecorder {
   public record(recorderEnvironmentSetup: RecorderEnvironmentSetup): void {
     this.environmentSetup = recorderEnvironmentSetup;
     nock.recorder.rec({
-      dont_print: true
+      logging: (content: string) => {
+        console.log(content);
+      }
     });
   }
 
