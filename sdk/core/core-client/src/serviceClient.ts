@@ -200,6 +200,7 @@ export class ServiceClient {
     }
 
     try {
+      console.log(`core-client => ${JSON.stringify(request)}`);
       const rawResponse = await this.sendRequest(request);
       const flatResponse = flattenResponse(
         rawResponse,

@@ -19,9 +19,9 @@ nock('https://fakestorageaccount.table.core.windows.net:443', {"encodedQueryPara
   'Server',
   'Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0',
   'x-ms-request-id',
-  'ea9c7aca-f002-0005-7dfd-f49283000000',
+  '322c16fb-9002-0037-41ff-f4ca53000000',
   'x-ms-client-request-id',
-  '6e5d9ede-9a67-48c4-b7d5-f465908743d6',
+  'd85826e9-1340-493c-949b-61fc696542c3',
   'x-ms-version',
   '2019-02-02',
   'X-Content-Type-Options',
@@ -29,7 +29,7 @@ nock('https://fakestorageaccount.table.core.windows.net:443', {"encodedQueryPara
   'Preference-Applied',
   'return-content',
   'Date',
-  'Wed, 27 Jan 2021 22:44:24 GMT'
+  'Wed, 27 Jan 2021 22:56:52 GMT'
 ]);
 
 nock('https://fakestorageaccount.table.core.windows.net:443', {"encodedQueryParams":true})
@@ -45,15 +45,15 @@ nock('https://fakestorageaccount.table.core.windows.net:443', {"encodedQueryPara
   'Server',
   'Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0',
   'x-ms-request-id',
-  'ea9c7b13-f002-0005-43fd-f49283000000',
+  '322c173c-9002-0037-7cff-f4ca53000000',
   'x-ms-client-request-id',
-  '30108546-7f4d-426a-8157-01ddd2219cf1',
+  'dc0704ca-423d-4049-b7ff-eff0c18dab2e',
   'x-ms-version',
   '2019-02-02',
   'X-Content-Type-Options',
   'nosniff',
   'Date',
-  'Wed, 27 Jan 2021 22:44:24 GMT'
+  'Wed, 27 Jan 2021 22:56:52 GMT'
 ]);
 
 nock('https://fakestorageaccount.table.core.windows.net:443', {"encodedQueryParams":true})
@@ -67,13 +67,13 @@ nock('https://fakestorageaccount.table.core.windows.net:443', {"encodedQueryPara
   'Server',
   'Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0',
   'x-ms-request-id',
-  'ea9c7b96-f002-0005-46fd-f49283000000',
+  '322c175a-9002-0037-1aff-f4ca53000000',
   'x-ms-client-request-id',
-  '9d94fb9a-638f-4147-9280-1374093ad9d8',
+  'b60f231d-e994-4a51-85ca-3158727b77cb',
   'x-ms-version',
   '2019-02-02',
   'X-Content-Type-Options',
   'nosniff',
   'Date',
-  'Wed, 27 Jan 2021 22:44:25 GMT'
+  'Wed, 27 Jan 2021 22:56:52 GMT'
 ]);
