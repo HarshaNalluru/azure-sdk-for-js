@@ -24,7 +24,7 @@ describe("TableServiceClient", () => {
   });
 
   describe("Create, get table and delete", () => {
-    it("should create new table, then delete", async () => {
+    it.only("should create new table, then delete", async () => {
       const tableName = `testTable${suffix}`;
       const createResult = await client.createTable(tableName);
       const result = client.listTables();
