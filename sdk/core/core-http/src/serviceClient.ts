@@ -511,6 +511,7 @@ export class ServiceClient {
       let rawResponse: HttpOperationResponse;
       let sendRequestError;
       try {
+        console.log(`core-http => ${JSON.stringify(httpRequest)}`);
         rawResponse = await this.sendRequest(httpRequest);
       } catch (error) {
         sendRequestError = error;
