@@ -1,6 +1,6 @@
 let nock = require('nock');
 
-module.exports.hash = "122999b76cbf65afed0e4180bf47536b";
+module.exports.hash = "9a79213ad92e0d0d2f97cf019ee198ef";
 
 module.exports.testInfo = {"uniqueName":{},"newDate":{}}
 
@@ -19,9 +19,9 @@ nock('https://fakestorageaccount.table.core.windows.net:443', {"encodedQueryPara
   'Server',
   'Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0',
   'x-ms-request-id',
-  'ea9c7aca-f002-0005-7dfd-f49283000000',
+  '54bafd2e-1002-0004-0803-f5937e000000',
   'x-ms-client-request-id',
-  '6e5d9ede-9a67-48c4-b7d5-f465908743d6',
+  '71a98aba-f525-447d-90bc-a5680a21a341',
   'x-ms-version',
   '2019-02-02',
   'X-Content-Type-Options',
@@ -29,7 +29,7 @@ nock('https://fakestorageaccount.table.core.windows.net:443', {"encodedQueryPara
   'Preference-Applied',
   'return-content',
   'Date',
-  'Wed, 27 Jan 2021 22:44:24 GMT'
+  'Wed, 27 Jan 2021 23:27:25 GMT'
 ]);
 
 nock('https://fakestorageaccount.table.core.windows.net:443', {"encodedQueryParams":true})
@@ -45,19 +45,19 @@ nock('https://fakestorageaccount.table.core.windows.net:443', {"encodedQueryPara
   'Server',
   'Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0',
   'x-ms-request-id',
-  'ea9c7b13-f002-0005-43fd-f49283000000',
+  '54bafdad-1002-0004-0503-f5937e000000',
   'x-ms-client-request-id',
-  '30108546-7f4d-426a-8157-01ddd2219cf1',
+  '4594cf78-eed4-4aee-943d-1f1b5fbb980e',
   'x-ms-version',
   '2019-02-02',
   'X-Content-Type-Options',
   'nosniff',
   'Date',
-  'Wed, 27 Jan 2021 22:44:24 GMT'
+  'Wed, 27 Jan 2021 23:27:25 GMT'
 ]);
 
 nock('https://fakestorageaccount.table.core.windows.net:443', {"encodedQueryParams":true})
-  .delete('/Tables('testTablenode')')
+  .delete('/Tables(%27testTablenode%27)')
   .query(true)
   .reply(204, "", [
   'Cache-Control',
@@ -67,13 +67,13 @@ nock('https://fakestorageaccount.table.core.windows.net:443', {"encodedQueryPara
   'Server',
   'Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0',
   'x-ms-request-id',
-  'ea9c7b96-f002-0005-46fd-f49283000000',
+  '54bafe3d-1002-0004-1303-f5937e000000',
   'x-ms-client-request-id',
-  '9d94fb9a-638f-4147-9280-1374093ad9d8',
+  '1a932e19-5f50-401d-a8ac-e8b02f747fb8',
   'x-ms-version',
   '2019-02-02',
   'X-Content-Type-Options',
   'nosniff',
   'Date',
-  'Wed, 27 Jan 2021 22:44:25 GMT'
+  'Wed, 27 Jan 2021 23:27:25 GMT'
 ]);
