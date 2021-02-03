@@ -8,6 +8,7 @@ dotenv.config();
 
 const serviceBusConnectionString = process.env.SERVICEBUS_CONNECTION_STRING;
 const appInsightsInstrumentationKey = process.env.APPINSIGHTS_INSTRUMENTATIONKEY;
+const subscriptionId = process.env.SUBSCRIPTION_ID;
 const resourceGroup = process.env.RESOURCE_GROUP;
 const registryUserName = process.env.REGISTRY_USERNAME;
 const registryPassword = process.env.REGISTRY_PASSWORD;
@@ -53,11 +54,11 @@ console.log(`Pushing image (will fail if you have not yet run \`docker login ${r
 spawn(`docker push "${imageName}"`);
 
 console.log(`Deleting Azure Container Instance (if exists)`);
-spawn(`az container delete --resource-group "${resourceGroup}" --name "${containerInstanceName}"`);
+spawn(`az container delete --subscription "${subscriptionId}" --resource-group "${resourceGroup}" --name "${containerInstanceName}"`);
 
 console.log(`Creating Azure Container Instance for stress/perf that runs ${options.testToRun}`);
 spawn(
-  `az container create --resource-group "${resourceGroup}" --name "${containerInstanceName}" ` +
+  `az container create --subscription "${subscriptionId}" --resource-group "${resourceGroup}" --name "${containerInstanceName}" ` +
     `--image ${imageName}  ` +
     "--cpu 1 --memory 0.7 " +
     "--restart-policy Never " +
@@ -73,11 +74,11 @@ console.log(
 
 console.log(`Some other commands you might find useful to manage your container:\n`);
 console.log(
-  `az container stop --resource-group "${resourceGroup}" --name "${containerInstanceName}"`
+  `az container stop --subscription "${subscriptionId}" --resource-group "${resourceGroup}" --name "${containerInstanceName}"`
 );
 console.log(
-  `az container delete --resource-group "${resourceGroup}" --name "${containerInstanceName}"`
+  `az container delete --subscription "${subscriptionId}" --resource-group "${resourceGroup}" --name "${containerInstanceName}"`
 );
 console.log(
-  `az container logs --resource-group "${resourceGroup}" --name "${containerInstanceName}" --follow`
+  `az container logs --subscription "${subscriptionId}" --resource-group "${resourceGroup}" --name "${containerInstanceName}" --follow`
 );
