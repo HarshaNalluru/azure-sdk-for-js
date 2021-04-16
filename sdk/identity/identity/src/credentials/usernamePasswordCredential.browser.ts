@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { AccessToken,  TokenCredential } from "@azure/core-http";
-
+import { AccessToken, TokenCredential } from "@azure/core-http";
 
 /**
  * Enables authentication to Azure Active Directory with a user's
@@ -13,7 +12,6 @@ import { AccessToken,  TokenCredential } from "@azure/core-http";
 // We'll be using InteractiveCredential as the base of this class, which requires us to support authenticate(),
 // to reduce the number of times we send the password over the network.
 export class UsernamePasswordCredential implements TokenCredential {
-
   /**
    * Creates an instance of the UsernamePasswordCredential with the details
    * needed to authenticate against Azure Active Directory with a username
@@ -25,9 +23,8 @@ export class UsernamePasswordCredential implements TokenCredential {
    * @param password - The user account's account password
    * @param options - Options for configuring the client which makes the authentication request.
    */
-  constructor(
-  ) {
-    throw new Error("not supported")
+  constructor() {
+    throw new Error("not supported");
   }
 
   /**
@@ -45,6 +42,6 @@ export class UsernamePasswordCredential implements TokenCredential {
    *                TokenCredential implementation might make.
    */
   async getToken(): Promise<AccessToken> {
-    throw new Error("not supported")
+    throw new Error("not supported");
   }
 }
