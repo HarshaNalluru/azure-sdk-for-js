@@ -15,10 +15,17 @@ export const isNode8 = process.versions.node[0] === "8";
 export const Node8NotSupportedError = new Error("Node 8 does not support persistence caching.");
 
 /**
+ * @returns {boolean}
+ */
+export function isBrowser(): boolean {
+  return typeof window !== "undefined";
+}
+
+/**
  * @internal
  */
 export function requireMsalNodeExtensions(): any {
-  if (isNode8) {
+  if (isNode8 && !isBrowser()) {
     throw Node8NotSupportedError;
   }
   /* eslint-disable-next-line @typescript-eslint/no-require-imports, import/no-extraneous-dependencies */

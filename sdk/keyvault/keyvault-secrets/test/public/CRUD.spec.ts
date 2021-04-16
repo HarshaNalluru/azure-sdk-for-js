@@ -35,7 +35,7 @@ describe("Secret client - create, read, update and delete operations", () => {
 
   // The tests follow
 
-  it("can add a secret", async function(this: Context) {
+  it.only("can add a secret", async function(this: Context) {
     const secretName = testClient.formatName(
       `${secretPrefix}-${this!.test!.title}-${secretSuffix}`
     );
