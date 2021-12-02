@@ -10,6 +10,7 @@ import {
 import { ServiceClient } from "@azure/core-client";
 import { recorderHttpPolicy, TestProxyHttpClient } from "../src";
 import { expect } from "chai";
+import { describeWithRecorder } from "../src/decribeWithRecorder";
 
 type TestMode = "record" | "playback" | "live" | undefined;
 
@@ -398,6 +399,61 @@ function getTestServerUrl() {
           await recorder["sanitizer"]!.transformsInfo();
         }
       });
+    });
+  });
+});
+
+// These tests require the following to be running in parallel
+// - utils/server.ts (to serve requests to act as a service)
+// - proxy-tool (to save/mock the responses)
+(["record", "playback", "live"] as TestMode[]).forEach((mode) => {
+  describeWithRecorder(`proxy tool 2`, { envSetupForPlayback: {} }, () => {
+    let client: ServiceClient;
+
+    const basePipelineReqOptions: Partial<PipelineRequestOptions> =
+      mode === "live" ? { allowInsecureConnection: true } : {};
+
+    before(() => {
+      setTestMode(mode);
+    });
+
+    beforeEach(async function() {
+      client = new ServiceClient({ baseUri: getTestServerUrl() });
+      client.pipeline.addPolicy(recorderHttpPolicy(this.recorder));
+    });
+
+    async function makeRequestAndVerifyResponse(
+      request: {
+        url?: string;
+        path: string;
+        body?: string;
+        headers?: { headerName: string; value: string }[];
+        method: HttpMethods;
+      },
+      expectedResponse: { [key: string]: unknown } | undefined
+    ) {
+      const req = createPipelineRequest({
+        url: request.url ?? getTestServerUrl() + request.path,
+        body: request.body,
+        method: request.method,
+        ...basePipelineReqOptions
+      });
+      request.headers?.forEach(({ headerName, value }) => {
+        req.headers.set(headerName, value);
+      });
+      const response = await client.sendRequest(req);
+      if (expectedResponse) {
+        expect(JSON.parse(response.bodyAsText!)).to.deep.equal(expectedResponse);
+      }
+      // Add code to also check expected headers
+      return response;
+    }
+
+    it("sample_response", async () => {
+      await makeRequestAndVerifyResponse(
+        { path: `/sample_response`, method: "GET" },
+        { val: "abc" }
+      );
     });
   });
 });
