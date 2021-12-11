@@ -127,10 +127,6 @@ module.exports = function(config) {
     browserNoActivityTimeout: 600000,
     browserDisconnectTimeout: 10000,
     browserDisconnectTolerance: 3,
-    browserConsoleLogOptions: {
-      terminal: !isRecordMode()
-    },
-
     client: {
       mocha: {
         // change Karma's debug.html to the mocha web reporter
