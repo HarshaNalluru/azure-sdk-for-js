@@ -1,13 +1,13 @@
 {
   "Entries": [
     {
-      "RequestUri": "http://host.docker.internal:8080/sample_response/fake_secret_info",
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2380",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip,deflate",
         "Connection": "keep-alive",
-        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.13.0 OS/(x64-Linux-5.10.60.1-microsoft-standard-WSL2)",
-        "x-ms-client-request-id": "7891dbce-3d4a-4442-bf14-9a3f43407721"
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "bdeb6864-8956-4c51-b701-a549d29363f7"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -15,7 +15,2287 @@
         "Connection": "keep-alive",
         "Content-Length": "26",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 10 Dec 2021 00:19:55 GMT",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2356",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "36ba6a46-bf81-4dc6-a416-7f8f1057899e"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2364",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "e1a4dcd4-2497-49bd-bbe8-54579fb8c64e"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2379",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "409adbd7-76a5-4d44-9082-b0f8a40a6440"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2371",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "52434011-3341-4743-815d-1735f89ee391"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2365",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "efbbc65a-896a-499c-a170-3b3619366ae5"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2372",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "61aabd5f-2e02-45a8-9e52-0ccb9ada0d8f"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2377",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "9cfd249f-8135-4cfd-8a83-47a95b21495f"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2369",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "6d4f3ab5-7bf5-42a2-804b-1cb074093a7e"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/abcdef-2385",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "3b7bb050-9b44-4da9-b513-65b95a167a8f"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2363",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "96a7fdc3-fa6f-4479-bbd4-38aaf5a3fa3b"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2378",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "aa5952e9-25d0-4d54-8395-783cb647f9b2"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2401",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "4661448b-114d-45c8-b371-4e9ceff289ce"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2387",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "1c718802-11be-42d9-8e32-0afce78ea891"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2393",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "8e38b3aa-274d-4a00-9e3b-e1e40a4abb1a"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2381",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "d71f7457-0dbe-41da-9f04-08811c968834"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2388",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "50f8caec-3fc7-4c0d-84f5-552871196b01"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2389",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "8b193a4a-aed5-438d-966d-cea3f28a0a96"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2395",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "4bba0544-95c9-4edc-9039-db9b7ec021aa"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2358",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "63c42388-1e55-435b-aaa8-5b3d11bc5a5f"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2362",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "504c089c-19c7-42cd-b67b-c5109f71f9fe"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2397",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "2fdd6138-387c-44cf-ada5-1176891b31f7"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2386",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "2a177d5d-5d71-4b7d-83e6-e9c113e405a4"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/abcdef-2396",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "e98c52e2-cb29-46cf-b00f-ad367fb68844"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2403",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "bb58ac84-e509-49a3-9903-0576b386efd4"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2359",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "b11201bd-47d3-496c-a91e-2cfa4846185b"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2404",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "4e4a6be3-4f14-4b17-83f1-9f4aaa9834eb"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2360",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "e0efacf1-b484-4478-898f-1304f03cf989"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2374",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "9b336b2b-57a6-44e1-8cdf-7cdb9e69f159"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2394",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "aec08618-c598-45a4-a92f-b7b683e6f6d7"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2382",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "6541f555-e5d5-438f-b815-174650312d7a"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2402",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "35828fa2-3c93-49e8-a04f-28cab6a2c251"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2361",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "e27a8353-5b83-4d88-a92b-2399fdbc9232"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/abcdef-2367",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "b5423744-f69a-4761-a5cb-7c8d4d8b3f74"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2390",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "fea75b82-b366-466f-9a98-4007b4926450"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2368",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "987b502e-a248-4dc5-b039-df95798c553a"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2376",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "783db073-86eb-4b04-a508-c6c5a4047544"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2398",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "a54150e0-6bd4-4b4c-969c-352c9a07909e"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2375",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "4f25fe17-8827-4bba-ab78-03c7a23a00f1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2354",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "e740b0c1-ab62-4d27-9f03-09e49d3fd518"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2384",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "e2f69e33-1e2b-4b2f-ab21-43d61c945496"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2406",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "3bad54f4-0070-4b32-b35f-a2e95ef791a3"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2392",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "91fabb90-696f-4507-bd65-1c8251adb455"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2383",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "ea973812-1dcc-4804-b024-98961a647960"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2400",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "2101bb18-721e-4fb1-b95c-973b19afc5f4"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2408",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "9f8b3ba9-8ade-40a0-8aac-44b0d2083163"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2391",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "8e10fbe6-51ce-48c7-872e-eb8926c3ed37"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2353",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "846289d4-2438-4402-bc03-f6bfee6bc03e"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/abcdef-2399",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "8baf9a6d-a87b-49e2-a60c-90d51ce2103a"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2407",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "583cb3d6-c9b4-4438-adf0-1b110e445226"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2409",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "97c9ac97-8971-4944-9bdb-042814b09b5e"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2417",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "1c42f61b-54c1-45cc-95f2-78aad4ec92b7"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2433",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "2ce2f1c3-b412-4b02-a758-94150d50d4fc"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2425",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "4c572ebb-5f0e-4852-9c72-37e673980c29"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2441",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "b5de5892-1015-423f-9d00-5c4550815bf6"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/abcdef-2355",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "2a3b7d35-f543-41ab-9d82-3c301ec29338"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2410",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "b1897d39-6b93-47dc-a722-d3ee4fba5f5a"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/abcdef-2418",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "20807498-d3ed-4a6b-8a7a-7f70e3c84d4c"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/abcdef-2434",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "45026872-cd50-4e98-8a55-2c971a8b8cfd"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2426",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "f090b59c-017d-479e-b6af-e5be56ab3242"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2442",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "4eaec09d-ecdb-42cd-aead-a72539c40030"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2411",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "687bc8d0-c3d2-4042-a1f6-00e68ba05677"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2427",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "febfc4f3-87f6-4162-95c6-8b7fc3af848c"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/abcdef-2412",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "49dfd3b5-2b6d-4309-bc9f-abc317d17c2c"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2345",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "54c8e9d2-d84a-43da-9b3e-a3d5c1263616"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2419",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "c80d7b58-55c5-4d90-b33b-7d2b77f1e58a"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2420",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "54af73b7-9353-4b2e-95b9-5d4e87240f54"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2435",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "8f781fac-26d0-43af-ba93-1f2f50da4630"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/abcdef-2436",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "58115dc7-960b-43d2-9018-4a7f44115e10"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2428",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "15219d70-b289-415f-8a89-82b2310ffa27"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2444",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "4fce8a45-aef0-4d87-9c21-72f1a85cabdb"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2352",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "c68f7f5d-d708-4d63-b4f0-8a16bd808d30"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2443",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "0e8ac721-116d-47ab-84ff-c920aeb6ed41"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2414",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "23a08a3c-755c-408a-8389-35dd7efcfedd"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2413",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "f408375b-e864-4394-a611-e982d4c22f44"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2347",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "b95f31ef-5c62-4324-aa96-b356601a0864"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2422",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "e84573e1-0279-41b1-9dcb-2f5ae244be43"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2429",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "0033fdea-f5f9-4645-88da-72185a61f3ee"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2421",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "d0ae0ed5-5d9d-43b8-8937-a5407b4ad3e4"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2437",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "20018132-860d-4896-858f-01824e17230f"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2349",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "17a3771b-5e9b-446d-b39a-cc915af2cce5"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2438",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "cc873248-2a37-417f-b200-411943ce4c6b"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2415",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "74cd1798-a7fc-419d-a619-41c820534c79"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2423",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "d911643b-2bae-4f96-b3c4-4aab59098bf4"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2430",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "959e6547-9869-4571-9556-3a48426c4dbe"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2424",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "b019abfc-30c2-4e91-a730-27a8d9d0db8d"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/abcdef-2348",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "151101c1-0ead-4aa1-bb9e-b017c8fc7ea0"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2416",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "1f80e34a-4b39-4424-8790-8c525f1ac676"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2439",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "91ee8fbb-83d7-4714-b5fa-e23ce2fae095"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2431",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "a10b7f5d-103e-488b-a77e-77cc567cfb24"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/abcdef-2432",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "fe1e8482-25c5-41d2-b307-35e5684ef277"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2351",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "1609dcc9-1f71-4d54-b916-7c990103d66d"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2440",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "a2223481-acbd-498f-b272-c8acf74fe109"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2350",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "34e27ea0-cd3e-480c-972f-e1e914c5faae"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2366",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "645a96bf-9ad2-4712-a186-c031798935dc"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
+        "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
+        "Keep-Alive": "timeout=5",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "val": "I am the answer!"
+      }
+    },
+    {
+      "RequestUri": "http://127.0.0.1:8080/sample_response/fake_secret_info-2405",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip,deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "core-rest-pipeline/1.3.3 Node/v16.6.1 OS/(x64-Windows_NT-10.0.22000)",
+        "x-ms-client-request-id": "9f5af62a-6b94-4e81-9e84-7bc31d49a50a"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "26",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Dec 2021 03:09:53 GMT",
         "ETag": "W/\u00221a-l2n/o5TdaU5b3c0hr/H15EW8dl8\u0022",
         "Keep-Alive": "timeout=5",
         "X-Powered-By": "Express"

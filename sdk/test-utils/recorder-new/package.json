@@ -19,7 +19,7 @@
     "build:test": "tsc -p .",
     "build": "npm run clean && tsc -p . && rollup -c 2>&1",
     "check-format": "prettier --list-different --config ../../../.prettierrc.json --ignore-path ../../../.prettierignore \"src/**/*.ts\" \"test/**/*.ts\" \"*.{js,json}\"",
-    "clean": "rimraf dist dist-esm test-dist typings *.tgz *.log",
+    "clean": "rimraf dist dist-esm test-dist typings *.tgz",
     "extract-api": "echo skipped",
     "format": "prettier --write --config ../../../.prettierrc.json --ignore-path ../../../.prettierignore \"src/**/*.ts\" \"test/**/*.ts\" \"*.{js,json}\"",
     "integration-test:browser": "concurrently \"npm run tests:server\" \"npm run test:browser-with-proxy\" --kill-others --success first",

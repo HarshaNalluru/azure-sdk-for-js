@@ -90,7 +90,7 @@ export const sanitizerKeywordMapping: Record<
 /**
  * This sanitizer offers a general regex replace across request/response Body, Headers, and URI. For the body, this means regex applying to the raw JSON.
  */
-interface RegexSanitizer {
+export interface RegexSanitizer {
   /**
    * The substitution value.
    */

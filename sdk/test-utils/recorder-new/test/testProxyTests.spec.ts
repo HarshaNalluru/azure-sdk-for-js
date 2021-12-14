@@ -10,6 +10,7 @@ import {
 import { ServiceClient } from "@azure/core-client";
 import { recorderHttpPolicy, TestProxyHttpClient } from "../src";
 import { expect } from "chai";
+import { RegexSanitizer } from "../src/utils/utils";
 
 type TestMode = "record" | "playback" | "live" | undefined;
 
@@ -45,6 +46,7 @@ function getTestServerUrl() {
   describe(`proxy tool`, () => {
     let recorder: TestProxyHttpClient;
     let client: ServiceClient;
+    let count = 0;
 
     const basePipelineReqOptions: Partial<PipelineRequestOptions> =
       mode === "live" ? { allowInsecureConnection: true } : {};
@@ -57,6 +59,7 @@ function getTestServerUrl() {
       recorder = new TestProxyHttpClient(this.currentTest);
       client = new ServiceClient({ baseUri: getTestServerUrl() });
       client.pipeline.addPolicy(recorderHttpPolicy(recorder));
+      count = 0;
     });
 
     afterEach(async () => {
@@ -85,6 +88,10 @@ function getTestServerUrl() {
       const response = await client.sendRequest(req);
       if (expectedResponse) {
         expect(JSON.parse(response.bodyAsText!)).to.deep.equal(expectedResponse);
+      }
+      count++;
+      if ((count + 1) % 10 === 0) {
+        console.log(count);
       }
       // Add code to also check expected headers
       return response;
@@ -117,20 +124,33 @@ function getTestServerUrl() {
     });
 
     describe("Sanitizers", () => {
-      it("GeneralRegexSanitizer", async () => {
-        env.SECRET_INFO = "abcdef";
+      it.only("GeneralRegexSanitizer", async () => {
+        const secretInfo = "abcdef";
         const fakeSecretInfo = "fake_secret_info";
+        const sanitizers: RegexSanitizer[] = [];
+        const seed = 2345;
+        for (let i = 0; i < 100; i++) {
+          sanitizers.push({
+            regex: secretInfo + "-" + (seed + i),
+            value: fakeSecretInfo + "-" + (seed + i)
+          });
+        }
         await recorder.start({
-          envSetupForPlayback: {
-            SECRET_INFO: fakeSecretInfo
+          envSetupForPlayback: {},
+          sanitizerOptions: {
+            generalRegexSanitizers: sanitizers
           }
         }); // Adds generalRegexSanitizers by default based on envSetupForPlayback
-        await makeRequestAndVerifyResponse(
-          {
-            path: `/sample_response/${env.SECRET_INFO}`,
-            method: "GET"
-          },
-          { val: "I am the answer!" }
+        await Promise.all(
+          sanitizers.map((sanitizer) =>
+            makeRequestAndVerifyResponse(
+              {
+                path: `/sample_response/${isPlaybackMode() ? sanitizer.value : sanitizer.regex}`,
+                method: "GET"
+              },
+              { val: "I am the answer!" }
+            )
+          )
         );
       });
 
