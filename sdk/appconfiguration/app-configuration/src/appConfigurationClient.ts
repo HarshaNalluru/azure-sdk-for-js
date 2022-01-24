@@ -7,17 +7,8 @@
 import { AppConfigCredential } from "./appConfigCredential";
 import { AppConfiguration } from "./generated/src/appConfiguration";
 import { PagedAsyncIterableIterator } from "@azure/core-paging";
-import {
-  isTokenCredential,
-  exponentialRetryPolicy,
-  systemErrorRetryPolicy,
-  ServiceClientCredentials,
-  UserAgentOptions,
-  getDefaultUserAgentValue as getCoreHttpDefaultUserAgentValue,
-  userAgentPolicy,
-} from "@azure/core-http";
 import { throttlingRetryPolicy } from "./policies/throttlingRetryPolicy";
-import { TokenCredential } from "@azure/core-auth";
+import { isTokenCredential, TokenCredential } from "@azure/core-auth";
 
 import "@azure/core-asynciterator-polyfill";
 
@@ -55,7 +46,6 @@ import {
   formatFieldsForSelect,
   serializeAsConfigurationSettingParam,
 } from "./internal/helpers";
-import { tracingPolicy } from "@azure/core-http";
 import { trace as traceFromTracingHelpers } from "./internal/tracingHelpers";
 import {
   AppConfigurationGetKeyValuesResponse,
