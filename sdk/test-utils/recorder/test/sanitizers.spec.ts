@@ -188,6 +188,36 @@ import { getTestServerUrl, makeRequestAndVerifyResponse, setTestMode } from "./u
         );
       });
 
+      it.only("UriSanitizer regex", async () => {
+        const secretEndpoint = "host.docker.internal";
+        const fakeEndpoint = "fake_endpoint2";
+        await recorder.start({
+          envSetupForPlayback: {},
+          sanitizerOptions: {
+            uriSanitizers: [
+              {
+                regex: true,
+                target: `http\:\/\/(?<secret_content>)\:8080.*`,
+                value: fakeEndpoint,
+                groupForReplace: "secret_content",
+              },
+            ],
+          },
+        });
+        const pathToHit = `/api/sample_request_body`;
+        await makeRequestAndVerifyResponse(
+          client,
+          {
+            url: isPlaybackMode()
+              ? getTestServerUrl().replace(secretEndpoint, fakeEndpoint) + pathToHit
+              : undefined,
+            path: pathToHit,
+            method: "POST",
+          },
+          { bodyProvided: {} }
+        );
+      });
+
       it("UriSubscriptionIdSanitizer", async () => {
         const id = "73c83158-bd73-4cda-aa11-a0c2a34e2544";
         const fakeId = "00000000-0000-0000-0000-000000000000";
