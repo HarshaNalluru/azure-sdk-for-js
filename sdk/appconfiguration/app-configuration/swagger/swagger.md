@@ -12,7 +12,8 @@ add-credentials: false
 generate-metadata: false
 license-header: MICROSOFT_MIT_NO_VERSION
 output-folder: ../src/generated
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/1.0/appconfiguration.json
+# input-file: https://github.com/Azure/azure-rest-api-specs-pr/blob/8d1470fb68256aa9c664e48bdccbb23d7c7cbaa2/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/preview/2022-11-01-preview/appconfiguration.json
+input-file: ./swagger.json
 model-date-time-as-string: false
 optional-response-headers: true
 sample-generation: false
