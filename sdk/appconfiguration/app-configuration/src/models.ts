@@ -263,7 +263,7 @@ export interface ListSettingsOptions extends OptionalFields {
    * to be specified: * or \\ or ,
    */
   keyFilter?: string;
-
+  /* eslint-disable tsdoc/syntax */
   /**
    * Filters for labels. There are two types of matching:
    *
@@ -276,13 +276,13 @@ export interface ListSettingsOptions extends OptionalFields {
    *    | \0           | Matches any key without a label (URL encoded as %00) |
    *    | prod         | Matches a key with label named prod                  |
    *    | prod*        | Matches key with label names that start with prod    |
-   *
    * These characters are reserved and must be prefixed with backslash in order
    * to be specified: * or \\ or ,
    *
    * Reference: https://learn.microsoft.com/azure/azure-app-configuration/rest-api-key-value
    */
   labelFilter?: string;
+  /* eslint-enable tsdoc/syntax */
 }
 
 /**
