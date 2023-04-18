@@ -11,12 +11,9 @@ export class QueryTest extends CosmosTest {
     // Setting up the client
   }
 
-  public async globalSetup() {
-    await super.globalSetup(); // Calling base class' setup
-    // Add any additional setup
-  }
-
-  async run(): Promise < void> {
-    // call the method on `serviceNameClient` that you're interested in testing
+  async run(): Promise<void> {
+    const container = this.cosmosClient.database(CosmosTest.databaseId).container(CosmosTest.containerId);
+    const res = await container.items.readAll().fetchAll();
+    res.resources.map((p) => p.id);
   }
 }
