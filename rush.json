@@ -1,7 +1,7 @@
 /**
  * This is the main configuration file for Rush.
  * For full documentation, please see https://rushjs.io
- */{
+ */ {
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
   /**
    * (Required) This specifies the version of the Rush engine to be used in this repo.
@@ -394,6 +394,11 @@
       "packageName": "@azure/quantum-jobs",
       "projectFolder": "sdk/quantum/quantum-jobs",
       "versionPolicyName": "client"
+    },
+    {
+      "packageName": "@azure-tests/perf-cosmos",
+      "projectFolder": "sdk/cosmosdb/perf-tests/cosmos",
+      "versionPolicyName": "test"
     },
     {
       "packageName": "@azure/communication-call-automation",
