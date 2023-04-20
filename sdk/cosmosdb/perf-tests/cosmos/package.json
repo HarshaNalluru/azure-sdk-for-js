@@ -8,7 +8,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@azure/cosmos": "3.9.2",
+    "@azure/cosmos": "3.14.1",
     "@azure/test-utils-perf": "^1.0.0",
     "dotenv": "^16.0.0",
     "uuid": "^8.3.0"
@@ -31,7 +31,7 @@
     "build:samples": "echo skipped",
     "build:test": "echo skipped",
     "check-format": "prettier --list-different --config ../../../../.prettierrc.json --ignore-path ../../../../.prettierignore \"test/**/*.ts\" \"*.{js,json}\"",
-    "clean": "rimraf dist dist-* types *.tgz *.log",
+    "clean": "rimraf dist dist-* types *.tgz",
     "format": "prettier --write --config ../../../../.prettierrc.json --ignore-path ../../../../.prettierignore \"test/**/*.ts\" \"*.{js,json}\"",
     "integration-test:browser": "echo skipped",
     "integration-test:node": "echo skipped",

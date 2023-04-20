@@ -1049,22 +1049,22 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@azure/cosmos/3.9.2:
-    resolution: {integrity: sha512-nS02/LyjE22osouSJGWw6DqJ34tbkEgAcysrbKyDzyiqdDKNprP8sAU43WGVr6Jxjw8jGBzg6rkHz9A+IvPcdg==}
+  /@azure/cosmos/3.14.1:
+    resolution: {integrity: sha512-i8HJOlmVfr1P5qMNgKbEpszddtT8Ooskj2pJm0ZD7jeMuwN2tYlQ68eLyCmynv1j5PQimLGjlobBVuFuM8uNAA==}
+    engines: {node: '>=12.0.0'}
     dependencies:
-      '@types/debug': 4.1.7
+      '@azure/core-auth': 1.4.0
+      '@azure/core-rest-pipeline': 1.10.2
       debug: 4.3.4
       fast-json-stable-stringify: 2.1.0
       jsbi: 3.2.5
       node-abort-controller: 1.2.1
-      node-fetch: 2.6.9
       priorityqueuejs: 1.0.0
       semaphore: 1.1.0
       tslib: 2.5.0
       universal-user-agent: 6.0.0
       uuid: 8.3.2
     transitivePeerDependencies:
-      - encoding
       - supports-color
     dev: false
 
@@ -4057,7 +4057,7 @@ packages:
     dependencies:
       semver: 7.3.8
       shelljs: 0.8.5
-      typescript: 5.1.0-dev.20230418
+      typescript: 5.1.0-dev.20230419
     dev: false
 
   /ecdsa-sig-formatter/1.0.11:
@@ -8908,8 +8908,8 @@ packages:
     hasBin: true
     dev: false
 
-  /typescript/5.1.0-dev.20230418:
-    resolution: {integrity: sha512-BfA/KV0xddF8ZCAQZxZ0FoS8p+nWKXVaa5fctXW6WNGfcYF04cXlLB6F6uf3uCVbd0iad4YdHchz3KR0722QLg==}
+  /typescript/5.1.0-dev.20230419:
+    resolution: {integrity: sha512-J8QfDyJDC/8fpA7fzlVBx4zSR+dGVd6afEpu6nEtplA98lcW3NHA7v9KcQ0AJ8SZGoCDLIl+8BVfiI/CkFS2fg==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false
@@ -18563,11 +18563,11 @@ packages:
     dev: false
 
   file:projects/perf-cosmos.tgz:
-    resolution: {integrity: sha512-LDjEHZ3fxTzFdQpB7kyVVooCTifsOvKvGJvPHoFkbUvUewaNOytaUfrVyy6KOWl9JMozmWvq9WzFPhbPvMlPGA==, tarball: file:projects/perf-cosmos.tgz}
+    resolution: {integrity: sha512-tdberjXi53nsW+VMx9smrYt0lXlUSpD/5fYXVbelW6j7b1ihQAIOr63ZmpzfAOJ2VtmciPshfTub5OyRTg5G4A==, tarball: file:projects/perf-cosmos.tgz}
     name: '@rush-temp/perf-cosmos'
     version: 0.0.0
     dependencies:
-      '@azure/cosmos': 3.9.2
+      '@azure/cosmos': 3.14.1
       '@types/node': 14.18.41
       '@types/uuid': 8.3.4
       dotenv: 16.0.3
@@ -18581,7 +18581,6 @@ packages:
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
-      - encoding
       - supports-color
     dev: false
 
