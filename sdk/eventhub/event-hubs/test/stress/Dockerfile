@@ -8,5 +8,6 @@ ADD ./app/package.json /app/package.json
 ADD ./app/tsconfig.json /app/tsconfig.json
 WORKDIR /app
 RUN npm install && npm run build
+ENV DEBUG=azure*,rhea*
 RUN ls
 ENTRYPOINT ["node"];

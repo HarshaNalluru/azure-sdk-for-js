@@ -16,7 +16,7 @@ interface scenarioCheckpointStoreOptions {
 function sanitizeOptions(args: string[]): Required<scenarioCheckpointStoreOptions> {
   const options = parsedArgs<scenarioCheckpointStoreOptions>(args);
   return {
-    testDurationInMs: options.testDurationInMs || 2 * 24 * 60 * 60 * 1000, // Default = 2 days
+    testDurationInMs: options.testDurationInMs || 10 * 24 * 60 * 60 * 1000, // Default = 2 days
   };
 }
 
@@ -31,7 +31,7 @@ async function scenarioCheckpointStore() {
     testName: "checkpointStore-memLeak",
   });
   let terminalCase = false;
-  const storageAccountConnectionString = process.env.AZURE_STORAGE_CONNNECTION_STRING;
+  const storageAccountConnectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
   const containerName = `container-${Math.floor(Math.random() * 1000)}`;
   const connectionString = process.env.EVENTHUBS_CONNECTION_STRING;
   const eventHubName = process.env.EVENTHUB_NAME;

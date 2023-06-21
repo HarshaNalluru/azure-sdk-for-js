@@ -102,6 +102,6 @@ output EVENTHUBS_CONNECTION_STRING string = listkeys(eventHubAuthRuleName, ehVer
 output EVENTHUB_NAME string = eventHubName
 output EVENT_HUB_SAS_POLICY string = eventHubAuthRuleName
 output EVENT_HUB_SAS_KEY string = listkeys(eventHubAuthRuleName, ehVersion).primaryKey
-output AZURE_STORAGE_CONNNECTION_STRING string = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount_var};AccountKey=${listKeys(storageAccountId, providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value};EndpointSuffix=${storageEndpointSuffix}'
+output AZURE_STORAGE_CONNECTION_STRING string = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount_var};AccountKey=${listKeys(storageAccountId, providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value};EndpointSuffix=${storageEndpointSuffix}'
 output AZURE_STORAGE_ACCOUNT string = storageAccount_var
 output AZURE_STORAGE_ACCESS_KEY string = listKeys(storageAccountId, providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value
