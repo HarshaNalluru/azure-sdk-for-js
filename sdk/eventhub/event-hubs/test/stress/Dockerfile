@@ -5,9 +5,12 @@ FROM ${REGISTRY}node:18
 RUN mkdir -p /app/src/
 ADD ./app/src/*.ts /app/src/
 ADD ./app/package.json /app/package.json
+COPY ./azure-event-hubs-5.11.1.tgz .
 ADD ./app/tsconfig.json /app/tsconfig.json
 WORKDIR /app
-RUN npm install && npm run build
+RUN npm install
+RUN npm install ../azure-event-hubs-5.11.1.tgz
+RUN npm run build
 ENV DEBUG=azure*,rhea*
 RUN ls
 ENTRYPOINT ["node"];

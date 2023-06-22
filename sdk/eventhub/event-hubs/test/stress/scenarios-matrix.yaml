@@ -12,12 +12,12 @@ matrix:
     # noActivity:
     #    testTarget: scenarioNoActivity
     #    memory: "1.5Gi"
-    noActivitySender:
-       testTarget: scenarioNoActivitySender
-       memory: "1.5Gi"
-    # checkpointStore:
-    #    testTarget: scenarioCheckpointStore
+    # noActivitySender:
+    #    testTarget: scenarioNoActivitySender
     #    memory: "1.5Gi"
+    checkpointStore:
+       testTarget: scenarioCheckpointStore
+       memory: "1.5Gi"
     # getRuntimeProps:
     #   testTarget: scenarioGetRuntimeProps
     #   memory: "1.5Gi"

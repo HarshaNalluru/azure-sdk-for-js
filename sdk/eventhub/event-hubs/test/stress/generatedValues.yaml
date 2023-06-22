@@ -1,7 +1,7 @@
 scenarios:
-- testTarget: scenarioNoActivitySender
-  image: Dockerfile
-  Scenario: node18-noActivitySender
+- image: Dockerfile
   memory: 1.5Gi
-  imageTag: stresspgs7b6dif73rup6.azurecr.io/harshan-eh-send/jseh/dockerfile:harshanalluru
+  testTarget: scenarioCheckpointStore
+  Scenario: node18-checkpointStore
+  imageTag: stresspgs7b6dif73rup6.azurecr.io/harshan-eh-5-11-1-fix/jseh/dockerfile:harshanalluru
 
