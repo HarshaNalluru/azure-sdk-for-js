@@ -56,7 +56,10 @@ import {
 } from "./indexModels";
 import { createOdataMetadataPolicy } from "./odataMetadataPolicy";
 import { IndexDocumentsBatch } from "./indexDocumentsBatch";
-import { decode, encode } from "./base64";
+import { 
+  decode,
+  encode } 
+  from "./base64";
 import * as utils from "./serviceUtils";
 import { IndexDocumentsClient } from "./searchIndexingBufferedSender";
 import { ExtendedCommonClientOptions } from "@azure/core-http-compat";
