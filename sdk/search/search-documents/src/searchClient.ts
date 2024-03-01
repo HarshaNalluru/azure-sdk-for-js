@@ -59,6 +59,8 @@ import { IndexDocumentsBatch } from "./indexDocumentsBatch";
 import { 
   decode,
   encode } 
+  
+  
   from "./base64";
 import * as utils from "./serviceUtils";
 import { IndexDocumentsClient } from "./searchIndexingBufferedSender";
