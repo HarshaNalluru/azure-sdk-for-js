@@ -58,7 +58,9 @@ import { createOdataMetadataPolicy } from "./odataMetadataPolicy";
 import { IndexDocumentsBatch } from "./indexDocumentsBatch";
 import { 
   decode,
-  encode } 
+  encode 
+
+} 
   
   
   from "./base64";
