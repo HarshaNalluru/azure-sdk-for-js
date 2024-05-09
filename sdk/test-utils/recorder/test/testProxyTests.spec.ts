@@ -3,7 +3,7 @@
 
 import { ServiceClient } from "@azure/core-client";
 import { createPipelineRequest } from "@azure/core-rest-pipeline";
-import { CustomMatcherOptions, isPlaybackMode, Recorder } from "../src/index.js";
+import { CustomMatcherOptions, env, isPlaybackMode, Recorder } from "../src/index.js";
 import { isLiveMode, TestMode } from "../src/utils/utils.js";
 import { TEST_SERVER_URL, makeRequestAndVerifyResponse, setTestMode } from "./utils/utils.js";
 import { describe, it, assert, expect, beforeEach, afterEach, beforeAll } from "vitest";
@@ -38,7 +38,8 @@ import { describe, it, assert, expect, beforeEach, afterEach, beforeAll } from "
       );
     });
 
-    it("redirect (redirect location has host)", async function () {
+    it.only("redirect (redirect location has host)", async function () {
+      console.log(`-----------${env.TEST_MODE} START-----------`)
       await recorder.start({ envSetupForPlayback: {} });
 
       await makeRequestAndVerifyResponse(
@@ -46,6 +47,7 @@ import { describe, it, assert, expect, beforeEach, afterEach, beforeAll } from "
         { path: `/redirectWithHost`, method: "GET" },
         { val: "abc" },
       );
+      console.log(`-----------${env.TEST_MODE} END-----------`)
     });
 
     it("redirect (redirect location is relative)", async function () {
@@ -281,9 +283,8 @@ import { describe, it, assert, expect, beforeEach, afterEach, beforeAll } from "
           await makeRequestAndVerifyResponse(
             client,
             {
-              path: `/sample_response${
-                isPlaybackMode() ? "?first=abc&second=def" : "?second=def&first=abc"
-              }`,
+              path: `/sample_response${isPlaybackMode() ? "?first=abc&second=def" : "?second=def&first=abc"
+                }`,
               body: undefined,
               method: "POST",
               headers: [{ headerName: "Content-Type", value: "text/plain" }],
